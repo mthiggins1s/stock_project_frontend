@@ -10,7 +10,11 @@
 }
 
 input {
-  width: 100%;
+  width: 95%;
+  max-width: 420px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   padding: 14px 16px;
   margin-bottom: 24px;
   font-size: 1.04rem;
@@ -21,8 +25,9 @@ input {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+
 input:focus {
-  border-color: #9758fa;
+  border-color: #004225;
   box-shadow: 0 2px 8px 0 rgba(100, 100, 180, 0.08);
 }
 
@@ -48,7 +53,7 @@ li:last-child {
 
 li:hover {
   background: #f5f5ff;
-  color: #9758fa;
+  color: #004225;
 }
 
 @media (max-width: 600px) {
