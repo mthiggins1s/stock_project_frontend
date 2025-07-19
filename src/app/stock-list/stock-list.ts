@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-stock-list',
   templateUrl: './stock-list.html',
+  styleUrls: ['./stock-list.css'], // <-- This makes your CSS work!
   imports: [CommonModule, FormsModule]
 })
 export class StockListComponent implements OnInit {
