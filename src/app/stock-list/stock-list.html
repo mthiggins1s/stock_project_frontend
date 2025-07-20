@@ -1,10 +1,30 @@
-<ul>
-  @for (stock of stocks; track stock.symbol) {
-    <li>
-      <span>{{ stock.symbol }} — {{ stock.name }}</span>
-      <button (click)="addToPortfolio(stock)" [disabled]="stock.added">
-        {{ stock.added ? 'Added' : 'Add' }}
-      </button>
-    </li>
-  }
-</ul>
+<!-- This is the root container for the component and should match the CSS :host styles -->
+<div class="stock-list-inner">
+  <input
+    [(ngModel)]="search"
+    (input)="onSearchChange()"
+    placeholder="Search stocks..."
+  />
+  <ul>
+    @for (stock of stocks; let i = $index; track stock.symbol) {
+      <li class="stock-row">
+        <div class="stock-info-text">
+          {{ stock.symbol }} — {{ stock.name }}
+        </div>
+        <div class="stock-actions">
+          <button (click)="addToPortfolio(stock)" [disabled]="stock.added">
+            {{ stock.added ? 'Added' : 'Add' }}
+          </button>
+          <button (click)="showChart(i, stock.symbol)">
+            Data
+          </button>
+        </div>
+      </li>
+    }
+  </ul>
+</div>
+<ng-container *ngIf="selectedSymbol">
+  <div class="stock-floating-chart">
+    <app-tradingview-mini [symbol]="'NASDAQ:' + selectedSymbol"></app-tradingview-mini>
+  </div>
+</ng-container>
