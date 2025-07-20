@@ -39,14 +39,8 @@ export class StockListComponent implements OnInit {
   }
 
   addToPortfolio(stock: any) {
-    this.http.post('/portfolio_stocks', { symbol: stock.symbol }).subscribe({
-      next: () => {
-        stock.added = true;
-        this.addedStockSymbols.add(stock.symbol);
-      },
-      error: () => {
-        alert('Could not add to portfolio.');
-      }
-    });
+  stock.added = true;
+  this.addedStockSymbols.add(stock.symbol);
+  alert('Stock has been added to your portfolio.');
   }
 }

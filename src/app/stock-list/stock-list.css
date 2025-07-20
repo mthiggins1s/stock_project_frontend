@@ -72,6 +72,7 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-right: 12px;
   gap: 12px;
 }
 
@@ -81,7 +82,7 @@ button {
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 6px 22px;
+  padding: 6px 14px;
   font-size: 1rem;
   font-family: inherit;
   box-shadow: 0 1px 4px #00422510;
@@ -92,6 +93,10 @@ button {
 
 button:active {
   background: #002c18;
+}
+
+button:hover {
+  background: #116945;
 }
 
 button:disabled,
