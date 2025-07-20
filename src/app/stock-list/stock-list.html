@@ -1,12 +1,10 @@
-<div class="stock-list-container">
-  <input [(ngModel)]="search"
-         (input)="onSearchChange()"
-         placeholder="Search stocks..." />
-  <ul>
-    @for (stock of stocks; track stock.symbol) {
-      <li>
-        {{ stock.symbol }} — {{ stock.name }}
-      </li>
-    }
-  </ul>
-</div>
+<ul>
+  @for (stock of stocks; track stock.symbol) {
+    <li>
+      <span>{{ stock.symbol }} — {{ stock.name }}</span>
+      <button (click)="addToPortfolio(stock)" [disabled]="stock.added">
+        {{ stock.added ? 'Added' : 'Add' }}
+      </button>
+    </li>
+  }
+</ul>

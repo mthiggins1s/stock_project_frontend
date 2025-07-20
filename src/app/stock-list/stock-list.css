@@ -66,3 +66,39 @@ li:hover {
     padding: 10px 8px;
   }
 }
+
+li {
+  /* ...keep your existing li styles... */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Style for the Add button */
+button {
+  background: #004225;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 22px;
+  font-size: 1rem;
+  font-family: inherit;
+  box-shadow: 0 1px 4px #00422510;
+  cursor: pointer;
+  transition: background 0.14s, opacity 0.14s;
+  outline: none;
+}
+
+button:active {
+  background: #002c18;
+}
+
+button:disabled,
+li[disabled] button {
+  background: #e6e6e6;
+  color: #aaa;
+  cursor: default;
+  opacity: 0.7;
+  box-shadow: none;
+}
