@@ -1,8 +1,51 @@
 html, body {
-  background: #130e1b !important;
+  background: #130e1b !important;  /* Your chosen black */
+  min-height: 100vh;
   height: 100%;
-}
-#root, app-root {
-  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow-x: hidden;
 }
 
+.background-blurs {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Reusable blur base */
+.blur {
+  position: absolute;
+  filter: blur(110px);
+  opacity: 0.45;
+  border-radius: 55% 45% 65% 35% / 60% 40% 60% 40%; /* organic, long shape */
+  mix-blend-mode: lighten;
+}
+
+.blur.pink {
+  width: 650px; height: 320px;
+  left: -180px; top: -60px;
+  background: #ff44c7;
+  opacity: 0.45;
+  transform: rotate(-10deg);
+}
+
+.blur.blue {
+  width: 430px; height: 600px;
+  right: -170px; top: 30vh;
+  background: #44d0ff;
+  opacity: 0.37;
+  transform: rotate(18deg);
+}
+
+.blur.purple {
+  width: 600px; height: 230px;
+  left: 30vw; bottom: -120px;
+  background: #8244ff;
+  opacity: 0.33;
+  transform: rotate(-18deg);
+}
