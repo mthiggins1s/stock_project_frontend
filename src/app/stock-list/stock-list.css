@@ -88,8 +88,8 @@ li:hover,
 
 /* Buttons in list rows */
 button {
-  background: #116945;
-  color: #fff;
+  background: #ffe066;
+  color: #000;
   border: none;
   border-radius: 8px;
   padding: 6px 14px;
@@ -107,7 +107,7 @@ button:active {
 }
 
 button:hover {
-  background: #1be388;
+  background: #ffe57c;
   color: #101014;
 }
 
