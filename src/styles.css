@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  background: #130e1b !important;
+  height: 100%;
+}
+#root, app-root {
+  background: transparent !important;
+}
+

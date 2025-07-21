@@ -3,16 +3,26 @@
   max-width: 520px;
   margin: 48px auto;
   padding: 32px 32px 16px 32px;
-  background: #fff;
+  background: #101014;           /* Main background: nearly black */
   border-radius: 18px;
-  box-shadow: 0 4px 32px 0 rgba(40,40,50,0.08);
+  box-shadow: 0 4px 32px 0 rgba(16,16,24,0.55);
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  position: relative; /* Important for floating chart */
+  color: #fff;                   /* Default text color */
+  position: relative;
 }
 
-/* Wrap the whole list and input in a container */
+html, body {
+  height: 100%;
+  background: #07070B !important;           /* Page background: true black */
+}
+
 .stock-list-inner {
-  max-width: 520px;
+  max-width: 100%;
+  background: #181A20;
+  border-radius: 20px;
+  box-shadow: 0 2px 32px 0 rgba(0,0,0,0.18);
+  padding: 24px 16px 12px 16px;  /* Increase if you want more spacing inside */
+  margin: 0;                    /* Remove margin if present */
 }
 
 input {
@@ -24,53 +34,68 @@ input {
   padding: 14px 16px;
   margin-bottom: 24px;
   font-size: 1.04rem;
-  border: 1.5px solid #ccc;
+  border: 1.5px solid #22232b;
   border-radius: 12px;
   outline: none;
-  background: #f8fafc;
+  background: #23272F;           /* Darker input background */
+  color: #fff;
   transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 6px 0 #05050533;
+}
+
+input::placeholder {
+  color: #A7A9BE;
 }
 
 input:focus {
-  border-color: #004225;
-  box-shadow: 0 2px 8px 0 rgba(100, 100, 180, 0.08);
+  border-color: #116945;
+  box-shadow: 0 2px 8px 0 #11694555;
 }
 
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  background: transparent;
 }
 
-li {
+li,
+.stock-row {
   padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #23232f;
   font-size: 1.02rem;
-  color: #23253a;
+  color: #fff;
   letter-spacing: 0.01em;
-  transition: background 0.13s;
+  transition: background 0.13s, color 0.13s;
   cursor: pointer;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-li:last-child {
+li:last-child,
+.stock-row:last-child {
   border-bottom: none;
 }
 
-li:hover {
-  background: #f5f5ff;
-  color: #004225;
+li:hover,
+.stock-row:hover {
+  background: #23272F;
+  color: #71F7C9;
 }
 
 /* Buttons in list rows */
 button {
-  background: #004225;
+  background: #116945;
   color: #fff;
   border: none;
   border-radius: 8px;
   padding: 6px 14px;
   font-size: 1rem;
   font-family: inherit;
-  box-shadow: 0 1px 4px #00422510;
+  box-shadow: 0 1px 4px #00422518;
   cursor: pointer;
   transition: background 0.14s, opacity 0.14s;
   outline: none;
@@ -78,17 +103,18 @@ button {
 }
 
 button:active {
-  background: #002c18;
+  background: #0b4d2d;
 }
 
 button:hover {
-  background: #116945;
+  background: #1be388;
+  color: #101014;
 }
 
 button:disabled,
 li[disabled] button {
-  background: #e6e6e6;
-  color: #aaa;
+  background: #23232f;
+  color: #666;
   cursor: default;
   opacity: 0.7;
   box-shadow: none;
@@ -97,28 +123,25 @@ li[disabled] button {
 /* === Floating chart container === */
 .stock-floating-chart {
   position: absolute;
-  top: 32px; /* aligns with padding top */
-  left: 100%; /* right outside the host box */
-  margin-left: 40px; /* gap between list and chart */
+  top: 32px;
+  left: 100%;
+  margin-left: 40px;
   z-index: 10;
-  box-shadow: 0 8px 32px 0 rgba(60,60,60,0.10);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.28);
   border-radius: 14px;
-  background: #fff;
-  padding: 8px; /* optional padding around chart */
-  /* Prevent container from shrinking too much */
+  background: #181A20;
+  padding: 8px;
   width: 370px;
   max-width: 370px;
   min-width: 350px;
 }
 
-/* TradingView widget sizing */
 app-tradingview-mini {
   width: 350px !important;
   min-width: 350px !important;
   max-width: 370px !important;
 }
 
-/* Responsive: stack chart below on small screens */
 @media (max-width: 1050px) {
   :host {
     max-width: 99vw;
@@ -133,6 +156,7 @@ app-tradingview-mini {
     box-shadow: none;
     border-radius: 0;
     padding: 0;
+    background: #181A20;
   }
   app-tradingview-mini {
     width: 100% !important;
@@ -151,26 +175,13 @@ app-tradingview-mini {
   }
 }
 
-.stock-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-  font-size: 1.02rem;
-  color: #23253a;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  transition: background 0.13s;
-}
-
 .stock-info-text {
   flex: 1;
-  min-width: 0; /* Prevent overflow */
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #fff;
 }
 
 .stock-actions {
@@ -179,33 +190,19 @@ app-tradingview-mini {
   flex-shrink: 0;
 }
 
-/* Buttons keep existing style */
-button {
-  background: #004225;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 14px;
-  font-size: 1rem;
-  font-family: inherit;
-  box-shadow: 0 1px 4px #00422510;
-  cursor: pointer;
-  transition: background 0.14s, opacity 0.14s;
-  outline: none;
+@keyframes yellowGlow {
+  0%, 100% {
+    box-shadow: 0 0 24px 0 #fff70033, 0 4px 32px 0 rgba(16,16,24,0.55);
+  }
+  50% {
+    box-shadow: 0 0 36px 8px #ffe066aa, 0 4px 32px 0 rgba(16,16,24,0.55);
+  }
 }
 
-button:active {
-  background: #002c18;
-}
-
-button:hover {
-  background: #116945;
-}
-
-button:disabled {
-  background: #e6e6e6;
-  color: #aaa;
-  cursor: default;
-  opacity: 0.7;
-  box-shadow: none;
+:host {
+  /* ... existing styles ... */
+  border-radius: 22px;
+  border: 2px solid #ffe066;
+  box-shadow: 0 0 24px 0 #fff70033, 0 4px 32px 0 rgba(16,16,24,0.55);
+  animation: yellowGlow 2s infinite alternate;
 }
