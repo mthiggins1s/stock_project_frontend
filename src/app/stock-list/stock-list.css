@@ -88,8 +88,8 @@ li:hover,
 
 /* Buttons in list rows */
 button {
-  background: #ffe066;
-  color: #000;
+  background: #080c3b;
+  color: #828282;
   border: none;
   border-radius: 8px;
   padding: 6px 14px;
@@ -107,8 +107,8 @@ button:active {
 }
 
 button:hover {
-  background: #ffe57c;
-  color: #101014;
+  background: #141b69;
+  color: #828282;
 }
 
 button:disabled,
@@ -192,17 +192,17 @@ app-tradingview-mini {
 
 @keyframes yellowGlow {
   0%, 100% {
-    box-shadow: 0 0 24px 0 #fff70033, 0 4px 32px 0 rgba(16,16,24,0.55);
+    box-shadow: 0 0 24px 0 #ffffff33, 0 4px 32px 0 rgba(16,16,24,0.55);
   }
   50% {
-    box-shadow: 0 0 36px 8px #ffe066aa, 0 4px 32px 0 rgba(16,16,24,0.55);
+    box-shadow: 0 0 36px 8px #080c3b, 0 4px 32px 0 rgba(16,16,24,0.55);
   }
 }
 
 :host {
   /* ... existing styles ... */
   border-radius: 22px;
-  border: 2px solid #ffe066;
-  box-shadow: 0 0 24px 0 #fff70033, 0 4px 32px 0 rgba(16,16,24,0.55);
+  border: 2px solid #080c3b;
+  box-shadow: 0 0 24px 0 #0004ff33, 0 4px 32px 0 rgba(16,16,24,0.55);
   animation: yellowGlow 2s infinite alternate;
 }
