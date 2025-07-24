@@ -89,7 +89,7 @@ li:hover,
 /* Buttons in list rows */
 button {
   background: #080c3b;
-  color: #828282;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   padding: 6px 14px;
@@ -108,7 +108,7 @@ button:active {
 
 button:hover {
   background: #141b69;
-  color: #828282;
+  color: #ffffff;
 }
 
 button:disabled,
