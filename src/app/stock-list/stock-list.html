@@ -1,30 +1,36 @@
-<!-- This is the root container for the component and should match the CSS :host styles -->
-<div class="stock-list-inner">
+<div class="stock-list-chips">
   <input
+    class="stock-search-input"
     [(ngModel)]="search"
     (input)="onSearchChange()"
     placeholder="Search stocks..."
+    type="text"
   />
-  <ul>
-    @for (stock of stocks; let i = $index; track stock.symbol) {
-      <li class="stock-row">
-        <div class="stock-info-text">
-          {{ stock.symbol }} — {{ stock.name }}
+
+  <div class="chips-grid">
+    <div
+      class="stock-chip"
+      *ngFor="let stock of stocks; let i = index; trackBy: trackStock"
+      [class.expanded]="expanded === i"
+    >
+      <div class="stock-chip-main" (click)="expandChip(i)">
+        <div class="stock-chip-symbol">{{ stock.symbol }}</div>
+        <div class="stock-chip-name">{{ stock.name }}</div>
+        <div class="stock-chip-sparkline">
+          <!-- Optional: Mini SVG sparkline here in the future! -->
         </div>
-        <div class="stock-actions">
-          <button (click)="addToPortfolio(stock)" [disabled]="stock.added">
-            {{ stock.added ? 'Added' : 'Add' }}
-          </button>
-          <button (click)="showChart(i, stock.symbol)">
-            Data
-          </button>
-        </div>
-      </li>
-    }
-  </ul>
-</div>
-<ng-container *ngIf="selectedSymbol">
-  <div class="stock-floating-chart">
-    <app-tradingview-mini [symbol]="'NASDAQ:' + selectedSymbol"></app-tradingview-mini>
+      </div>
+      <div class="stock-chip-actions">
+        <button (click)="addToPortfolio(stock)" [disabled]="stock.added">
+          {{ stock.added ? 'Added' : 'Add' }}
+        </button>
+        <button (click)="showChart(i, stock.symbol)">
+          Data
+        </button>
+      </div>
+      <div class="stock-chip-chart" *ngIf="expanded === i && showChartFor === i">
+        <app-tradingview-mini [symbol]="'NASDAQ:' + stock.symbol"></app-tradingview-mini>
+      </div>
+    </div>
   </div>
-</ng-container>
+</div>

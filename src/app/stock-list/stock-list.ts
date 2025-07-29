@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TradingviewMiniComponent } from '../tradingview-mini/tradingview-mini';
-import { StocksService } from '../stocks.service'; // Import your service!
+import { StocksService } from '../stocks.service';
 
 @Component({
   selector: 'app-stock-list',
@@ -16,7 +16,8 @@ export class StockListComponent implements OnInit {
   search: string = '';
   addedStockSymbols: Set<string> = new Set();
 
-  selectedIndex: number | null = null;
+  expanded: number | null = null;
+  showChartFor: number | null = null;
   selectedSymbol: string | null = null;
 
   constructor(private stocksService: StocksService) {}
@@ -44,11 +45,25 @@ export class StockListComponent implements OnInit {
     alert('Stock has been added to your portfolio.');
   }
 
-  showChart(i: number, symbol: string) {
-  if (this.selectedSymbol === symbol) {
+  // ---- CHIP BEHAVIOR ----
+  trackStock(index: number, stock: any) {
+    return stock.symbol;
+  }
+
+  expandChip(i: number) {
+    this.expanded = this.expanded === i ? null : i;
+    this.showChartFor = null;
     this.selectedSymbol = null;
-  } else {
-    this.selectedSymbol = symbol;
+  }
+
+  showChart(i: number, symbol: string) {
+    if (this.showChartFor === i && this.selectedSymbol === symbol) {
+      this.showChartFor = null;
+      this.selectedSymbol = null;
+    } else {
+      this.showChartFor = i;
+      this.expanded = i;
+      this.selectedSymbol = symbol;
     }
   }
 }
