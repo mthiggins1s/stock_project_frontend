@@ -3,13 +3,25 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TradingviewMiniComponent } from '../tradingview-mini/tradingview-mini';
 import { StocksService } from '../stocks.service';
+import { MatSidenavModule } from '@angular/material/sidenav'; // <-- Add this line!
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-stock-list',
   templateUrl: './stock-list.html',
   styleUrls: ['./stock-list.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, TradingviewMiniComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    TradingviewMiniComponent,
+    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule
+  ]
 })
 export class StockListComponent implements OnInit {
   stocks: any[] = [];
