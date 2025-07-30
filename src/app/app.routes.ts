@@ -9,7 +9,6 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./stock-list/stock-list').then(c => c.StockListComponent)
   },
-  // Optional: redirect any unknown route to home
   {
     path: '**',
     redirectTo: ''
