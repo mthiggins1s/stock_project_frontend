@@ -1,69 +1,50 @@
-<mat-sidenav-container class="stock-sidenav-container" style="height: 100vh;">
+<div class="main-content" style="min-height: 100vh; background: #18141d;">
+  <!-- Top Bar -->
+  <mat-toolbar color="transparent" style="box-shadow: none; background: transparent; padding: 20px 36px 0 36px;">
+    <!-- Removed sidenav toggle button -->
+    <span style="flex: 1 1 auto;"></span>
+  </mat-toolbar>
 
-  <!-- Sidenav -->
-  <mat-sidenav #sidenav mode="side" opened class="mat-elevation-z4" style="width: 220px; background: #18141d; color: #fff;">
-    <div style="padding: 24px;">
-      <h2 style="margin-bottom: 24px; font-size: 1.4rem; font-weight: 700;">Menu</h2>
-      <button mat-stroked-button color="accent" (click)="sidenav.close()" style="margin-bottom: 20px;">Close</button>
-      <nav style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
-        <a mat-button color="accent" style="justify-content: flex-start; text-align: left;" href="#">Portfolio</a>
-        <a mat-button color="accent" style="justify-content: flex-start; text-align: left;" href="#">Watchlist</a>
-        <a mat-button color="accent" style="justify-content: flex-start; text-align: left;" href="#">Settings</a>
-      </nav>
-    </div>
-  </mat-sidenav>
+  <!-- Stock list content -->
+  <div class="stock-list-chips">
+    <input
+      class="stock-search-input"
+      [(ngModel)]="search"
+      (input)="onSearchChange()"
+      placeholder="Search stocks..."
+      type="text"
+    />
 
-  <!-- Main content -->
-  <mat-sidenav-content style="min-height: 100vh; background: #18141d;">
-    <!-- Top Bar -->
-    <mat-toolbar color="transparent" style="box-shadow: none; background: transparent; padding: 20px 36px 0 36px;">
-      <button mat-icon-button (click)="sidenav.toggle()" aria-label="Open sidenav">
-        <mat-icon style="color: #fff;">menu</mat-icon>
-      </button>
-      <span style="flex: 1 1 auto;"></span>
-    </mat-toolbar>
-
-    <!-- Stock list content -->
-    <div class="stock-list-chips">
-      <input
-        class="stock-search-input"
-        [(ngModel)]="search"
-        (input)="onSearchChange()"
-        placeholder="Search stocks..."
-        type="text"
-      />
-
-      <div class="chips-grid">
-        <div
-          class="stock-chip"
-          *ngFor="let stock of stocks; let i = index; trackBy: trackStock"
-          [class.expanded]="expanded === i"
-        >
-          <div class="stock-chip-main" (click)="expandChip(i)">
-            <div class="stock-chip-symbol">{{ stock.symbol }}</div>
-            <div class="stock-chip-name">{{ stock.name }}</div>
-            <div class="stock-chip-sparkline">
-              <!-- Optional: Mini SVG sparkline here in the future! -->
-            </div>
+    <div class="chips-grid">
+      <div
+        class="stock-chip"
+        *ngFor="let stock of stocks; let i = index; trackBy: trackStock"
+        [class.expanded]="expanded === i"
+      >
+        <div class="stock-chip-main" (click)="expandChip(i)">
+          <div class="stock-chip-symbol">{{ stock.symbol }}</div>
+          <div class="stock-chip-name">{{ stock.name }}</div>
+          <div class="stock-chip-sparkline">
+            <!-- Optional: Mini SVG sparkline here in the future! -->
           </div>
-          <div class="stock-chip-actions">
-            <button
-              (click)="addToPortfolio(stock)"
-              [disabled]="stock.added"
-            >
-              {{ stock.added ? 'Added' : 'Add' }}
-            </button>
-            <button
-              (click)="showChart(i, stock.symbol)"
-            >
-              Data
-            </button>
-          </div>
-          <div class="stock-chip-chart" *ngIf="expanded === i && showChartFor === i">
-            <app-tradingview-mini [symbol]="'NASDAQ:' + stock.symbol"></app-tradingview-mini>
-          </div>
+        </div>
+        <div class="stock-chip-actions">
+          <button
+            (click)="addToPortfolio(stock)"
+            [disabled]="stock.added"
+          >
+            {{ stock.added ? 'Added' : 'Add' }}
+          </button>
+          <button
+            (click)="showChart(i, stock.symbol)"
+          >
+            Data
+          </button>
+        </div>
+        <div class="stock-chip-chart" *ngIf="expanded === i && showChartFor === i">
+          <app-tradingview-mini [symbol]="'NASDAQ:' + stock.symbol"></app-tradingview-mini>
         </div>
       </div>
     </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>
