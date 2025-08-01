@@ -1,5 +1,22 @@
 /* styles.css — Full version for your Stock Tracker app */
 
+/* ---- ANGULAR MATERIAL SNACKBAR AND OVERLAY Z-INDEX FIX ---- */
+/* This ensures snackbars and overlays are above all navbars/headers */
+.mat-mdc-snack-bar-container,
+.cdk-overlay-container,
+.cdk-overlay-pane {
+  z-index: 99999 !important;
+}
+
+
+/* If you ever need to force *all* overlays (dialogs, menus, etc.) above everything: */
+/*
+.cdk-overlay-container,
+.cdk-overlay-pane {
+  z-index: 99999 !important;
+}
+*/
+
 /* Font smoothing & base font */
 html {
   -webkit-font-smoothing: antialiased;
