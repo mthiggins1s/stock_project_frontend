@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TradingviewMiniComponent } from '../tradingview-mini/tradingview-mini';
 import { StocksService } from '../stocks.service';
-import { MatToolbar } from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
@@ -15,8 +15,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     CommonModule,
     FormsModule,
     TradingviewMiniComponent,
-    MatToolbar,
     MatSnackBarModule,
+    MatToolbarModule,
   ]
 })
 export class StockListComponent implements OnInit {
@@ -28,10 +28,9 @@ export class StockListComponent implements OnInit {
   showChartFor: number | null = null;
   selectedSymbol: string | null = null;
 
-  // FIX: Inject MatSnackBar here
   constructor(
     private stocksService: StocksService,
-    private snackBar: MatSnackBar // <-- add this
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +51,9 @@ export class StockListComponent implements OnInit {
   }
 
   addToPortfolio(stock: any) {
-    // ...your logic
+    console.log(stock);
+    this.addedStockSymbols.add(stock.symbol);
+    stock.added = true;
     this.snackBar.open('Stock added to portfolio!', 'Close', {
       duration: 2000,
       verticalPosition: 'top',
@@ -61,7 +62,7 @@ export class StockListComponent implements OnInit {
   }
 
   // ---- CHIP BEHAVIOR ----
-  trackStock(index: number, stock: any) {
+  trackStock(stock: any) {
     return stock.symbol;
   }
 
