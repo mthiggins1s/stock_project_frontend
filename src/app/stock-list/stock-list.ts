@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TradingviewMiniComponent } from '../tradingview-mini/tradingview-mini';
 import { StocksService } from '../stocks.service';
 import { MatToolbar } from '@angular/material/toolbar';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-stock-list',
@@ -15,7 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     CommonModule,
     FormsModule,
     TradingviewMiniComponent,
-    MatToolbar, // <-- keep this if you use <mat-toolbar>
+    MatToolbar,
+    MatSnackBarModule,
   ]
 })
 export class StockListComponent implements OnInit {
