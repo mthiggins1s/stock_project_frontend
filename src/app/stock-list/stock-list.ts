@@ -51,15 +51,26 @@ export class StockListComponent implements OnInit {
   }
 
   addToPortfolio(stock: any) {
-    console.log(stock);
-    this.addedStockSymbols.add(stock.symbol);
-    stock.added = true;
-    this.snackBar.open('Stock added to portfolio!', 'Close', {
-      duration: 2000,
-      verticalPosition: 'top',
-      horizontalPosition: 'center',
-    });
+  // Update UI state for "added"
+  this.addedStockSymbols.add(stock.symbol);
+  stock.added = true;
+
+  // Save to localStorage
+  let portfolio = JSON.parse(localStorage.getItem('portfolio') || '[]');
+  // Only add if not already in portfolio
+  if (!portfolio.some((s: any) => s.symbol === stock.symbol)) {
+    portfolio.push(stock);
+    localStorage.setItem('portfolio', JSON.stringify(portfolio));
   }
+
+  // Show snackbar
+  this.snackBar.open('Stock added to portfolio!', 'Close', {
+    duration: 2000,
+    verticalPosition: 'top',
+    horizontalPosition: 'center',
+  });
+}
+
 
   // ---- CHIP BEHAVIOR ----
   trackStock(stock: any) {

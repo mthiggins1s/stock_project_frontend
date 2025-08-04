@@ -1,7 +1,6 @@
 <div class="main-content" style="min-height: 100vh; background: #18141d;">
   <!-- Top Bar -->
   <mat-toolbar color="transparent" style="box-shadow: none; background: transparent; padding: 20px 36px 0 36px;">
-    <!-- Removed sidenav toggle button -->
     <span style="flex: 1 1 auto;"></span>
   </mat-toolbar>
 
@@ -29,12 +28,14 @@
           </div>
         </div>
         <div class="stock-chip-actions">
+          <!-- Add button -->
           <button
             (click)="addToPortfolio(stock)"
             [disabled]="stock.added"
           >
             {{ stock.added ? 'Added' : 'Add' }}
           </button>
+          <!-- Data button -->
           <button
             (click)="showChart(i, stock.symbol)"
           >

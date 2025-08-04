@@ -1,0 +1,26 @@
+<div class="main-content" style="min-height: 100vh; background: #18141d;">
+  <mat-toolbar color="transparent" style="box-shadow: none; background: transparent; padding: 20px 36px 0 36px;">
+    <span style="flex: 1 1 auto;"></span>
+  </mat-toolbar>
+
+  <div class="stock-list-chips">
+    <h2 style="color: #232626; margin-bottom: 20px;">Your Portfolio</h2>
+    <div class="chips-grid">
+      <div
+        class="stock-chip"
+        *ngFor="let stock of portfolioStocks; let i = index"
+      >
+        <div class="stock-chip-main">
+          <div class="stock-chip-symbol">{{ stock.symbol }}</div>
+          <div class="stock-chip-name">{{ stock.name }}</div>
+        </div>
+        <div class="stock-chip-actions">
+          <button (click)="removeFromPortfolio(stock.symbol)">Remove</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="portfolioStocks.length === 0" style="color: #ccc; text-align:center; margin-top: 32px;">
+      No stocks in your portfolio yet.
+    </div>
+  </div>
+</div>

@@ -15,6 +15,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'portfolio',
+    loadComponent: () => import('./portfolio/portfolio').then(c => c.PortfolioComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: '**',
     redirectTo: '/login'
   }
