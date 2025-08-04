@@ -1,51 +1,98 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 .navbar {
+  width: 100%;
+  height: 64px;
+  background: rgba(28, 28, 32, 0.98);
+  box-shadow: 0 4px 24px 0 #13121733;
+  border-bottom: 1.5px solid rgba(255,255,255,0.03);
   display: flex;
   align-items: center;
-  background: #23242a;
-  padding: 0 24px;
-  height: 65px;
+  padding: 0 38px;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  backdrop-filter: blur(8px);
+  border-radius: 0 0 18px 18px;
 }
 
 .nav-brand {
-  font-size: 1.8rem;
-  font-weight: bold;
+  font-size: 2.1rem;
+  font-weight: 800;
   color: #fff;
-  margin-right: 24px;
+  font-family: 'Inter', 'Manrope', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  letter-spacing: -1px;
+}
+
+.nav-logo {
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1.5px;
+}
+
+.nav-logo span {
+  font-weight: 900;
+  color: #ffcc40;
+  text-shadow: 0 0 12px #ffe28a99, 0 1px 2px #ffbb36cc;
+  margin-left: 2px;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
   list-style: none;
-  margin: 0;
+  margin-left: auto;      /* THIS is the key change */
   padding: 0;
-}
-
-.nav-links li {
-  margin-right: 32px;
+  gap: 32px;
 }
 
 .nav-links a, .logout-btn {
   color: #fff;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1rem;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 7px 18px;
+  border-radius: 9px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.nav-links a:hover,
+.logout-btn:hover {
+  background: rgba(255,204,64,0.08);
+  color: #ffcc40;
 }
 
 .logout-btn {
   color: #ffb86c;
-  font-weight: bold;
+  font-weight: 800;
 }
 
 @media (max-width: 700px) {
+  .navbar {
+    padding: 0 14px;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+  }
   .nav-links {
     flex-direction: column;
-    position: absolute;
-    left: 0; right: 0; top: 65px;
-    background: #23242a;
-    display: none; /* Toggle this for mobile */
+    gap: 14px;
+    margin-left: 0;
+    width: 100%;
   }
-  /* Hamburger menu styles here... */
+  .nav-links li {
+    width: 100%;
+  }
+  .nav-links a, .logout-btn {
+    width: 100%;
+    text-align: left;
+    padding: 10px 16px;
+  }
 }
