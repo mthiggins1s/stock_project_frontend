@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { Authentication } from '../core/services/authentication.service'; // Adjust the path as needed
+import { Authentication } from '../core/services/authentication.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
-  standalone: true
 })
 export class NavbarComponent {
   constructor(private authService: Authentication) {}
