@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
     // TODO
-    apiUrl: 'http://www.production.com'
+    apiUrl: 'https://stock-tracker-api-fgxl.onrender.com'
 };
