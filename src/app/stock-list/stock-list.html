@@ -1,12 +1,51 @@
-<div class="stock-list-container">
-  <input [(ngModel)]="search"
-         (input)="onSearchChange()"
-         placeholder="Search stocks..." />
-  <ul>
-    @for (stock of stocks; track stock.symbol) {
-      <li>
-        {{ stock.symbol }} — {{ stock.name }}
-      </li>
-    }
-  </ul>
+<div class="main-content" style="min-height: 100vh; background: #18141d;">
+  <!-- Top Bar -->
+  <mat-toolbar color="transparent" style="box-shadow: none; background: transparent; padding: 20px 36px 0 36px;">
+    <span style="flex: 1 1 auto;"></span>
+  </mat-toolbar>
+
+  <!-- Stock list content -->
+  <div class="stock-list-chips">
+    <input
+      class="stock-search-input"
+      [(ngModel)]="search"
+      (input)="onSearchChange()"
+      placeholder="Search stocks..."
+      type="text"
+    />
+
+    <div class="chips-grid">
+      <div
+        class="stock-chip"
+        *ngFor="let stock of stocks; let i = index; trackBy: trackStock"
+        [class.expanded]="expanded === i"
+      >
+        <div class="stock-chip-main" (click)="expandChip(i)">
+          <div class="stock-chip-symbol">{{ stock.symbol }}</div>
+          <div class="stock-chip-name">{{ stock.name }}</div>
+          <div class="stock-chip-sparkline">
+            <!-- Optional: Mini SVG sparkline here in the future! -->
+          </div>
+        </div>
+        <div class="stock-chip-actions">
+          <!-- Add button -->
+          <button
+            (click)="addToPortfolio(stock)"
+            [disabled]="stock.added"
+          >
+            {{ stock.added ? 'Added' : 'Add' }}
+          </button>
+          <!-- Data button -->
+          <button
+            (click)="showChart(i, stock.symbol)"
+          >
+            Data
+          </button>
+        </div>
+        <div class="stock-chip-chart" *ngIf="expanded === i && showChartFor === i">
+          <app-tradingview-mini [symbol]="'NASDAQ:' + stock.symbol"></app-tradingview-mini>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
