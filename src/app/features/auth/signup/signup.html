@@ -1,0 +1,30 @@
+<div class="container">
+  <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+    <h1 class="logo">Stock<span>Folio</span></h1>
+    <div class="form-group">
+      <label for="first_name">First Name</label>
+      <input type="text" formControlName="first_name" placeholder="Enter your first name" />
+    </div>
+    <div class="form-group">
+      <label for="last_name">Last Name</label>
+      <input type="text" formControlName="last_name" placeholder="Enter your last name" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="text" formControlName="email" placeholder="Enter your email address" />
+    </div>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" formControlName="username" placeholder="Enter your username" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" formControlName="password" placeholder="Enter your password" />
+    </div>
+    <div class="form-group">
+      <label for="password_confirmation">Password Confirmation</label>
+      <input type="password" formControlName="password_confirmation" placeholder="Please re-type your password" />
+    </div>
+    <button type="submit">Sign Up</button>
+  </form>
+</div>
