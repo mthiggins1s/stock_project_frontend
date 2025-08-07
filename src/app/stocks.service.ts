@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class StocksService {
-  private apiUrl = 'https://stock-tracker-api-zy5k.onrender.com/stocks';
+  private apiUrl = 'http://localhost:3000/stocks';
 
   constructor(private http: HttpClient) {}
 
