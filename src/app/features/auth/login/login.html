@@ -16,4 +16,9 @@
 
     <button type="submit" [disabled]="!loginForm.valid">Login</button>
   </form>
+
+  <div class="signup-link" style="text-align:center; margin-top: 16px;">
+  <span>Don't have an account?</span>
+  <button type="button" (click)="goToSignup()" class="signup-btn">Sign Up</button>
+</div>
 </div>

@@ -35,7 +35,11 @@ export class Login {
           console.log("Error when logging", error)
           this.isError = true
         }
-      })
+      });
     }
+  }
+
+  goToSignup() {
+    this.router.navigate(['/signup']);
   }
 }

@@ -123,3 +123,26 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.signup-btn {
+  width: 100%;
+  padding: 13px 0;
+  margin-top: 6px;
+  background: linear-gradient(90deg, #ffb703 10%, #ff9800 90%);
+  border: none;
+  border-radius: 1.2rem;
+  color: #19191c;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 2px 20px 0 #ffb70333;
+  transition: transform 0.17s, box-shadow 0.17s;
+  display: block;
+}
+
+.signup-btn:hover,
+.signup-btn:focus {
+  transform: scale(1.04);
+  box-shadow: 0 6px 24px 0 #ffb70355;
+}

@@ -20,6 +20,10 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'signup',
+    loadComponent: () => import('./features/auth/signup/signup').then(c => c.Signup),
+  },
+  {
     path: '**',
     redirectTo: 'login'
   }
