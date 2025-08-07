@@ -121,5 +121,7 @@ button[type="submit"]:hover, button[type="submit"]:focus {
     font-size: 1.4rem;
   }
 
-  
+  .error{
+    color: red;
+  }
 }

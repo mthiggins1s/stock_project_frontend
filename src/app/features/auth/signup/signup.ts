@@ -20,16 +20,19 @@ export class Signup {
     password_confirmation: new FormControl('')
   })
 
+  errors:string[] = []
+
   constructor(private authService: Authentication, private router:Router) {  }
 
   onSignup() {
     const formValue = this.signupForm.value
-    this.authService.signup(formValue).subscribe({
+    this.authService.signup({user: formValue}).subscribe({
       next: (res:any) => {
         this.router.navigate(['/login'])
       },
       error: (error:any) => {
-        console.log(error)
+        console.log(error.error)
+        this.errors = error.error
       }
     })
   }
