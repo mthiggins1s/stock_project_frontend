@@ -10,9 +10,14 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./navbar.css'],
 })
 export class NavbarComponent {
+  menuOpen = false;
   constructor(private authService: Authentication) {}
 
   logout() {
     this.authService.logout();
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
   }
 }

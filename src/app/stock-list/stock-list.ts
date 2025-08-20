@@ -28,6 +28,9 @@ export class StockListComponent implements OnInit {
   showChartFor: number | null = null;
   selectedSymbol: string | null = null;
 
+  loading = true;
+  placeholders = Array.from({length:8});
+
   constructor(
     private stocksService: StocksService,
     private snackBar: MatSnackBar
@@ -38,12 +41,14 @@ export class StockListComponent implements OnInit {
   }
 
   loadStocks() {
+    this.loading = true;
     this.stocksService.getStocks(this.search).subscribe(data => {
       data.forEach((stock: any) => {
         stock.added = this.addedStockSymbols.has(stock.symbol);
       });
       this.stocks = data;
-    });
+      this.loading = false;
+    }, () => { this.loading = false; });
   }
 
   onSearchChange() {

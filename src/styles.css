@@ -146,3 +146,45 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   transform: scale(1.04);
   box-shadow: 0 6px 24px 0 #ffb70355;
 }
+
+/* Design Tokens */
+:root {
+  --color-bg: #0d1117;
+  --color-bg-alt: #161b22;
+  --color-surface: #1e2530;
+  --color-surface-alt: #242d3a;
+  --color-border: #2e3946;
+  --color-accent: #4f8cff;
+  --color-accent-alt: #6366f1;
+  --color-accent-gradient: linear-gradient(135deg,#4f8cff 0%,#6366f1 100%);
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-success: #10b981;
+  --color-info: #3b82f6;
+  --color-text: #e6edf3;
+  --color-text-soft: #9da8b5;
+  --color-text-faint: #6b7684;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-md: 0 4px 14px -2px rgba(0,0,0,.55),0 2px 4px -1px rgba(0,0,0,.4);
+  --shadow-glow: 0 0 0 1px #4f8cff40, 0 0 0 6px #4f8cff1a;
+  --transition-fast: .15s cubic-bezier(.4,.0,.2,1);
+  --transition: .25s cubic-bezier(.4,.0,.2,1);
+  --focus-ring: 0 0 0 3px rgba(99,102,241,0.35);
+}
+
+/* Utilities */
+.fade-in { animation: fadeIn .4s ease; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(4px);} to {opacity:1; transform:translateY(0);} }
+.glass { background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)); backdrop-filter: blur(14px) saturate(130%); border:1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); }
+.btn { position:relative; display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.15rem; font-size:.85rem; font-weight:600; border-radius:var(--radius-md); background:var(--color-accent-gradient); color:#fff; border:none; cursor:pointer; transition:var(--transition); box-shadow:var(--shadow-sm); }
+.btn:hover { filter:brightness(1.08); box-shadow:var(--shadow-md); }
+.btn.outline { background:transparent; color:var(--color-text); border:1px solid var(--color-border); }
+.btn.outline:hover { border-color:var(--color-accent); color:var(--color-accent); }
+.skeleton { background: linear-gradient(90deg,#2a3543 0%,#313c4b 40%,#2a3543 80%); background-size:200% 100%; animation: skeleton 1.6s linear infinite; border-radius: var(--radius-sm);} @keyframes skeleton {0%{background-position:0 0;}100%{background-position:-200% 0;}}
+
+/* Snackbar theme override */
+.mat-mdc-snack-bar-container { --mdc-snackbar-container-color: var(--color-surface-alt); --mdc-snackbar-supporting-text-color: var(--color-text); border:1px solid var(--color-border); box-shadow: var(--shadow-md); }

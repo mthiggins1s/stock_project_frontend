@@ -1,10 +1,37 @@
-<nav class="navbar">
-  <div class="nav-brand">
-    <span class="nav-logo">Stock<span>folio</span></span>
+<nav class="nav-shell glass">
+  <div class="nav-left">
+    <a routerLink="/" class="brand">Stock<span>Folio</span></a>
   </div>
-  <ul class="nav-links">
-    <li><a routerLink="/">Dashboard</a></li>
-    <li><a routerLink="/portfolio">Portfolio</a></li>
-    <li><a (click)="logout()">Logout</a></li>
+
+  <!-- Mobile toggle button -->
+  <button
+    class="nav-toggle"
+    type="button"
+    (click)="menuOpen = !menuOpen"
+    aria-label="Toggle navigation"
+    [attr.aria-expanded]="menuOpen"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Nav links -->
+  <ul class="nav-links" [class.open]="menuOpen">
+    <li>
+      <a routerLink="/" routerLinkActive="active" (click)="closeMenu()">
+        Dashboard
+      </a>
+    </li>
+    <li>
+      <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">
+        Portfolio
+      </a>
+    </li>
+    <li>
+      <button class="logout-btn" (click)="logout(); closeMenu()">
+        Logout
+      </button>
+    </li>
   </ul>
 </nav>

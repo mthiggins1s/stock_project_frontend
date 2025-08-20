@@ -1,51 +1,34 @@
-<div class="main-content" style="min-height: 100vh; background: #18141d;">
-  <!-- Top Bar -->
-  <mat-toolbar color="transparent" style="box-shadow: none; background: transparent; padding: 20px 36px 0 36px;">
-    <span style="flex: 1 1 auto;"></span>
-  </mat-toolbar>
-
-  <!-- Stock list content -->
-  <div class="stock-list-chips">
-    <input
-      class="stock-search-input"
-      [(ngModel)]="search"
-      (input)="onSearchChange()"
-      placeholder="Search stocks..."
-      type="text"
-    />
-
-    <div class="chips-grid">
-      <div
-        class="stock-chip"
-        *ngFor="let stock of stocks; let i = index; trackBy: trackStock"
-        [class.expanded]="expanded === i"
-      >
-        <div class="stock-chip-main" (click)="expandChip(i)">
-          <div class="stock-chip-symbol">{{ stock.symbol }}</div>
-          <div class="stock-chip-name">{{ stock.name }}</div>
-          <div class="stock-chip-sparkline">
-            <!-- Optional: Mini SVG sparkline here in the future! -->
-          </div>
-        </div>
-        <div class="stock-chip-actions">
-          <!-- Add button -->
-          <button
-            (click)="addToPortfolio(stock)"
-            [disabled]="stock.added"
-          >
-            {{ stock.added ? 'Added' : 'Add' }}
-          </button>
-          <!-- Data button -->
-          <button
-            (click)="showChart(i, stock.symbol)"
-          >
-            Data
-          </button>
-        </div>
-        <div class="stock-chip-chart" *ngIf="expanded === i && showChartFor === i">
-          <app-tradingview-mini [symbol]="'NASDAQ:' + stock.symbol"></app-tradingview-mini>
-        </div>
+<div class="dashboard-shell">
+  <section class="search-bar glass fade-in">
+    <input class="search-input" [(ngModel)]="search" (input)="onSearchChange()" placeholder="Search tickers..." type="text" />
+  </section>
+  <section class="stocks-grid" *ngIf="!loading; else loadingTpl">
+    <div class="stock-card" *ngFor="let stock of stocks; let i = index; trackBy: trackStock" [class.expanded]="expanded === i">
+      <button class="card-main" type="button" (click)="expandChip(i)">
+        <div class="ticker">{{ stock.symbol }}</div>
+        <div class="name" title="{{stock.name}}">{{ stock.name }}</div>
+        <div class="spark skeleton" aria-hidden="true"></div>
+      </button>
+      <div class="card-actions">
+        <button class="btn tiny" (click)="addToPortfolio(stock)" [disabled]="stock.added">{{ stock.added ? 'Added' : 'Add' }}</button>
+        <button class="btn outline tiny" (click)="showChart(i, stock.symbol)">Data</button>
+      </div>
+      <div class="chart-wrapper" *ngIf="expanded === i && showChartFor === i">
+        <app-tradingview-mini [symbol]="'NASDAQ:' + stock.symbol"></app-tradingview-mini>
       </div>
     </div>
-  </div>
+  </section>
+  <ng-template #loadingTpl>
+    <section class="stocks-grid">
+      <div class="stock-card skeleton" *ngFor="let _ of placeholders">
+        <div class="skeleton" style="height:14px; width:50%; border-radius:6px;"></div>
+        <div class="skeleton" style="height:10px; width:80%; border-radius:6px; margin-top:6px;"></div>
+        <div class="skeleton" style="height:32px; width:100%; border-radius:10px; margin-top:12px;"></div>
+        <div style="display:flex; gap:.5rem; margin-top:14px;">
+          <div class="skeleton" style="height:28px; flex:1; border-radius:8px;"></div>
+          <div class="skeleton" style="height:28px; flex:1; border-radius:8px;"></div>
+        </div>
+      </div>
+    </section>
+  </ng-template>
 </div>

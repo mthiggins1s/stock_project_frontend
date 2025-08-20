@@ -8,12 +8,12 @@ import { MatToolbar } from "@angular/material/toolbar";
   standalone: true,
   templateUrl: './portfolio.html',
   styleUrls: ['./portfolio.css'],
-  imports: [FormsModule, CommonModule, MatToolbar]
+  imports: [FormsModule, CommonModule]
   
 })
 export class PortfolioComponent implements OnInit {
   portfolioStocks: any[] = [];
-stock: any;
+  stock: any;
 
   ngOnInit() {
     this.loadPortfolio();
@@ -30,7 +30,6 @@ stock: any;
   }
 
   trackStock(index: number, stock: any) {
-  return stock.symbol;
-}
-
+    return stock.symbol;
+  }
 }

@@ -2,97 +2,22 @@
   box-sizing: border-box;
 }
 
-.navbar {
-  width: 100%;
-  height: 64px;
-  background: rgba(28, 28, 32, 0.98);
-  box-shadow: 0 4px 24px 0 #13121733;
-  border-bottom: 1.5px solid rgba(255,255,255,0.03);
-  display: flex;
-  align-items: center;
-  padding: 0 38px;
-  position: sticky;
-  top: 0;
-  z-index: 1100;
-  backdrop-filter: blur(8px);
-  border-radius: 0 0 18px 18px;
-}
-
-.nav-brand {
-  font-size: 2.1rem;
-  font-weight: 800;
-  color: #fff;
-  font-family: 'Inter', 'Manrope', Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  letter-spacing: -1px;
-}
-
-.nav-logo {
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: -1.5px;
-}
-
-.nav-logo span {
-  font-weight: 900;
-  color: #ffcc40;
-  text-shadow: 0 0 12px #ffe28a99, 0 1px 2px #ffbb36cc;
-  margin-left: 2px;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  margin-left: auto;      /* THIS is the key change */
-  padding: 0;
-  gap: 32px;
-}
-
-.nav-links a, .logout-btn {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 7px 18px;
-  border-radius: 9px;
-  transition: background 0.18s, color 0.18s;
-}
-
-.nav-links a:hover,
-.logout-btn:hover {
-  background: rgba(255,204,64,0.08);
-  color: #ffcc40;
-}
-
-.logout-btn {
-  color: #ffb86c;
-  font-weight: 800;
-}
-
-@media (max-width: 700px) {
-  .navbar {
-    padding: 0 14px;
-    height: auto;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .nav-links {
-    flex-direction: column;
-    gap: 14px;
-    margin-left: 0;
-    width: 100%;
-  }
-  .nav-links li {
-    width: 100%;
-  }
-  .nav-links a, .logout-btn {
-    width: 100%;
-    text-align: left;
-    padding: 10px 16px;
-  }
+/* New navbar using global design tokens */
+.nav-shell { position:sticky; top:0; z-index:1100; display:flex; align-items:center; gap:2rem; padding:.9rem 2rem; margin:0 auto; width:100%; backdrop-filter:blur(14px) saturate(160%); background:linear-gradient(120deg,rgba(30,37,48,.78),rgba(30,37,48,.55)); border-bottom:1px solid rgba(255,255,255,.08); box-shadow:0 4px 28px -8px rgba(0,0,0,.55); }
+.brand { font-size:1.35rem; font-weight:700; color:var(--color-text); text-decoration:none; letter-spacing:.5px; display:inline-flex; align-items:center; }
+.brand span { background:var(--color-accent-gradient); background-clip:text; -webkit-background-clip:text; color:transparent; font-weight:800; margin-left:.25ch; }
+.nav-links { list-style:none; margin:0 0 0 auto; padding:0; display:flex; align-items:center; gap:1.1rem; }
+.nav-links a, .nav-links button { position:relative; font:500 .85rem/1 'Inter',sans-serif; letter-spacing:.5px; padding:.55rem .95rem; border-radius:var(--radius-md); text-decoration:none; color:var(--color-text-soft); background:transparent; border:1px solid transparent; cursor:pointer; transition:var(--transition-fast); }
+.nav-links a.active { color:var(--color-text); background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.08); }
+.nav-links a:hover, .nav-links button:hover { color:#fff; background:rgba(255,255,255,.07); }
+.logout-btn { color:var(--color-danger); }
+.logout-btn:hover { background:rgba(239,68,68,.12); color:#fff; }
+.nav-toggle { display:none; width:42px; height:42px; padding:.6rem .55rem; flex-direction:column; justify-content:space-between; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-md); cursor:pointer; transition:var(--transition-fast); }
+.nav-toggle:hover { background:rgba(255,255,255,.09); }
+.nav-toggle span { display:block; height:3px; width:100%; background:var(--color-text); border-radius:2px; }
+@media (max-width:820px){
+  .nav-toggle{display:flex;}
+  .nav-links { position:fixed; inset:64px 0 0 0; flex-direction:column; align-items:flex-start; padding:1.25rem 1.25rem 4rem; gap:.35rem; background:linear-gradient(160deg,#1e2530ee,#161b22f2); backdrop-filter:blur(16px) saturate(160%); transform:translateY(-12px); opacity:0; pointer-events:none; transition:var(--transition); border-top:1px solid rgba(255,255,255,.08); }
+  .nav-links.open { transform:translateY(0); opacity:1; pointer-events:auto; }
+  .nav-links a, .nav-links button { width:100%; text-align:left; }
 }

@@ -1,57 +1,33 @@
-<div class="container">
-  <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+<div class="auth-layout">
+  <div class="auth-card glass fade-in">
     <h1 class="logo">Stock<span>Folio</span></h1>
-
-    <!-- Username -->
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input
-        id="username"
-        type="text"
-        formControlName="username"
-        placeholder="Enter your username"
-        [attr.aria-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-        autocomplete="username"
-      />
-      @if (loginForm.get('username')?.touched && loginForm.get('username')?.hasError('required')) {
-        <p class="hint error">Username is required.</p>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" formControlName="username" placeholder="Enter your username" autocomplete="username" />
+        @if (loginForm.get('username')?.touched && loginForm.get('username')?.hasError('required')) {
+          <p class="hint error">Username is required.</p>
+        }
+      </div>
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="Enter your password" autocomplete="current-password" />
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
+          <p class="hint error">Password is required.</p>
+        }
+      </div>
+      @if (isError) {
+        <p class="alert error" role="alert">{{ errorMessage || 'Username and password credentials failed. Please try again!' }}</p>
       }
+      <button class="btn w-full" type="submit" [disabled]="loginForm.invalid || isLoading">
+        {{ isLoading ? 'Signing in…' : 'Login' }}
+      </button>
+    </form>
+    <div class="auth-alt">
+      <span>Don't have an account?</span>
+      <button type="button" (click)="goToSignup()" class="link-btn">Sign Up</button>
     </div>
-
-    <!-- Password -->
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="password"
-        placeholder="Enter your password"
-        [attr.aria-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-        autocomplete="current-password"
-      />
-      @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
-        <p class="hint error">Password is required.</p>
-      }
-    </div>
-
-    <!-- Server/API error -->
-    @if (isError) {
-      <p class="error" role="alert">
-        {{ errorMessage || 'Username and password credentials failed. Please try again!' }}
-      </p>
-    }
-
-    <button
-      type="submit"
-      [disabled]="loginForm.invalid || isLoading"
-      [attr.aria-busy]="isLoading"
-    >
-      {{ isLoading ? 'Signing in…' : 'Login' }}
-    </button>
-  </form>
-
-  <div class="signup-link" style="text-align:center; margin-top: 16px;">
-    <span>Don't have an account?</span>
-    <button type="button" (click)="goToSignup()" class="signup-btn">Sign Up</button>
   </div>
 </div>
