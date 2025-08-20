@@ -8,35 +8,47 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  // NOTE: Angular uses `styleUrls` (array). If you used `styleUrl`, styles may not load.
+  styleUrls: ['./login.css'],
 })
 export class Login {
-  loginForm: FormGroup = new FormGroup({
-    username: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required)
-  })
+  // Strongly typed + non-nullable controls to avoid undefined reads
+  loginForm = new FormGroup({
+    username: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+  });
 
-  isError:boolean = false;
+  isError = false;
+  isLoading = false;
+  errorMessage = '';
 
-  constructor(private authService:Authentication, private router:Router) {  }
+  constructor(private auth: Authentication, private router: Router) {}
 
   login() {
-    if(this.loginForm.valid) {
-      const username = this.loginForm.value.username;
-      const password = this.loginForm.value.password;
+    if (this.loginForm.invalid || this.isLoading) return;
 
-      this.authService.login(username, password).subscribe({
-        next: (res:any) => {
-          console.log(res);
-          this.authService.setToken(res.token)
-          this.router.navigate(['/'])
-        },
-        error: (error:any) => {
-          console.log("Error when logging", error)
-          this.isError = true
-        }
-      });
-    }
+    this.isError = false;
+    this.errorMessage = '';
+    this.isLoading = true;
+
+    const { username, password } = this.loginForm.getRawValue();
+
+    this.auth.login(username, password).subscribe({
+      next: () => {
+        // token is already saved by the service's tap()
+        this.router.navigateByUrl('/');
+      },
+      error: (err) => {
+        // 401 from Rails => unauthorized; other statuses bubble up too
+        this.isError = true;
+        this.errorMessage =
+          err?.error?.error || // { error: "unauthorized" } or "token expired"
+          err?.error?.messages?.[0] || // in case backend sends messages array
+          'Invalid username or password';
+        console.error('Error when logging', err);
+      },
+      complete: () => (this.isLoading = false),
+    });
   }
 
   goToSignup() {
