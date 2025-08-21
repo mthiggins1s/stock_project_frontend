@@ -5,8 +5,7 @@ import { TradingviewMiniComponent } from '../tradingview-mini/tradingview-mini';
 import { StocksService } from '../stocks.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { PriceStreamService } from '../core/services/price-stream.service'; // ✅ import live price service
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-stock-list',
@@ -33,14 +32,13 @@ export class StockListComponent implements OnInit, OnDestroy {
   loading = true;
   placeholders = Array.from({ length: 8 });
 
-  // ✅ New fields for live prices
+  // ✅ Prices (live + snapshot)
   prices: { [symbol: string]: number } = {};
-  private sub?: Subscription;
+  private pollSub?: Subscription;
 
   constructor(
     private stocksService: StocksService,
-    private snackBar: MatSnackBar,
-    private priceStream: PriceStreamService // ✅ inject
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -48,11 +46,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.sub?.unsubscribe();
-    // ✅ Unsubscribe only from the first 10
-    this.stocks.slice(0, 10).forEach(stock => {
-      this.priceStream.unsubscribeFromSymbol(stock.symbol);
-    });
+    this.pollSub?.unsubscribe();
   }
 
   loadStocks() {
@@ -61,24 +55,38 @@ export class StockListComponent implements OnInit, OnDestroy {
       data.forEach((stock: any) => {
         stock.added = this.addedStockSymbols.has(stock.symbol);
       });
-      this.stocks = data;
 
-      // ✅ Subscribe only to first 10
-      this.stocks.slice(0, 10).forEach(stock => {
-        this.priceStream.subscribeToSymbol(stock.symbol);
-      });
+      // ✅ Only keep first 50
+      this.stocks = data.slice(0, 50);
 
-      // ✅ Listen for live updates (attach once)
-      if (!this.sub) {
-        this.sub = this.priceStream.onPriceUpdate().subscribe(update => {
-          if (this.stocks.slice(0, 10).some(s => s.symbol === update.symbol)) {
-            this.prices[update.symbol] = update.price;
+      // ✅ Snapshot prices for 11–50
+      this.stocks.slice(10, 50).forEach(stock => {
+        this.stocksService.getQuote(stock.symbol).subscribe(q => {
+          if (q && q.c) {
+            this.prices[stock.symbol] = q.c;
           }
         });
-      }
+      });
+
+      // ✅ Start polling first 10
+      this.startPolling();
 
       this.loading = false;
     }, () => { this.loading = false; });
+  }
+
+  startPolling() {
+    this.pollSub?.unsubscribe(); // clear old poller
+
+    this.pollSub = interval(5000).subscribe(() => {
+      this.stocks.slice(0, 10).forEach(stock => {
+        this.stocksService.getQuote(stock.symbol).subscribe(q => {
+          if (q && q.c) {
+            this.prices[stock.symbol] = q.c; // "c" = current price
+          }
+        });
+      });
+    });
   }
 
   onSearchChange() {
