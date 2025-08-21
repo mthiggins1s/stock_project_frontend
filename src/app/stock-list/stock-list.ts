@@ -32,7 +32,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   loading = true;
   placeholders = Array.from({ length: 8 });
 
-  // ✅ Prices (live + snapshot)
+  // ✅ Live prices
   prices: { [symbol: string]: number } = {};
   private pollSub?: Subscription;
 
@@ -56,19 +56,15 @@ export class StockListComponent implements OnInit, OnDestroy {
         stock.added = this.addedStockSymbols.has(stock.symbol);
       });
 
-      // ✅ Only keep first 50
+      // ✅ Limit to 50
       this.stocks = data.slice(0, 50);
 
-      // ✅ Snapshot prices for 11–50
-      this.stocks.slice(10, 50).forEach(stock => {
-        this.stocksService.getQuote(stock.symbol).subscribe(q => {
-          if (q && q.c) {
-            this.prices[stock.symbol] = q.c;
-          }
-        });
+      // ✅ Initial fetch of quotes for first 10
+      this.stocks.slice(0, 10).forEach(stock => {
+        this.fetchQuote(stock.symbol);
       });
 
-      // ✅ Start polling first 10
+      // ✅ Start polling after first load
       this.startPolling();
 
       this.loading = false;
@@ -78,14 +74,30 @@ export class StockListComponent implements OnInit, OnDestroy {
   startPolling() {
     this.pollSub?.unsubscribe(); // clear old poller
 
-    this.pollSub = interval(5000).subscribe(() => {
+    this.pollSub = interval(60000).subscribe(() => { // 🔄 every 60s to avoid rate limits
       this.stocks.slice(0, 10).forEach(stock => {
-        this.stocksService.getQuote(stock.symbol).subscribe(q => {
-          if (q && q.c) {
-            this.prices[stock.symbol] = q.c; // "c" = current price
-          }
-        });
+        this.fetchQuote(stock.symbol);
       });
+    });
+  }
+
+  // ✅ Wrapper so we handle Yahoo payload
+  fetchQuote(symbol: string) {
+    this.stocksService.getQuote(symbol).subscribe({
+      next: (q) => {
+        console.log("Quote response for", symbol, q);
+
+        // Yahoo Finance returns { symbol, price }
+        if (q && (q.price || q.regularMarketPrice)) {
+          this.prices[symbol] = q.price || q.regularMarketPrice;
+        } else {
+          this.prices[symbol] = NaN; // no valid price
+        }
+      },
+      error: (err) => {
+        console.error("Quote error for", symbol, err);
+        this.prices[symbol] = NaN;
+      }
     });
   }
 

@@ -6,22 +6,19 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class StocksService {
-  private apiUrl = 'http://localhost:3000/stocks'; // ✅ your Rails API root
+  private apiUrl = 'http://localhost:3000/stocks';
 
   constructor(private http: HttpClient) {}
 
-  // Get stock list (with optional search)
-  getStocks(search?: string): Observable<any[]> {
-    let url = this.apiUrl;
-    if (search) {
-      url += `?search=${encodeURIComponent(search)}`;
-    }
-    return this.http.get<any[]>(url);
+  // ✅ Get list of stocks
+  getStocks(search: string = ''): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl, {
+      params: { search }
+    });
   }
 
-  // Get live quote for one symbol
+  // ✅ Get single stock quote
   getQuote(symbol: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${symbol}/quote`);
   }
-
 }

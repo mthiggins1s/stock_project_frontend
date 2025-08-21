@@ -15,15 +15,14 @@
         <div class="ticker">{{ stock.symbol }}</div>
         <div class="name" title="{{stock.description}}">{{ stock.description }}</div>
 
-        <!-- ✅ Price with fallback + tag -->
+        <!-- ✅ Live price or placeholder -->
         <div class="price">
-          <ng-container *ngIf="prices[stock.symbol] !== undefined; else loadingPrice">
+          <ng-container *ngIf="prices[stock.symbol]; else priceLoading">
             ${{ prices[stock.symbol] | number:'1.2-2' }}
-            <span class="tag" *ngIf="i < 10">Live</span>
-            <span class="tag gray" *ngIf="i >= 10">Snapshot</span>
           </ng-container>
-          <ng-template #loadingPrice>
-            <span class="skeleton" style="height:14px; width:60px; border-radius:6px;"></span>
+          <ng-template #priceLoading>
+            <span *ngIf="i < 10">Loading price...</span>
+            <span *ngIf="i >= 10">Live data limited to first 10</span>
           </ng-template>
         </div>
 
@@ -45,11 +44,13 @@
     </div>
   </section>
 
+  <!-- ✅ Skeleton loader for first load -->
   <ng-template #loadingTpl>
     <section class="stocks-grid">
       <div class="stock-card skeleton" *ngFor="let _ of placeholders">
         <div class="skeleton" style="height:14px; width:50%; border-radius:6px;"></div>
         <div class="skeleton" style="height:10px; width:80%; border-radius:6px; margin-top:6px;"></div>
+        <div class="skeleton" style="height:20px; width:40%; border-radius:6px; margin-top:8px;"></div>
         <div class="skeleton" style="height:32px; width:100%; border-radius:10px; margin-top:12px;"></div>
         <div style="display:flex; gap:.5rem; margin-top:14px;">
           <div class="skeleton" style="height:28px; flex:1; border-radius:8px;"></div>
