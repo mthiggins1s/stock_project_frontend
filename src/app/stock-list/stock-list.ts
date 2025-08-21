@@ -81,25 +81,23 @@ export class StockListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ✅ Wrapper so we handle Yahoo payload
   fetchQuote(symbol: string) {
-    this.stocksService.getQuote(symbol).subscribe({
-      next: (q) => {
-        console.log("Quote response for", symbol, q);
+  this.stocksService.getQuote(symbol).subscribe({
+    next: (q) => {
+      console.log("Quote response for", symbol, q);
 
-        // Yahoo Finance returns { symbol, price }
-        if (q && (q.price || q.regularMarketPrice)) {
-          this.prices[symbol] = q.price || q.regularMarketPrice;
-        } else {
-          this.prices[symbol] = NaN; // no valid price
-        }
-      },
-      error: (err) => {
-        console.error("Quote error for", symbol, err);
-        this.prices[symbol] = NaN;
+      if (q && q.price) {
+        this.prices[symbol] = q.price;
+      } else {
+        this.prices[symbol] = NaN; // no valid price
       }
-    });
-  }
+    },
+    error: (err) => {
+      console.error("Quote error for", symbol, err);
+      this.prices[symbol] = NaN;
+    }
+  });
+}
 
   onSearchChange() {
     this.loadStocks();
