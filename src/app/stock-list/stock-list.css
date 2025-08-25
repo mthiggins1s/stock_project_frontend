@@ -1,20 +1,168 @@
-.dashboard-shell { width:100%; max-width:1440px; margin:0 auto; padding:clamp(1.2rem,2vw,2.4rem) clamp(.9rem,2vw,2.2rem) 4rem; }
-.search-bar { width:100%; max-width:520px; margin:0 auto 2.2rem; padding:.9rem 1.1rem; display:flex; gap:.75rem; align-items:center; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); }
-.search-input { flex:1; background:transparent; border:1px solid var(--color-border); border-radius:var(--radius-md); padding:.85rem 1rem; font:500 .9rem/1.1 'Inter',sans-serif; color:var(--color-text); outline:none; transition:var(--transition-fast); }
-.search-input:focus { border-color:var(--color-accent); box-shadow:var(--shadow-glow); }
-.stocks-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(210px,1fr)); gap:1.35rem 1.15rem; position:relative; }
-.stock-card { position:relative; display:flex; flex-direction:column; background:var(--color-bg-alt); border:1px solid var(--color-border); border-radius:18px; padding:.95rem .95rem 1rem; gap:.85rem; box-shadow:var(--shadow-sm); transition:var(--transition-fast); overflow:hidden; }
-.stock-card:hover { transform:translateY(-4px); box-shadow:0 6px 26px -8px rgba(0,0,0,.55); border-color:var(--color-accent); }
-.stock-card.expanded { grid-column:span 1; }
-.card-main { all:unset; display:flex; flex-direction:column; gap:.35rem; cursor:pointer; }
-.ticker { font:700 .95rem/1 'Inter',sans-serif; letter-spacing:.5px; color:#fff; }
-.name { font:500 .7rem/1.1 'Inter',sans-serif; color:var(--color-text-faint); max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.spark { height:32px; width:100%; border-radius:10px; margin-top:.2rem; }
-.card-actions { display:flex; gap:.5rem; }
-.btn.tiny { padding:.5rem .65rem; font-size:.65rem; line-height:1; }
-.btn.outline.tiny { padding:.48rem .7rem; }
-.chart-wrapper { position:absolute; inset:auto 0 0 0; background:var(--color-surface); border-top:1px solid var(--color-border); padding:.65rem; animation:reveal .35s ease; }
-@keyframes reveal { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-.chart-wrapper app-tradingview-mini { display:block; }
-@media (min-width:880px){ .stock-card.expanded { grid-column:span 2; } }
-@media (max-width:620px){ .stocks-grid { grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); } .ticker{font-size:.88rem;} }
+.dashboard-shell {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(1.2rem, 2vw, 2.4rem) clamp(.9rem, 2vw, 2.2rem) 4rem;
+}
+
+/* 🔎 Search bar */
+.search-bar {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto 2.2rem;
+  padding: .9rem 1.1rem;
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: .85rem 1rem;
+  font: 500 .9rem/1.1 'Inter', sans-serif;
+  color: var(--color-text);
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.search-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+/* 🔎 Stocks grid + cards */
+.stocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1.35rem 1.15rem;
+  position: relative;
+}
+
+.stock-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: .95rem .95rem 1rem;
+  gap: .85rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+  overflow: hidden;
+}
+
+.stock-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 26px -8px rgba(0, 0, 0, .55);
+  border-color: var(--color-accent);
+}
+
+.stock-card.expanded {
+  grid-column: span 1;
+}
+
+.card-main {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  cursor: pointer;
+}
+
+/* 🔎 Typography inside cards */
+.ticker {
+  font: 700 .95rem/1 'Inter', sans-serif;
+  letter-spacing: .5px;
+  color: #fff;
+}
+
+.name {
+  font: 500 .7rem/1.1 'Inter', sans-serif;
+  color: var(--color-text-faint);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price {
+  font: 600 .85rem/1.2 'Inter', sans-serif;
+  color: var(--color-text);
+}
+
+.mock-label {
+  font-size: 0.75rem;
+  color: #ff6b6b;
+  margin-left: 4px;
+}
+
+.spark {
+  height: 32px;
+  width: 100%;
+  border-radius: 10px;
+  margin-top: .2rem;
+}
+
+/* 🔎 Actions */
+.card-actions {
+  display: flex;
+  gap: .5rem;
+}
+
+.btn.tiny {
+  padding: .5rem .65rem;
+  font-size: .65rem;
+  line-height: 1;
+}
+
+.btn.outline.tiny {
+  padding: .48rem .7rem;
+}
+
+/* 🔎 Chart wrapper */
+.chart-wrapper {
+  position: absolute;
+  inset: auto 0 0 0;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: .65rem;
+  animation: reveal .35s ease;
+}
+
+.chart-wrapper app-tradingview-mini {
+  display: block;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🔎 Responsive */
+@media (min-width: 880px) {
+  .stock-card.expanded {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 620px) {
+  .stocks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  .ticker {
+    font-size: .88rem;
+  }
+}

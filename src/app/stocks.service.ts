@@ -19,6 +19,6 @@ export class StocksService {
 
   // ✅ Get single stock quote
   getQuote(symbol: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${symbol}/quote`);
+    return this.http.get<any>(`${this.apiUrl}/${symbol}`);
   }
 }

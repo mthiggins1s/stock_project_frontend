@@ -32,7 +32,6 @@ export class StockListComponent implements OnInit, OnDestroy {
   loading = true;
   placeholders = Array.from({ length: 8 });
 
-  // ✅ Live prices
   prices: { [symbol: string]: number } = {};
   private pollSub?: Subscription;
 
@@ -56,26 +55,24 @@ export class StockListComponent implements OnInit, OnDestroy {
         stock.added = this.addedStockSymbols.has(stock.symbol);
       });
 
-      // ✅ Limit to 50
       this.stocks = data.slice(0, 50);
 
-      // ✅ Initial fetch of quotes for first 10
-      this.stocks.slice(0, 10).forEach(stock => {
+      // ✅ Fetch quotes for first 5 stocks only
+      this.stocks.slice(0, 5).forEach(stock => {
         this.fetchQuote(stock.symbol);
       });
 
-      // ✅ Start polling after first load
       this.startPolling();
-
       this.loading = false;
     }, () => { this.loading = false; });
   }
 
   startPolling() {
-    this.pollSub?.unsubscribe(); // clear old poller
+    this.pollSub?.unsubscribe();
 
-    this.pollSub = interval(60000).subscribe(() => { // 🔄 every 60s to avoid rate limits
-      this.stocks.slice(0, 10).forEach(stock => {
+    // ✅ Poll every 15 minutes, only first 5 stocks
+    this.pollSub = interval(15 * 60 * 1000).subscribe(() => {
+      this.stocks.slice(0, 5).forEach(stock => {
         this.fetchQuote(stock.symbol);
       });
     });
@@ -87,9 +84,17 @@ export class StockListComponent implements OnInit, OnDestroy {
       console.log("Quote response for", symbol, q);
 
       if (q && q.price) {
+        // ✅ Update the price lookup
         this.prices[symbol] = q.price;
+
+        // ✅ Also attach mock flag + price directly to stock in list
+        const stock = this.stocks.find(s => s.symbol === symbol);
+        if (stock) {
+          stock.price = q.price;
+          stock.mock = q.mock || false;
+        }
       } else {
-        this.prices[symbol] = NaN; // no valid price
+        this.prices[symbol] = NaN;
       }
     },
     error: (err) => {
