@@ -1,0 +1,46 @@
+.dashboard-shell {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.card {
+  flex: 1;
+  background: var(--color-bg-alt);
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.card h3 {
+  font-size: .9rem;
+  color: var(--color-text-soft);
+}
+
+.card p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+.card.total { border-left: 4px solid #10b981; }
+.card.income { border-left: 4px solid #22c55e; }
+.card.loss { border-left: 4px solid #ef4444; }
+
+.charts {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.chart-box {
+  background: var(--color-bg-alt);
+  padding: 1rem;
+  border-radius: 12px;
+}

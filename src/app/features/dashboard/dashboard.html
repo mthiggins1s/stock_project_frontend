@@ -1,0 +1,36 @@
+<div class="dashboard-shell">
+  <section class="stats">
+    <div class="card total">
+      <h3>Total Value</h3>
+      <p>${{ totalValue | number:'1.2-2' }}</p>
+    </div>
+    <div class="card income">
+      <h3>Gains</h3>
+      <p>+${{ totalGains | number:'1.2-2' }}</p>
+    </div>
+    <div class="card loss">
+      <h3>Losses</h3>
+      <p>-${{ totalLosses | number:'1.2-2' }}</p>
+    </div>
+  </section>
+
+  <section class="charts">
+    <div class="chart-box">
+      <h4>Portfolio Performance</h4>
+      <canvas baseChart 
+              [data]="portfolioChartData"
+              [options]="portfolioChartOptions"
+              [type]="'line'">
+      </canvas>
+    </div>
+
+    <div class="chart-box">
+      <h4>Stock Allocation</h4>
+      <canvas baseChart 
+              [data]="allocationChartData"
+              [options]="allocationChartOptions"
+              [type]="'doughnut'">
+      </canvas>
+    </div>
+  </section>
+</div>

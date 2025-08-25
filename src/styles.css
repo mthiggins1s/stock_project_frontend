@@ -1,23 +1,13 @@
-/* styles.css — Full version for your Stock Tracker app */
+/* styles.css — Global Theme for Dark FinTech Dashboard */
 
 /* ---- ANGULAR MATERIAL SNACKBAR AND OVERLAY Z-INDEX FIX ---- */
-/* This ensures snackbars and overlays are above all navbars/headers */
 .mat-mdc-snack-bar-container,
 .cdk-overlay-container,
 .cdk-overlay-pane {
   z-index: 99999 !important;
 }
 
-
-/* If you ever need to force *all* overlays (dialogs, menus, etc.) above everything: */
-/*
-.cdk-overlay-container,
-.cdk-overlay-pane {
-  z-index: 99999 !important;
-}
-*/
-
-/* Font smoothing & base font */
+/* Base font + smooth rendering */
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -25,15 +15,16 @@ html {
 }
 
 html, body {
-  background: #130e1b !important;
+  background: linear-gradient(180deg, #0f172a 0%, #0d1117 100%);
   min-height: 100vh;
   height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  color: var(--color-text);
 }
 
-/* Smooth fade-in for the whole app */
+/* Smooth fade-in */
 body {
   opacity: 0;
   animation: bodyFadeIn 0.7s cubic-bezier(.23,.77,.42,1.02) 0.15s 1 forwards;
@@ -42,149 +33,115 @@ body {
   to { opacity: 1; }
 }
 
-/* --- MOVING DIAMOND GRID BACKGROUND --- */
+/* ---- DARK MOVING BACKGROUND ---- */
 .moving-bg {
   pointer-events: none;
   position: fixed;
   z-index: 0;
   left: 0; top: 0; width: 100vw; height: 100vh;
-  opacity: 0.07;
-  background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png') repeat;
-  animation: moveGridBg 5s linear infinite;
+  opacity: 0.15;
+  background: radial-gradient(circle at 20% 30%, #064e3b55, transparent 60%),
+              radial-gradient(circle at 80% 70%, #1e40af55, transparent 70%);
+  background-size: 300% 300%;
+  animation: bgMove 20s ease-in-out infinite alternate;
+}
+@keyframes bgMove {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
-@keyframes moveGridBg {
-  0%   { background-position:    0     0; }
-  100% { background-position: -128px 128px; }
-}
-
-/* --- BLUR BLOBS (layered over grid) --- */
-.background-blurs {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-.blur {
-  position: absolute;
-  filter: blur(110px);
-  opacity: 0.45;
-  border-radius: 55% 45% 65% 35% / 60% 40% 60% 40%;
-  mix-blend-mode: lighten;
-}
-.blur.pink {
-  width: 650px; height: 320px;
-  left: -180px; top: -60px;
-  background: #ff44c7;
-  opacity: 0.43;
-  transform: rotate(-10deg);
-  animation: pinkBlobMove 26s linear infinite alternate;
-}
-.blur.blue {
-  width: 430px; height: 600px;
-  right: -170px; top: 30vh;
-  background: #44d0ff;
-  opacity: 0.37;
-  transform: rotate(18deg);
-  animation: blueBlobMove 40s linear infinite alternate;
-}
-.blur.purple {
-  width: 600px; height: 230px;
-  left: 30vw; bottom: -120px;
-  background: #8244ff;
-  opacity: 0.33;
-  transform: rotate(-18deg);
-  animation: purpleBlobMove 35s linear infinite alternate;
-}
-@keyframes pinkBlobMove {
-  0% { left: -180px; top: -60px; }
-  100% { left: 40px; top: -40px; }
-}
-@keyframes blueBlobMove {
-  0% { right: -170px; top: 30vh; }
-  100% { right: -90px; top: 24vh; }
-}
-@keyframes purpleBlobMove {
-  0% { left: 30vw; bottom: -120px; }
-  100% { left: 36vw; bottom: -90px; }
-}
-
-/* --- MODERN SCROLLBAR --- */
+/* ---- SCROLLBAR ---- */
 ::-webkit-scrollbar {
   width: 10px;
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #252e3e;
+  background: #1f2937;
   border-radius: 6px;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.signup-btn {
-  width: 100%;
-  padding: 13px 0;
-  margin-top: 6px;
-  background: linear-gradient(90deg, #ffb703 10%, #ff9800 90%);
-  border: none;
-  border-radius: 1.2rem;
-  color: #19191c;
-  font-weight: 700;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  cursor: pointer;
-  box-shadow: 0 2px 20px 0 #ffb70333;
-  transition: transform 0.17s, box-shadow 0.17s;
-  display: block;
-}
-
-.signup-btn:hover,
-.signup-btn:focus {
-  transform: scale(1.04);
-  box-shadow: 0 6px 24px 0 #ffb70355;
-}
-
-/* Design Tokens */
+/* ---- THEME TOKENS ---- */
 :root {
-  --color-bg: #0d1117;
-  --color-bg-alt: #161b22;
-  --color-surface: #1e2530;
-  --color-surface-alt: #242d3a;
-  --color-border: #2e3946;
-  --color-accent: #4f8cff;
-  --color-accent-alt: #6366f1;
-  --color-accent-gradient: linear-gradient(135deg,#4f8cff 0%,#6366f1 100%);
+  --color-bg: #0f172a;
+  --color-bg-alt: #1e293b;
+  --color-surface: #111827;
+  --color-surface-alt: #1f2937;
+  --color-border: #334155;
+
+  --color-accent: #10b981; /* emerald */
+  --color-accent-alt: #059669;
+  --color-accent-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+
   --color-danger: #ef4444;
   --color-warning: #f59e0b;
-  --color-success: #10b981;
+  --color-success: #22c55e;
   --color-info: #3b82f6;
-  --color-text: #e6edf3;
-  --color-text-soft: #9da8b5;
-  --color-text-faint: #6b7684;
+
+  --color-text: #f1f5f9;
+  --color-text-soft: #cbd5e1;
+  --color-text-faint: #64748b;
+
   --radius-sm: 6px;
   --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-lg: 18px;
   --radius-pill: 999px;
+
   --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
-  --shadow-md: 0 4px 14px -2px rgba(0,0,0,.55),0 2px 4px -1px rgba(0,0,0,.4);
-  --shadow-glow: 0 0 0 1px #4f8cff40, 0 0 0 6px #4f8cff1a;
+  --shadow-md: 0 4px 14px rgba(0,0,0,.35);
+  --shadow-glow: 0 0 0 1px #10b98140, 0 0 0 6px #10b9811a;
+
   --transition-fast: .15s cubic-bezier(.4,.0,.2,1);
   --transition: .25s cubic-bezier(.4,.0,.2,1);
-  --focus-ring: 0 0 0 3px rgba(99,102,241,0.35);
+  --focus-ring: 0 0 0 3px rgba(16,185,129,0.35);
 }
 
-/* Utilities */
+/* ---- UTILITIES ---- */
 .fade-in { animation: fadeIn .4s ease; }
 @keyframes fadeIn { from { opacity:0; transform: translateY(4px);} to {opacity:1; transform:translateY(0);} }
-.glass { background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)); backdrop-filter: blur(14px) saturate(130%); border:1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); }
-.btn { position:relative; display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.15rem; font-size:.85rem; font-weight:600; border-radius:var(--radius-md); background:var(--color-accent-gradient); color:#fff; border:none; cursor:pointer; transition:var(--transition); box-shadow:var(--shadow-sm); }
-.btn:hover { filter:brightness(1.08); box-shadow:var(--shadow-md); }
-.btn.outline { background:transparent; color:var(--color-text); border:1px solid var(--color-border); }
-.btn.outline:hover { border-color:var(--color-accent); color:var(--color-accent); }
-.skeleton { background: linear-gradient(90deg,#2a3543 0%,#313c4b 40%,#2a3543 80%); background-size:200% 100%; animation: skeleton 1.6s linear infinite; border-radius: var(--radius-sm);} @keyframes skeleton {0%{background-position:0 0;}100%{background-position:-200% 0;}}
 
-/* Snackbar theme override */
-.mat-mdc-snack-bar-container { --mdc-snackbar-container-color: var(--color-surface-alt); --mdc-snackbar-supporting-text-color: var(--color-text); border:1px solid var(--color-border); box-shadow: var(--shadow-md); }
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+}
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .65rem 1rem;
+  font-size: .85rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-gradient);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+.btn:hover { filter: brightness(1.08); box-shadow: var(--shadow-md); }
+.btn.outline { background: transparent; color: var(--color-text); border: 1px solid var(--color-border); }
+.btn.outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* ---- SKELETON LOADER ---- */
+.skeleton {
+  background: linear-gradient(90deg, #1e293b 0%, #334155 40%, #1e293b 80%);
+  background-size: 200% 100%;
+  animation: skeleton 1.6s linear infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes skeleton {
+  0% { background-position: 0 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---- SNACKBAR THEME ---- */
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: var(--color-surface-alt);
+  --mdc-snackbar-supporting-text-color: var(--color-text);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
