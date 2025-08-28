@@ -1,21 +1,32 @@
-<div class="portfolio-search glass">
-  <h3>Find Another Portfolio</h3>
+<div class="search-container">
+  <h2>Search for a User Portfolio</h2>
 
-  <div class="search-bar">
-    <input [(ngModel)]="publicId" placeholder="Enter public ID…" />
-    <button (click)="search()" [disabled]="!publicId">Search</button>
-  </div>
+  <form (ngSubmit)="search()">
+    <input
+      type="number"
+      [(ngModel)]="publicId"
+      name="publicId"
+      placeholder="Enter User ID"
+      required
+    />
+    <button type="submit">Search</button>
+  </form>
 
-  <p *ngIf="loading">Loading portfolio…</p>
-  <p *ngIf="error" class="error">{{ error }}</p>
+  @if (loading) {
+    <div>Loading...</div>
+  }
 
-  <div *ngIf="results.length > 0">
-    <h4>Portfolio for ID {{ publicId }}</h4>
-    <ul>
-      <li *ngFor="let stock of results">
-        {{ stock.symbol }} – ${{ stock.price }}
-        <button (click)="addToMyPortfolio(stock)">Copy</button>
-      </li>
-    </ul>
-  </div>
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  @if (results) {
+    <h3>Results for User {{ publicId }}</h3>
+
+    @for (item of results; track $index) {
+      <div class="result-item">
+        {{ item | json }}
+      </div>
+    }
+  }
 </div>

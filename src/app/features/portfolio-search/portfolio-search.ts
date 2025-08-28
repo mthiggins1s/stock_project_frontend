@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-portfolio-search',
@@ -12,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PortfolioSearchComponent {
   publicId = '';
-  results: any[] = [];
+  results: any = null;
   error: string | null = null;
   loading = false;
 
@@ -20,24 +21,19 @@ export class PortfolioSearchComponent {
 
   search() {
     this.error = null;
-    this.results = [];
+    this.results = null;
     this.loading = true;
 
-    this.http.get<any[]>(`http://localhost:3000/profiles/public/${this.publicId}/portfolio`)
+    this.http.get(`${environment.apiUrl}/users/${this.publicId}`)
       .subscribe({
-        next: data => {
-          this.results = data;
+        next: (res) => {
+          this.results = res;
           this.loading = false;
         },
-        error: () => {
-          this.error = 'No portfolio found for that ID';
+        error: (err) => {
+          this.error = err.error?.error || 'User not found';
           this.loading = false;
         }
       });
-  }
-
-  addToMyPortfolio(stock: any) {
-    this.http.post(`http://localhost:3000/portfolios`, { symbol: stock.symbol })
-      .subscribe(() => alert(`${stock.symbol} added to your portfolio!`));
   }
 }
