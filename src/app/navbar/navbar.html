@@ -19,19 +19,13 @@
   <!-- Nav links -->
   <ul class="nav-links" [class.open]="menuOpen">
     <li>
-      <a routerLink="/" routerLinkActive="active" (click)="closeMenu()">
-        Dashboard
-      </a>
+      <a routerLink="/" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
     </li>
     <li>
-      <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">
-        Portfolio
-      </a>
+      <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">Portfolio</a>
     </li>
     <li>
-      <button class="logout-btn" (click)="logout(); closeMenu()">
-        Logout
-      </button>
+      <button class="logout-btn" (click)="logout(); closeMenu()">Logout</button>
     </li>
   </ul>
 </nav>

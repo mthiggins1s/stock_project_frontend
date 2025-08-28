@@ -1,4 +1,5 @@
 <div class="dashboard-shell">
+  <!-- Portfolio Stats -->
   <section class="stats">
     <div class="card total">
       <h3>Total Value</h3>
@@ -14,6 +15,7 @@
     </div>
   </section>
 
+  <!-- Portfolio Charts -->
   <section class="charts">
     <div class="chart-box">
       <h4>Portfolio Performance</h4>
@@ -33,4 +35,14 @@
       </canvas>
     </div>
   </section>
-</div>
+
+  <!-- New Two-Box Layout -->
+  <section class="stock-section">
+  <div class="left-panel">
+    <app-stock-list (stockSelected)="onStockSelected($event)"></app-stock-list>
+  </div>
+  <div class="right-panel">
+    <app-stock-chart [symbol]="selectedStock"></app-stock-chart>
+  </div>
+</section>
+

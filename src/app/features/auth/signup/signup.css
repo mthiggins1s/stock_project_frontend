@@ -1,63 +1,131 @@
+/* Fullscreen layout */
 .auth-layout {
-  min-height: calc(100vh - 64px);
-  display: grid;
-  place-items: center;
-  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: radial-gradient(circle at top, #1e293b, #0f172a);
+  padding: 1rem;
 }
 
+/* Card container */
 .auth-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 2.4rem;
-  box-shadow: var(--shadow-md);
+  background: rgba(30, 41, 59, 0.85); /* slate glass */
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 2rem;
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.6s ease forwards;
 }
 
+/* App logo */
 .logo {
-  text-align: center;
   font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 1.6rem;
-}
-.logo span {
-  background: var(--color-accent-gradient);
-  /* -webkit-background-clip: text; */
-  color: transparent;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #06b6d4;
 }
 
-form {
+.logo span {
+  color: #10b981;
+}
+
+/* Forms */
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-label {
-  font-size: .7rem;
-  color: var(--color-text-faint);
-  text-transform: uppercase;
-  letter-spacing: .1rem;
-}
-input {
-  padding: .85rem 1rem;
-  border-radius: var(--radius-md);
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-}
-input:focus {
-  border-color: var(--color-accent);
-  box-shadow: var(--shadow-glow);
-}
-input::placeholder {
-  color: var(--color-text-soft);
+  margin-bottom: 1rem;
 }
 
-.alert.error {
-  background: rgba(239, 68, 68, .12);
-  border: 1px solid rgba(239, 68, 68, .4);
-  padding: .7rem 1rem;
-  border-radius: var(--radius-md);
-  color: #fca5a5;
-  font-size: .8rem;
+label {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: #94a3b8;
+}
+
+input {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #0f172a;
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus {
+  background: #1e293b;
+  box-shadow: 0 0 0 2px #06b6d4;
+}
+
+/* Alerts & hints */
+.alert.error,
+.hint.error {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* Buttons */
+.btn {
+  background: linear-gradient(135deg, #06b6d4, #10b981);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.w-full {
+  width: 100%;
+}
+
+/* Link style for "Sign up" alt actions */
+.auth-alt {
+  margin-top: 1rem;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #06b6d4;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.link-btn:hover {
+  color: #10b981;
+}
+
+/* Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

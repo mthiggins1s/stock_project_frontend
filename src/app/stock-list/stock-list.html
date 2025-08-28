@@ -1,73 +1,33 @@
-<div class="dashboard-shell">
-  <section class="search-bar glass fade-in">
-    <input class="search-input"
-           [(ngModel)]="search"
-           (input)="onSearchChange()"
-           placeholder="Search tickers..."
-           type="text" />
-  </section>
+<div class="stock-list">
+  <input 
+    type="text" 
+    placeholder="Search stocks..." 
+    [(ngModel)]="search" 
+    (ngModelChange)="onSearchChange()" 
+    class="search-input"
+  />
 
-  <section class="stocks-grid">
-    @if (!loading) {
-      @for (stock of stocks; track stock.symbol; let i = $index) {
-        <div class="stock-card" [class.expanded]="expanded === i">
-          <button class="card-main" type="button" (click)="expandChip(i)">
-            <div class="ticker">{{ stock.symbol }}</div>
-            <div class="name" title="{{stock.description}}">{{ stock.description }}</div>
+  @if (loading) {
+    <p>Loading stocks...</p>
+  } @else {
+    @for (stock of stocks; track stock.symbol) {
+      <div 
+        class="stock-item"
+        (click)="selectStock(stock.symbol)">
+        
+        <h4>{{ stock.symbol }}</h4>
+        <p>${{ stock.price | number:'1.2-2' }}</p>
+        
+        <p [ngClass]="{ 'positive': stock.change >= 0, 'negative': stock.change < 0 }">
+          {{ stock.change | number:'1.2-2' }} ({{ stock.change_percent | percent:'1.1-1' }})
+        </p>
 
-            <!-- ✅ Live price or placeholder -->
-            <div class="price">
-              @if (stock.price) {
-                ${{ stock.price | number:'1.2-2' }}
-                @if (stock.mock) {
-                  <span class="mock-label">(mock)</span>
-                }
-              } @else {
-                @if (i < 10) {
-                  <span>Loading price...</span>
-                } @else {
-                  <span>Live data limited to first 10</span>
-                }
-              }
-            </div>
-
-            <div class="spark skeleton" aria-hidden="true"></div>
-          </button>
-
-          <div class="card-actions">
-            <button class="btn tiny"
-                    (click)="addToPortfolio(stock)"
-                    [disabled]="stock.added">
-              {{ stock.added ? 'Added' : 'Add' }}
-            </button>
-            <button class="btn outline tiny" (click)="showChart(i, stock.symbol)">Data</button>
-          </div>
-
-          @if (expanded === i && showChartFor === i) {
-            <div class="chart-wrapper">
-              <app-tradingview-mini [symbol]="'NASDAQ:' + stock.symbol"></app-tradingview-mini>
-            </div>
-          }
-        </div>
-      } @empty {
-        <div>No stocks available.</div>
-      }
-    } @else {
-      <!-- ✅ Skeleton loader for first load -->
-      <section class="stocks-grid">
-        @for (_ of placeholders; track $index) {
-          <div class="stock-card skeleton">
-            <div class="skeleton" style="height:14px; width:50%; border-radius:6px;"></div>
-            <div class="skeleton" style="height:10px; width:80%; border-radius:6px; margin-top:6px;"></div>
-            <div class="skeleton" style="height:20px; width:40%; border-radius:6px; margin-top:8px;"></div>
-            <div class="skeleton" style="height:32px; width:100%; border-radius:10px; margin-top:12px;"></div>
-            <div style="display:flex; gap:.5rem; margin-top:14px;">
-              <div class="skeleton" style="height:28px; flex:1; border-radius:8px;"></div>
-              <div class="skeleton" style="height:28px; flex:1; border-radius:8px;"></div>
-            </div>
-          </div>
+        @if (stock.added) {
+          <span class="in-portfolio">✓ In Portfolio</span>
+        } @else {
+          <button (click)="addToPortfolio(stock); $event.stopPropagation()">Add</button>
         }
-      </section>
+      </div>
     }
-  </section>
+  }
 </div>

@@ -1,21 +1,24 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { ChartConfiguration } from 'chart.js';
+import { StockChartComponent } from '../../stock-chart/stock-chart';
+import { StockListComponent } from '../../stock-list/stock-list';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, NgChartsModule],
+  imports: [CommonModule, NgChartsModule, StockChartComponent, StockListComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent {
-  totalValue = 12500; // mock
+  // --- Portfolio summary (mock for now) ---
+  totalValue = 12500;
   totalGains = 2400;
   totalLosses = 800;
 
-  // ✅ Portfolio Performance Line Chart
+  // --- Portfolio Performance Line Chart ---
   portfolioChartData: ChartConfiguration<'line'>['data'] = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
     datasets: [
@@ -37,7 +40,7 @@ export class DashboardComponent {
     plugins: { legend: { display: true } }
   };
 
-  // ✅ Stock Allocation Doughnut Chart
+  // --- Stock Allocation Doughnut Chart ---
   allocationChartData: ChartConfiguration<'doughnut'>['data'] = {
     labels: ['AAPL', 'TSLA', 'AMZN', 'GOOG'],
     datasets: [
@@ -53,4 +56,11 @@ export class DashboardComponent {
     responsive: true,
     plugins: { legend: { position: 'bottom' } }
   };
+
+  // --- New: Selected stock state ---
+  selectedStock: string | null = null;
+
+  onStockSelected(symbol: string) {
+    this.selectedStock = symbol;
+  }
 }

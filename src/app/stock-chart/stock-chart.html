@@ -1,0 +1,9 @@
+<div class="chart-container">
+  @if (symbol) {
+    <h3>{{ symbol }} Chart</h3>
+    @if (loading) {
+      <p>Loading...</p>
+    }
+    <canvas id="chartCanvas"></canvas>
+  }
+</div>
