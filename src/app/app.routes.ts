@@ -37,6 +37,14 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
+  // --- Portfolio Search (NEW) ---
+  {
+    path: 'portfolio-search',
+    loadComponent: () => import('./features/portfolio-search/portfolio-search')
+      .then(c => c.PortfolioSearchComponent),
+    canActivate: [authGuard]
+  },
+
   // --- Wildcard (redirect) ---
   {
     path: '**',

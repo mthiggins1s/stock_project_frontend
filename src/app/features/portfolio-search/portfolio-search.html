@@ -1,0 +1,21 @@
+<div class="portfolio-search glass">
+  <h3>Find Another Portfolio</h3>
+
+  <div class="search-bar">
+    <input [(ngModel)]="publicId" placeholder="Enter public ID…" />
+    <button (click)="search()" [disabled]="!publicId">Search</button>
+  </div>
+
+  <p *ngIf="loading">Loading portfolio…</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <div *ngIf="results.length > 0">
+    <h4>Portfolio for ID {{ publicId }}</h4>
+    <ul>
+      <li *ngFor="let stock of results">
+        {{ stock.symbol }} – ${{ stock.price }}
+        <button (click)="addToMyPortfolio(stock)">Copy</button>
+      </li>
+    </ul>
+  </div>
+</div>
