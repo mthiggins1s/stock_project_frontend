@@ -1,38 +1,26 @@
-.stock-list {
-  background: #1e293b;
-  border-radius: 12px;
-  padding: 1rem;
-  max-height: 600px;
-  overflow-y: auto;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-}
-
 .stock-item {
+  background: #1a1a1a;
   padding: 1rem;
-  border-bottom: 1px solid #334155;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-  transition: background 0.2s ease;
+  color: #f5f5f5;
 }
 
-.stock-item:hover {
-  background: #0f172a;
-}
-
-.stock-item h4 {
-  margin: 0;
-  font-size: 1rem;
+.stock-item .symbol {
   font-weight: 600;
 }
 
-.positive { color: #10b981; }
-.negative { color: #ef4444; }
+.stock-item .price {
+  color: #facc15; /* yellow price highlight */
+}
 
-button {
-  background: linear-gradient(135deg, #06b6d4, #10b981);
-  border-radius: 6px;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.85rem;
+.stock-item .change.positive {
+  color: #10b981; /* green for gains */
+}
+
+.stock-item .change.negative {
+  color: #ef4444; /* red for losses */
 }

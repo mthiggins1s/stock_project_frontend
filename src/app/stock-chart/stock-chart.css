@@ -1,7 +1,18 @@
-.chart-container {
-  background: #1e293b;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  height: 100%;
+/* Chart.js overrides */
+.chart-box canvas {
+  background: transparent !important;
+}
+
+.chartjs-render-monitor {
+  color: #f5f5f5;
+}
+
+.chart-legend {
+  color: #f5f5f5 !important;
+}
+
+/* Use yellow line for main portfolio performance */
+.chart-line {
+  border-color: #facc15 !important;
+  background-color: rgba(250, 204, 21, 0.1) !important;
 }

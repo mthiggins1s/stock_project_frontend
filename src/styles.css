@@ -1,38 +1,31 @@
-/* RESET */
-* {
+body {
+  background: #0f0f0f;  /* deep black background */
+  color: #f5f5f5;       /* light gray text */
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
-  font-family: 'Inter', sans-serif;
-  background: #0f172a;
-  color: #f1f5f9;
-  line-height: 1.5;
+h1, h2, h3, h4, h5 {
+  color: #facc15; /* yellow headers */
+  margin: 0;
 }
 
-/* Remove browser default link + list styles */
 a {
-  color: inherit;
+  color: #facc15; /* yellow links */
   text-decoration: none;
 }
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+
+button {
+  background: #facc15;
+  color: #0f0f0f;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-/* Global container for app */
-.app-shell {
-  display: flex;
-  min-height: 100vh;
-}
-
-/* Main content wrapper */
-.main-content {
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
+button:hover {
+  background: #eab308;
 }
