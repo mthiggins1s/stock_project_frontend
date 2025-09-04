@@ -1,17 +1,18 @@
 .dashboard-shell {
   padding: 2rem;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: #0d0d0d; /* dark background */
+  color: #f5f5f5;
+  min-height: 100vh;
 }
 
 /* --- Stat Cards --- */
 .stats {
-  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 1.5rem;
-  margin-bottom: 2rem;
 }
 
 .card {
@@ -22,20 +23,64 @@
   color: #f5f5f5;
 }
 
-.card.total { grid-column: span 8; border-left: 4px solid #facc15; }
-.card.income { grid-column: span 2; border-left: 4px solid #10b981; }
-.card.loss   { grid-column: span 2; border-left: 4px solid #ef4444; }
+.card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #facc15; /* yellow highlight */
+}
 
-/* --- Charts --- */
-.charts {
-  grid-column: 1 / -1;
+.card.total { border-left: 4px solid #facc15; }
+.card.income { border-left: 4px solid #10b981; }
+.card.loss   { border-left: 4px solid #ef4444; }
+
+/* --- Main Stock Section --- */
+.stock-section {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
 }
 
+/* Left: Chart */
+.left-panel {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.left-panel h4 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #facc15;
+}
+
+/* Right: Stock List */
+.right-panel {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.right-panel h4 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #facc15;
+}
+
+/* --- Chart Box (used in Portfolio Performance) --- */
 .chart-box {
   background: #1a1a1a;
   border-radius: 12px;
   padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.chart-box h4 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #facc15;
 }

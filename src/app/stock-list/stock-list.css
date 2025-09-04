@@ -1,26 +1,122 @@
-.stock-item {
-  background: #1a1a1a;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
+.stock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #2a2a2a;
+  color: #f5f5f5;
+  font-size: 0.9rem;
+}
+
+.search-input::placeholder {
+  color: #a3a3a3;
+}
+
+.loading-text {
+  color: #facc15;
+  text-align: center;
+}
+
+.stock-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.75rem 1rem;
+  background: #1a1a1a;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.stock-row:hover {
+  background: #2a2a2a;
+}
+
+/* Left Section */
+.stock-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stock-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  object-fit: contain;
+}
+
+.stock-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.symbol {
+  font-weight: 700;
+  color: #facc15;
+  font-size: 0.95rem;
+}
+
+.name {
+  font-size: 0.75rem;
+  color: #a3a3a3;
+}
+
+/* Middle Section */
+.stock-right {
+  text-align: right;
+  margin-right: 1rem;
+}
+
+.price {
+  font-size: 0.95rem;
   color: #f5f5f5;
 }
 
-.stock-item .symbol {
+.change {
+  font-size: 0.8rem;
+}
+
+.change.positive {
+  color: #10b981;
+}
+
+.change.negative {
+  color: #ef4444;
+}
+
+/* Actions */
+.stock-actions {
+  flex-shrink: 0;
+}
+
+.add-btn {
+  background: #facc15;
+  color: #0f0f0f;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: 16px; /* pill shape */
+  cursor: pointer;
   font-weight: 600;
+  font-size: 0.8rem;
+  transition: background 0.2s ease;
 }
 
-.stock-item .price {
-  color: #facc15; /* yellow price highlight */
+.add-btn:hover {
+  background: #eab308;
 }
 
-.stock-item .change.positive {
-  color: #10b981; /* green for gains */
-}
-
-.stock-item .change.negative {
-  color: #ef4444; /* red for losses */
+.in-portfolio {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #facc15;
 }

@@ -1,4 +1,5 @@
 <div class="dashboard-shell">
+
   <!-- Portfolio Stats -->
   <section class="stats">
     <div class="card total">
@@ -15,34 +16,34 @@
     </div>
   </section>
 
-  <!-- Portfolio Charts -->
+  <!-- Portfolio Performance Chart -->
   <section class="charts">
     <div class="chart-box">
       <h4>Portfolio Performance</h4>
-      <canvas baseChart 
-              [data]="portfolioChartData"
-              [options]="portfolioChartOptions"
-              [type]="'line'">
-      </canvas>
-    </div>
-
-    <div class="chart-box">
-      <h4>Stock Allocation</h4>
-      <canvas baseChart 
-              [data]="allocationChartData"
-              [options]="allocationChartOptions"
-              [type]="'doughnut'">
+      <canvas 
+        baseChart
+        [data]="portfolioChartData"
+        [options]="portfolioChartOptions"
+        [type]="'line'">
       </canvas>
     </div>
   </section>
 
-  <!-- New Two-Box Layout -->
+  <!-- Stock List + Dynamic Chart -->
   <section class="stock-section">
-  <div class="left-panel">
-    <app-stock-list (stockSelected)="onStockSelected($event)"></app-stock-list>
-  </div>
-  <div class="right-panel">
-    <app-stock-chart [symbol]="selectedStock"></app-stock-chart>
-  </div>
-</section>
+    <!-- Left: Chart (updates when stock clicked) -->
+    <div class="left-panel">
+      <canvas 
+        baseChart
+        [data]="portfolioChartData"
+        [options]="portfolioChartOptions"
+        [type]="'line'">
+      </canvas>
+    </div>
 
+    <!-- Right: Stock List -->
+    <div class="right-panel">
+      <app-stock-list (stockSelected)="onStockSelected($event)"></app-stock-list>
+    </div>
+  </section>
+</div>

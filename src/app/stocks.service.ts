@@ -16,8 +16,11 @@ export class StocksService {
     return this.http.get<any>(`${this.apiUrl}/${symbol}`);
   }
 
-  getCandles(symbol: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${symbol}/candles`);
+  getCandles(symbol: string, from?: string, to?: string): Observable<any[]> {
+    let url = `${this.apiUrl}/${symbol}/candles`;
+    if (from && to) {
+      url += `?from=${from}&to=${to}`;
+    }
+    return this.http.get<any[]>(url);
   }
-
 }

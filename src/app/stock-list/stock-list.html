@@ -8,25 +8,42 @@
   />
 
   @if (loading) {
-    <p>Loading stocks...</p>
+    <p class="loading-text">Loading stocks...</p>
   } @else {
     @for (stock of stocks; track stock.symbol) {
-      <div 
-        class="stock-item"
-        (click)="selectStock(stock.symbol)">
+      <div class="stock-row" (click)="selectStock(stock.symbol)">
         
-        <h4>{{ stock.symbol }}</h4>
-        <p>${{ stock.price | number:'1.2-2' }}</p>
-        
-        <p [ngClass]="{ 'positive': stock.change >= 0, 'negative': stock.change < 0 }">
-          {{ stock.change | number:'1.2-2' }} ({{ stock.change_percent | percent:'1.1-1' }})
-        </p>
+        <!-- Left: Logo + Symbol + Name -->
+        <div class="stock-left">
+          <img 
+            [src]="'https://api.polygon.io/v1/reference/company-branding/' + stock.symbol + '?apiKey=YOUR_API_KEY'"
+            alt="{{ stock.symbol }} logo"
+            class="stock-logo"
+            (error)="$any($event.target).style.display='none'" 
+          />
 
-        @if (stock.added) {
-          <span class="in-portfolio">✓ In Portfolio</span>
-        } @else {
-          <button (click)="addToPortfolio(stock); $event.stopPropagation()">Add</button>
-        }
+          <div class="stock-text">
+            <span class="symbol">{{ stock.symbol }}</span>
+            <span class="name">{{ stock.name || stock.symbol }}</span>
+          </div>
+        </div>
+
+        <!-- Middle: Price + Change -->
+        <div class="stock-right">
+          <div class="price">${{ stock.price | number:'1.2-2' }}</div>
+          <div class="change" [ngClass]="{ 'positive': stock.change >= 0, 'negative': stock.change < 0 }">
+            {{ stock.change | number:'1.2-2' }} ({{ stock.change_percent | percent:'1.1-1' }})
+          </div>
+        </div>
+
+        <!-- Right: Action -->
+        <div class="stock-actions">
+          @if (stock.added) {
+            <span class="in-portfolio">✓</span>
+          } @else {
+            <button class="add-btn" (click)="addToPortfolio(stock); $event.stopPropagation()">Add</button>
+          }
+        </div>
       </div>
     }
   }
