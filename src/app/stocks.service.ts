@@ -19,4 +19,5 @@ export class StocksService {
   getCandles(symbol: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${symbol}/candles`);
   }
+
 }
