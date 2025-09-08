@@ -1,31 +1,24 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { StocksService } from '../stocks.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { Subscription, interval } from 'rxjs';
+import { StocksService } from '../stocks.service';
 
 @Component({
   selector: 'app-stock-list',
+  standalone: true,
   templateUrl: './stock-list.html',
   styleUrls: ['./stock-list.css'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatSnackBarModule,
-    MatToolbarModule,
-  ]
+  imports: [CommonModule, FormsModule, MatSnackBarModule]
 })
 export class StockListComponent implements OnInit, OnDestroy {
   stocks: any[] = [];
   search: string = '';
-  addedStockSymbols: Set<string> = new Set();
   loading = true;
   private pollSub?: Subscription;
 
-  @Output() stockSelected = new EventEmitter<string>();
+  @Output() stockSelected = new EventEmitter<any>();
 
   constructor(
     private stocksService: StocksService,
@@ -42,53 +35,38 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   loadStocks() {
     this.loading = true;
-    this.stocksService.getStocks(this.search).subscribe(data => {
-      data.forEach((stock: any) => {
-        stock.added = this.addedStockSymbols.has(stock.symbol);
-      });
-
-      this.stocks = data.slice(0, 50);
-      this.startPolling();
-      this.loading = false;
-    }, () => { this.loading = false; });
+    this.stocksService.getStocks(this.search).subscribe(
+      data => {
+        this.stocks = data.slice(0, 50); // show first 50
+        this.startPolling();
+        this.loading = false;
+      },
+      () => (this.loading = false)
+    );
   }
 
   startPolling() {
     this.pollSub?.unsubscribe();
-    this.pollSub = interval(15 * 60 * 1000).subscribe(() => {
-      this.stocks.forEach(stock => this.fetchQuote(stock.symbol));
-    });
-  }
-
-  fetchQuote(symbol: string) {
-    this.stocksService.getQuote(symbol).subscribe(q => {
-      const stock = this.stocks.find(s => s.symbol === symbol);
-      if (stock && q.price) {
-        stock.price = q.price;
-        stock.change = q.change;
-        stock.change_percent = q.change_percent;
-      }
-    });
+    // refresh every 10 seconds (since you have unlimited calls)
+    this.pollSub = interval(10000).subscribe(() => this.loadStocks());
   }
 
   onSearchChange() {
     this.loadStocks();
   }
 
-  addToPortfolio(stock: any) {
-    this.addedStockSymbols.add(stock.symbol);
-    stock.added = true;
+  selectStock(stock: any) {
+    this.stockSelected.emit(stock);
+  }
 
+  addToPortfolio(stock: any) {
     let portfolio = JSON.parse(localStorage.getItem('portfolio') || '[]');
     if (!portfolio.some((s: any) => s.symbol === stock.symbol)) {
       portfolio.push(stock);
       localStorage.setItem('portfolio', JSON.stringify(portfolio));
+      this.snackBar.open('Stock added to portfolio!', 'Close', {
+        duration: 2000
+      });
     }
-
-    this.snackBar.open('Stock added to portfolio!', 'Close', { duration: 2000 });
-  }
-
-  selectStock(symbol: string) {
-    this.stockSelected.emit(symbol);
   }
 }

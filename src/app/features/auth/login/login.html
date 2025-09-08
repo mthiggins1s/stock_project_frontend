@@ -1,33 +1,40 @@
 <div class="auth-layout">
-  <div class="auth-card glass fade-in">
-    <h1 class="logo">Stock<span>Folio</span></h1>
-    <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-      <!-- Username -->
+  <div class="auth-card">
+    <h2 class="logo">StockFolio</h2>
+
+    <form (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="username">Username</label>
-        <input id="username" type="text" formControlName="username" placeholder="Enter your username" autocomplete="username" />
-        @if (loginForm.get('username')?.touched && loginForm.get('username')?.hasError('required')) {
-          <p class="hint error">Username is required.</p>
-        }
+        <label for="usernameOrEmail">Username or Email</label>
+        <input
+          type="text"
+          id="usernameOrEmail"
+          [(ngModel)]="usernameOrEmail"
+          name="usernameOrEmail"
+          required
+        />
       </div>
-      <!-- Password -->
+
       <div class="form-group">
         <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="Enter your password" autocomplete="current-password" />
-        @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
-          <p class="hint error">Password is required.</p>
-        }
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
       </div>
-      @if (isError) {
-        <p class="alert error" role="alert">{{ errorMessage || 'Username and password credentials failed. Please try again!' }}</p>
-      }
-      <button class="btn w-full" type="submit" [disabled]="loginForm.invalid || isLoading">
-        {{ isLoading ? 'Signing in…' : 'Login' }}
-      </button>
+
+      <button type="submit" class="btn w-full">Login</button>
     </form>
-    <div class="auth-alt">
-      <span>Don't have an account?</span>
-      <button type="button" (click)="goToSignup()" class="link-btn">Sign Up</button>
-    </div>
+
+    @if (errorMessage) {
+      <div class="alert error">{{ errorMessage }}</div>
+    }
+
+    <p class="auth-alt">
+      Don’t have an account?
+      <a routerLink="/signup" class="link-btn">Sign Up</a>
+    </p>
   </div>
 </div>

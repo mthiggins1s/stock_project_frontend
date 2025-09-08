@@ -1,36 +1,29 @@
-<nav class="nav-shell glass">
-  <div class="nav-left">
-    <a routerLink="/" class="brand">Stock<span>Folio</span></a>
+<nav class="navbar">
+  <!-- Left: Brand -->
+  <div class="brand">
+    <a routerLink="/dashboard">📈 StockFolio</a>
   </div>
 
-  <!-- Mobile toggle button -->
-  <button
-    class="nav-toggle"
-    type="button"
-    (click)="menuOpen = !menuOpen"
-    aria-label="Toggle navigation"
-    [attr.aria-expanded]="menuOpen"
-  >
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-
-  <!-- Nav links -->
-  <ul class="nav-links" [class.open]="menuOpen">
-    <li>
-      <a routerLink="/" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
-    </li>
-    <li>
-      <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">Portfolio</a>
-    </li>
-    <li>
-      <a routerLink="/portfolio-search" routerLinkActive="active" (click)="closeMenu()">
-        Search Portfolios
-      </a>
-    </li>
-    <li>
-      <button class="logout-btn" (click)="logout(); closeMenu()">Logout</button>
-    </li>
+  <!-- Middle: Links -->
+  <ul class="nav-links">
+    <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+    <li><a routerLink="/portfolio" routerLinkActive="active">Portfolio</a></li>
+    <li><a routerLink="/search" routerLinkActive="active">Search</a></li>
   </ul>
+
+  <!-- Right: Actions -->
+  <div class="actions">
+    <button (click)="logout()">Logout</button>
+  </div>
+
+  <!-- Mobile Hamburger -->
+  <div class="hamburger" (click)="toggleMenu()">☰</div>
 </nav>
+
+<!-- Mobile Dropdown -->
+<div class="mobile-menu" *ngIf="menuOpen">
+  <a routerLink="/dashboard" routerLinkActive="active" (click)="toggleMenu()">Dashboard</a>
+  <a routerLink="/portfolio" routerLinkActive="active" (click)="toggleMenu()">Portfolio</a>
+  <a routerLink="/search" routerLinkActive="active" (click)="toggleMenu()">Search</a>
+  <button (click)="logout()">Logout</button>
+</div>

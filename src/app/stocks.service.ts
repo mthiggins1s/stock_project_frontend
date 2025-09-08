@@ -16,11 +16,19 @@ export class StocksService {
     return this.http.get<any>(`${this.apiUrl}/${symbol}`);
   }
 
-  getCandles(symbol: string, from?: string, to?: string): Observable<any[]> {
-    let url = `${this.apiUrl}/${symbol}/candles`;
-    if (from && to) {
-      url += `?from=${from}&to=${to}`;
-    }
-    return this.http.get<any[]>(url);
+  getCandles(symbol: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${symbol}/candles`);
   }
+
+  getPortfolioCandles(symbols: string[]): Observable<{ [symbol: string]: any[] }> {
+    return this.http.get<{ [symbol: string]: any[] }>(
+      `http://localhost:3000/portfolio/candles`,
+      { params: { symbols: JSON.stringify(symbols) } }
+    );
+  }
+  getPortfolioSummary(symbols: string[]) {
+  return this.http.get<any>(`${this.apiUrl}/portfolio/summary`, {
+    params: { symbols: JSON.stringify(symbols) }
+  });
+}
 }

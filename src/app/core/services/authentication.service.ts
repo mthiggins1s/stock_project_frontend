@@ -3,22 +3,23 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 type LoginResponse = { token: string };
 
 @Injectable({ providedIn: 'root' })
-export class Authentication {
+export class AuthenticationService {
   private readonly api = environment.apiUrl;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   /**
    * POST /login
-   * Sends RAW body { username, password } as Rails expects.
-   * On success, automatically persists token to localStorage.
+   * Accepts username OR email + password.
+   * Rails backend will handle finding the user.
    */
-  login(username: string, password: string) {
-    return this.http.post<LoginResponse>(`${this.api}/login`, { username, password }).pipe(
+  login(usernameOrEmail: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.api}/login`, { usernameOrEmail, password }).pipe(
       tap(res => {
         if (res?.token) this.setToken(res.token);
       })
@@ -26,15 +27,11 @@ export class Authentication {
   }
 
   /**
-   * POST /users
-   * Rails strong params expect a WRAPPED payload: { user: {...} } with snake_case keys.
-   * This method accepts either flat or wrapped data and transforms as needed.
+   * POST /users (signup)
    */
   signup(data: any) {
-    // If already wrapped correctly, pass through
     if (data?.user) return this.http.post(`${this.api}/users`, data);
 
-    // Map both snake_case and common camelCase form keys → snake_case
     const user = {
       username: data.username,
       email: data.email,
@@ -56,10 +53,6 @@ export class Authentication {
     return localStorage.getItem('token');
   }
 
-  /**
-   * Real auth check: verifies JWT exp, not just presence.
-   * Returns false if token missing, malformed, or expired.
-   */
   isLoggedIn() {
     const token = this.getToken();
     if (!token) return false;

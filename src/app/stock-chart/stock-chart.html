@@ -1,9 +1,12 @@
-<div class="chart-container">
+<div class="chart-wrapper">
   @if (symbol) {
-    <h3>{{ symbol }} Chart</h3>
-    @if (loading) {
-      <p>Loading...</p>
-    }
-    <canvas id="chartCanvas"></canvas>
+    <canvas
+      baseChart
+      [data]="chartData"
+      [options]="chartOptions"
+      [type]="'line'">
+    </canvas>
+  } @else {
+    <p class="placeholder">Select a stock to view its chart</p>
   }
 </div>

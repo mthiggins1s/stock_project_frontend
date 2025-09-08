@@ -1,48 +1,75 @@
 <div class="dashboard-shell">
-
-  <!-- Portfolio Stats -->
-  <section class="stats">
-    <div class="card total">
-      <h3>Total Value</h3>
-      <p>${{ totalValue | number:'1.2-2' }}</p>
+  <!-- Stats bar -->
+  <section class="stats-bar">
+    <div class="stat">
+      <span>Total Value</span>
+      <strong>${{ totalValue | number:'1.2-2' }}</strong>
     </div>
-    <div class="card income">
-      <h3>Gains</h3>
-      <p>+${{ totalGains | number:'1.2-2' }}</p>
+    <div class="stat positive">
+      <span>Gains</span>
+      <strong>+${{ totalGains | number:'1.2-2' }}</strong>
     </div>
-    <div class="card loss">
-      <h3>Losses</h3>
-      <p>-${{ totalLosses | number:'1.2-2' }}</p>
-    </div>
-  </section>
-
-  <!-- Portfolio Performance Chart -->
-  <section class="charts">
-    <div class="chart-box">
-      <h4>Portfolio Performance</h4>
-      <canvas 
-        baseChart
-        [data]="portfolioChartData"
-        [options]="portfolioChartOptions"
-        [type]="'line'">
-      </canvas>
+    <div class="stat negative">
+      <span>Losses</span>
+      <strong>-${{ totalLosses | number:'1.2-2' }}</strong>
     </div>
   </section>
 
-  <!-- Stock List + Dynamic Chart -->
-  <section class="stock-section">
-    <!-- Left: Chart (updates when stock clicked) -->
-    <div class="left-panel">
-      <canvas 
+  <!-- Main layout -->
+  <section class="main-layout">
+    <!-- Left: Chart + details -->
+    <div class="chart-panel">
+      @if (selectedStock) {
+        <div class="stock-header">
+          <img
+            [src]="selectedStock.logo_url"
+            alt="{{ selectedStock.symbol }}"
+            class="stock-logo"
+            (error)="$any($event.target).style.display='none'"
+          />
+          <div class="info">
+            <h2>{{ selectedStock.symbol }}</h2>
+            <p>{{ selectedStock.name }}</p>
+          </div>
+          <div class="price-block">
+            <h2
+              [ngClass]="{
+                positive: selectedStock.change >= 0,
+                negative: selectedStock.change < 0
+              }"
+            >
+              ${{ selectedStock.price | number:'1.2-2' }}
+            </h2>
+            <p
+              [ngClass]="{
+                positive: selectedStock.change >= 0,
+                negative: selectedStock.change < 0
+              }"
+            >
+              {{ selectedStock.change | number:'1.2-2' }}
+              ({{ selectedStock.change_percent | percent:'1.1-1' }})
+            </p>
+          </div>
+        </div>
+
+        <div class="ohlc">
+          <span>Open: {{ selectedStock.open }}</span>
+          <span>High: {{ selectedStock.high }}</span>
+          <span>Low: {{ selectedStock.low }}</span>
+          <span>Close: {{ selectedStock.close }}</span>
+        </div>
+      }
+
+      <canvas
         baseChart
-        [data]="portfolioChartData"
-        [options]="portfolioChartOptions"
-        [type]="'line'">
-      </canvas>
+        [data]="chartData"
+        [options]="chartOptions"
+        [type]="'line'"
+      ></canvas>
     </div>
 
-    <!-- Right: Stock List -->
-    <div class="right-panel">
+    <!-- Right: Stock list -->
+    <div class="list-panel">
       <app-stock-list (stockSelected)="onStockSelected($event)"></app-stock-list>
     </div>
   </section>

@@ -1,23 +1,24 @@
 import { Component } from '@angular/core';
-import { Authentication } from '../core/services/authentication.service';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css'],
+  styleUrls: ['./navbar.css']
 })
 export class NavbarComponent {
   menuOpen = false;
-  constructor(private authService: Authentication) {}
 
-  logout() {
-    this.authService.logout();
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
-  closeMenu() {
-    this.menuOpen = false;
+  logout() {
+    // 🔥 Replace with actual logout logic (JWT clear, redirect)
+    localStorage.removeItem('auth_token');
+    window.location.href = '/login';
   }
 }

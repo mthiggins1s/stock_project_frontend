@@ -1,53 +1,34 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth-guard';
-import { noAuthGuard } from './core/guards/no-auth-guard';
 
+// lazy imports must return the correct component class
 export const routes: Routes = [
-  // --- Auth ---
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login').then(c => c.Login),
-    canActivate: [noAuthGuard]
+    loadComponent: () =>
+      import('./features/auth/login/login').then(c => c.LoginComponent),
   },
   {
     path: 'signup',
-    loadComponent: () => import('./features/auth/signup/signup').then(c => c.Signup),
-    canActivate: [noAuthGuard]
+    loadComponent: () =>
+      import('./features/auth/signup/signup').then(c => c.SignupComponent),
   },
-
-  // --- Dashboard (new default) ---
   {
-    path: '',
-    pathMatch: 'full',
-    loadComponent: () => import('./features/dashboard/dashboard').then(c => c.DashboardComponent),
-    canActivate: [authGuard]
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./features/dashboard/dashboard').then(c => c.DashboardComponent),
   },
-
-  // --- Stocks List ---
-  {
-    path: 'stocks',
-    loadComponent: () => import('./stock-list/stock-list').then(c => c.StockListComponent),
-    canActivate: [authGuard]
-  },
-
-  // --- Portfolio ---
   {
     path: 'portfolio',
-    loadComponent: () => import('./portfolio/portfolio').then(c => c.PortfolioComponent),
-    canActivate: [authGuard]
+    loadComponent: () =>
+      import('./portfolio/portfolio').then(c => c.PortfolioComponent),
   },
-
-  // --- Portfolio Search (NEW) ---
   {
-    path: 'portfolio-search',
-    loadComponent: () => import('./features/portfolio-search/portfolio-search')
-      .then(c => c.PortfolioSearchComponent),
-    canActivate: [authGuard]
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
   },
-
-  // --- Wildcard (redirect) ---
   {
     path: '**',
-    redirectTo: 'login'
-  }
+    redirectTo: 'login',
+  },
 ];

@@ -1,86 +1,110 @@
 .dashboard-shell {
-  padding: 2rem;
+  padding: 1.5rem;
+  background: #0f0f0f;
+  color: #f5f5f5;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  background: #0d0d0d; /* dark background */
-  color: #f5f5f5;
-  min-height: 100vh;
-}
-
-/* --- Stat Cards --- */
-.stats {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
   gap: 1.5rem;
 }
 
-.card {
-  padding: 1.5rem;
+/* Stats bar */
+.stats-bar {
+  display: flex;
+  gap: 2rem;
   background: #1a1a1a;
+  padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  color: #f5f5f5;
 }
 
-.card h3 {
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.stat span {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+.stat strong {
   font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #facc15; /* yellow highlight */
+}
+.stat.positive strong {
+  color: #10b981;
+}
+.stat.negative strong {
+  color: #ef4444;
 }
 
-.card.total { border-left: 4px solid #facc15; }
-.card.income { border-left: 4px solid #10b981; }
-.card.loss   { border-left: 4px solid #ef4444; }
-
-/* --- Main Stock Section --- */
-.stock-section {
+/* Main layout */
+.main-layout {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
 }
 
-/* Left: Chart */
-.left-panel {
+.chart-panel {
   background: #1a1a1a;
-  border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.left-panel h4 {
-  margin-bottom: 1rem;
-  font-weight: 600;
-  color: #facc15;
+.stock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-/* Right: Stock List */
-.right-panel {
+.stock-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.stock-header .info h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.stock-header .info p {
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.price-block {
+  text-align: right;
+}
+.price-block h2 {
+  font-size: 1.4rem;
+}
+.price-block .positive {
+  color: #10b981;
+}
+.price-block .negative {
+  color: #ef4444;
+}
+
+.ohlc {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* Right panel */
+.list-panel {
   background: #1a1a1a;
-  border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border-radius: 12px;
   overflow-y: auto;
-  max-height: 600px;
+  max-height: 700px;
 }
 
-.right-panel h4 {
-  margin-bottom: 1rem;
-  font-weight: 600;
-  color: #facc15;
-}
-
-/* --- Chart Box (used in Portfolio Performance) --- */
-.chart-box {
-  background: #1a1a1a;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
-
-.chart-box h4 {
-  margin-bottom: 1rem;
-  font-weight: 600;
-  color: #facc15;
+/* Mobile responsive */
+@media (max-width: 1024px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
 }
