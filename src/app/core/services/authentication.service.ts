@@ -5,7 +5,11 @@ import { Router } from '@angular/router';
 import { tap, shareReplay } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
-type LoginResponse = { token: string };
+export interface LoginResponse {
+  token?: string;
+  jwt?: string;
+  auth_token?: string;
+}
 
 export interface User {
   id: number;
@@ -29,9 +33,15 @@ export class AuthenticationService {
       .post<LoginResponse>(`${this.api}/login`, { usernameOrEmail, password })
       .pipe(
         tap(res => {
-          if (res?.token) {
-            this.setToken(res.token);
+          console.log('Login response:', res); // 👀 debug
+
+          const token = res?.token || res?.jwt || res?.auth_token;
+          if (token) {
+            this.setToken(token);
             this.currentUser = null; // reset cache after login
+            console.log('Stored token:', token); // 👀 confirm saved
+          } else {
+            console.warn('⚠️ No token found in login response');
           }
         })
       );
@@ -111,4 +121,3 @@ export class AuthenticationService {
     this.router.navigate(['/login']);
   }
 }
- 

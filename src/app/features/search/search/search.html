@@ -21,11 +21,11 @@
   @if (results.length > 0) {
     <div class="results">
       @for (stock of results; track stock.symbol) {
-        <div class="stock-card">
-          <h3>{{ stock.symbol }}</h3>
-          <p>{{ stock.name }}</p>
-          <p>\${{ stock.price | number:'1.2-2' }}</p>
-        </div>
+        <!-- ✅ Reuse stock-card -->
+        <app-stock-card
+          [stock]="stock"
+          [showRemove]="false">
+        </app-stock-card>
       }
     </div>
   }

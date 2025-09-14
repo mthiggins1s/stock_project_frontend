@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { StockCardComponent } from '../stock-card/stock-card'; // 👈 import reusable card
 
 @Component({
   selector: 'app-portfolio',
   standalone: true,
   templateUrl: './portfolio.html',
   styleUrls: ['./portfolio.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, StockCardComponent] // 👈 add card here
 })
 export class PortfolioComponent implements OnInit {
   portfolio: any[] = [];
@@ -22,9 +23,5 @@ export class PortfolioComponent implements OnInit {
   removeFromPortfolio(symbol: string) {
     this.portfolio = this.portfolio.filter(s => s.symbol !== symbol);
     localStorage.setItem('portfolio', JSON.stringify(this.portfolio));
-  }
-
-  trackStock(index: number, stock: any) {
-    return stock.symbol;
   }
 }
