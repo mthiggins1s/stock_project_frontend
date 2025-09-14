@@ -108,3 +108,28 @@
     grid-template-columns: 1fr;
   }
 }
+
+.user-info {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+}
+
+.user-info .welcome {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #facc15; /* soft golden yellow */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  position: relative;
+}
+
+.user-info .welcome::after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background: linear-gradient(to right, #facc15, transparent);
+  margin-left: 0.75rem;
+  border-radius: 2px;
+}
