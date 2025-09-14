@@ -6,22 +6,20 @@
 
   <!-- Middle: Links -->
   <ul class="nav-links">
-    @for (link of [
-      { path: '/dashboard', label: 'Dashboard' },
-      { path: '/portfolio', label: 'Portfolio' },
-      { path: '/search', label: 'Search' }
-    ]; track link.path) {
-      <li>
-        <a [routerLink]="link.path" routerLinkActive="active">
-          {{ link.label }}
-        </a>
-      </li>
-    }
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    </li>
+    <li>
+      <a routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
+    </li>
+    <li>
+      <a routerLink="/search" routerLinkActive="active">Search</a>
+    </li>
   </ul>
 
   <!-- Right: Actions -->
   <div class="actions">
-    @if (user?.public_id) {
+    @if (user) {
       <div class="public-id-wrapper">
         <span class="label">Copy Public ID:</span>
 
@@ -30,7 +28,7 @@
           (click)="copyPublicId()"
           title="Click to copy your Public ID"
         >
-          {{ revealId ? user?.public_id : '•••••••••••••••••••' }}
+          {{ revealId ? user.public_id : '•••••••••••••••••••' }}
         </span>
 
         <span
@@ -41,9 +39,9 @@
           {{ revealId ? '🙈' : '👁️' }}
         </span>
       </div>
-    }
 
-    <button (click)="logout()">Logout</button>
+      <button (click)="logout()">Logout</button>
+    }
   </div>
 
   <!-- Mobile Hamburger -->
@@ -53,21 +51,17 @@
 <!-- Mobile Dropdown -->
 @if (menuOpen) {
   <div class="mobile-menu">
-    @for (link of [
-      { path: '/dashboard', label: 'Dashboard' },
-      { path: '/portfolio', label: 'Portfolio' },
-      { path: '/search', label: 'Search' }
-    ]; track link.path) {
-      <a
-        [routerLink]="link.path"
-        routerLinkActive="active"
-        (click)="toggleMenu()"
-      >
-        {{ link.label }}
-      </a>
-    }
+    <a routerLink="/dashboard" routerLinkActive="active" (click)="toggleMenu()">
+      Dashboard
+    </a>
+    <a routerLink="/portfolio" routerLinkActive="active" (click)="toggleMenu()">
+      Portfolio
+    </a>
+    <a routerLink="/search" routerLinkActive="active" (click)="toggleMenu()">
+      Search
+    </a>
 
-    @if (user?.public_id) {
+    @if (user) {
       <div class="public-id-wrapper">
         <span class="label">Copy Public ID:</span>
 
@@ -76,7 +70,7 @@
           (click)="copyPublicId()"
           title="Click to copy your Public ID"
         >
-          {{ revealId ? user?.public_id : '•••••••••••••••••••' }}
+          {{ revealId ? user.public_id : '•••••••••••••••••••' }}
         </span>
 
         <span
@@ -87,8 +81,8 @@
           {{ revealId ? '🙈' : '👁️' }}
         </span>
       </div>
-    }
 
-    <button (click)="logout()">Logout</button>
+      <button (click)="logout()">Logout</button>
+    }
   </div>
 }

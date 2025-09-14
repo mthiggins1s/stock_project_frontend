@@ -23,6 +23,11 @@ export const routes: Routes = [
       import('./portfolio/portfolio').then(c => c.PortfolioComponent),
   },
   {
+    path: 'search', // ✅ NEW route
+    loadComponent: () =>
+      import('./features/search/search/search').then(c => c.SearchComponent),
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',

@@ -106,6 +106,7 @@ export class AuthenticationService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.clearUserCache();
     this.router.navigate(['/login']);
   }
