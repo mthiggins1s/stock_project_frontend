@@ -48,7 +48,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   startPolling() {
     this.pollSub?.unsubscribe();
     // refresh every 10 seconds (since you have unlimited calls)
-    this.pollSub = interval(10000).subscribe(() => this.loadStocks());
+    this.pollSub = interval(180000).subscribe(() => this.loadStocks());
   }
 
   onSearchChange() {

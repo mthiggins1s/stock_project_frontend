@@ -1,4 +1,21 @@
 <div class="dashboard-shell">
+  <!-- User Info -->
+  <section class="user-info">
+    @if (user) {
+      <h3>Welcome, {{ user.first_name }}</h3>
+
+      @if (user.public_id) {
+        <div class="id-box">
+          <code>{{ user.public_id }}</code>
+          <button (click)="copyId()">Copy</button>
+          @if (copied) {
+            <span class="copied-msg">Copied!</span>
+          }
+        </div>
+      }
+    }
+  </section>
+
   <!-- Stats bar -->
   <section class="stats-bar">
     <div class="stat">

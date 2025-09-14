@@ -6,13 +6,31 @@
 
   <!-- Middle: Links -->
   <ul class="nav-links">
-    <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-    <li><a routerLink="/portfolio" routerLinkActive="active">Portfolio</a></li>
-    <li><a routerLink="/search" routerLinkActive="active">Search</a></li>
+    @for (link of [
+      { path: '/dashboard', label: 'Dashboard' },
+      { path: '/portfolio', label: 'Portfolio' },
+      { path: '/search', label: 'Search' }
+    ]; track link.path) {
+      <li>
+        <a [routerLink]="link.path" routerLinkActive="active">
+          {{ link.label }}
+        </a>
+      </li>
+    }
   </ul>
 
   <!-- Right: Actions -->
   <div class="actions">
+    @if (user?.public_id) {
+      <span
+        class="public-id"
+        (click)="copyPublicId()"
+        title="Click to copy your Public ID"
+      >
+        {{ user?.public_id }}
+      </span>
+    }
+
     <button (click)="logout()">Logout</button>
   </div>
 
@@ -21,9 +39,28 @@
 </nav>
 
 <!-- Mobile Dropdown -->
-<div class="mobile-menu" *ngIf="menuOpen">
-  <a routerLink="/dashboard" routerLinkActive="active" (click)="toggleMenu()">Dashboard</a>
-  <a routerLink="/portfolio" routerLinkActive="active" (click)="toggleMenu()">Portfolio</a>
-  <a routerLink="/search" routerLinkActive="active" (click)="toggleMenu()">Search</a>
-  <button (click)="logout()">Logout</button>
-</div>
+@if (menuOpen) {
+  <div class="mobile-menu">
+    @for (link of [
+      { path: '/dashboard', label: 'Dashboard' },
+      { path: '/portfolio', label: 'Portfolio' },
+      { path: '/search', label: 'Search' }
+    ]; track link.path) {
+      <a [routerLink]="link.path" routerLinkActive="active" (click)="toggleMenu()">
+        {{ link.label }}
+      </a>
+    }
+
+    @if (user?.public_id) {
+      <span
+        class="public-id"
+        (click)="copyPublicId()"
+        title="Click to copy your Public ID"
+      >
+        {{ user?.public_id }}
+      </span>
+    }
+
+    <button (click)="logout()">Logout</button>
+  </div>
+}

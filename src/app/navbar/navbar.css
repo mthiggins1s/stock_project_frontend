@@ -42,6 +42,12 @@
 }
 
 /* Actions */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .actions button {
   background: #3b82f6;
   color: #fff;
@@ -54,6 +60,24 @@
 }
 .actions button:hover {
   background: #2563eb;
+}
+
+/* Public ID */
+.public-id {
+  font-weight: 600;
+  color: #ffcc00; /* gold highlight */
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.public-id:hover {
+  background: rgba(255, 204, 0, 0.1);
+  color: #ffe066;
+  text-decoration: underline;
+}
+.public-id:active {
+  transform: scale(0.95);
 }
 
 /* Mobile Hamburger */
@@ -72,7 +96,8 @@
   gap: 1rem;
 }
 .mobile-menu a,
-.mobile-menu button {
+.mobile-menu button,
+.mobile-menu .public-id {
   color: #f5f5f5;
   text-decoration: none;
   font-size: 1rem;
@@ -83,7 +108,8 @@
   cursor: pointer;
 }
 .mobile-menu a:hover,
-.mobile-menu button:hover {
+.mobile-menu button:hover,
+.mobile-menu .public-id:hover {
   color: #3b82f6;
 }
 
