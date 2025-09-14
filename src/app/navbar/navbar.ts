@@ -13,14 +13,12 @@ import { AuthenticationService, User } from '../core/services/authentication.ser
 export class NavbarComponent implements OnInit {
   menuOpen = false;
   user: User | null = null;
+  revealId = false; // 👈 controls eye toggle
 
   constructor(private authService: AuthenticationService) {}
 
   ngOnInit(): void {
-    // ✅ First try cached user (instant load)
     this.user = this.authService.getCachedUser();
-
-    // ✅ Always attempt to fetch from API once if cache is empty
     if (!this.user) {
       this.authService.getCurrentUser().subscribe({
         next: (u: User) => (this.user = u),
@@ -34,9 +32,13 @@ export class NavbarComponent implements OnInit {
     this.menuOpen = !this.menuOpen;
   }
 
+  toggleReveal(): void {
+    this.revealId = !this.revealId;
+  }
+
   logout(): void {
     this.authService.logout();
-    this.user = null; // ✅ clear navbar immediately
+    this.user = null;
   }
 
   copyPublicId(): void {

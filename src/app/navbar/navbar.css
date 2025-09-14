@@ -122,3 +122,31 @@
     display: block;
   }
 }
+
+.public-id-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: #aaa; /* lighter gray for subtle label */
+}
+
+.public-id {
+  font-family: monospace;
+  color: #ffcc00; /* yellow for ID */
+  cursor: pointer;
+  user-select: none;
+}
+
+.public-id:hover {
+  text-decoration: underline;
+}
+
+.eye-icon {
+  cursor: pointer;
+  font-size: 1rem;
+}

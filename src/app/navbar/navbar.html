@@ -22,13 +22,25 @@
   <!-- Right: Actions -->
   <div class="actions">
     @if (user?.public_id) {
-      <span
-        class="public-id"
-        (click)="copyPublicId()"
-        title="Click to copy your Public ID"
-      >
-        {{ user?.public_id }}
-      </span>
+      <div class="public-id-wrapper">
+        <span class="label">Copy Public ID:</span>
+
+        <span
+          class="public-id"
+          (click)="copyPublicId()"
+          title="Click to copy your Public ID"
+        >
+          {{ revealId ? user?.public_id : '•••••••••••••••••••' }}
+        </span>
+
+        <span
+          class="eye-icon"
+          (click)="toggleReveal()"
+          title="Show/Hide Public ID"
+        >
+          {{ revealId ? '🙈' : '👁️' }}
+        </span>
+      </div>
     }
 
     <button (click)="logout()">Logout</button>
@@ -46,19 +58,35 @@
       { path: '/portfolio', label: 'Portfolio' },
       { path: '/search', label: 'Search' }
     ]; track link.path) {
-      <a [routerLink]="link.path" routerLinkActive="active" (click)="toggleMenu()">
+      <a
+        [routerLink]="link.path"
+        routerLinkActive="active"
+        (click)="toggleMenu()"
+      >
         {{ link.label }}
       </a>
     }
 
     @if (user?.public_id) {
-      <span
-        class="public-id"
-        (click)="copyPublicId()"
-        title="Click to copy your Public ID"
-      >
-        {{ user?.public_id }}
-      </span>
+      <div class="public-id-wrapper">
+        <span class="label">Copy Public ID:</span>
+
+        <span
+          class="public-id"
+          (click)="copyPublicId()"
+          title="Click to copy your Public ID"
+        >
+          {{ revealId ? user?.public_id : '•••••••••••••••••••' }}
+        </span>
+
+        <span
+          class="eye-icon"
+          (click)="toggleReveal()"
+          title="Show/Hide Public ID"
+        >
+          {{ revealId ? '🙈' : '👁️' }}
+        </span>
+      </div>
     }
 
     <button (click)="logout()">Logout</button>
