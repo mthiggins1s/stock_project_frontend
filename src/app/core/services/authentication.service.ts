@@ -6,9 +6,7 @@ import { tap, shareReplay } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 export interface LoginResponse {
-  token?: string;
-  jwt?: string;
-  auth_token?: string;
+  token: string; // 👈 backend now always returns `token`
 }
 
 export interface User {
@@ -22,8 +20,8 @@ export interface User {
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private readonly api = environment.apiUrl;
-  private currentUser: User | null = null;   // 👈 cached user
-  private userRequest$: Observable<User> | null = null; // 👈 prevent duplicate calls
+  private currentUser: User | null = null;   // ✅ cached user
+  private userRequest$: Observable<User> | null = null; // ✅ prevent duplicate calls
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -33,13 +31,9 @@ export class AuthenticationService {
       .post<LoginResponse>(`${this.api}/login`, { usernameOrEmail, password })
       .pipe(
         tap(res => {
-          console.log('Login response:', res); // 👀 debug
-
-          const token = res?.token || res?.jwt || res?.auth_token;
-          if (token) {
-            this.setToken(token);
+          if (res?.token) {
+            this.setToken(res.token);
             this.currentUser = null; // reset cache after login
-            console.log('Stored token:', token); // 👀 confirm saved
           } else {
             console.warn('⚠️ No token found in login response');
           }
@@ -64,16 +58,9 @@ export class AuthenticationService {
 
   // ---- User ----
   getCurrentUser(): Observable<User> {
-    if (this.currentUser) {
-      // ✅ return cached user
-      return of(this.currentUser);
-    }
-    if (this.userRequest$) {
-      // ✅ if already fetching, reuse that request
-      return this.userRequest$;
-    }
+    if (this.currentUser) return of(this.currentUser);
+    if (this.userRequest$) return this.userRequest$;
 
-    // ✅ first fetch from API
     this.userRequest$ = this.http.get<User>(`${this.api}/me`).pipe(
       tap(user => {
         this.currentUser = user;
@@ -116,7 +103,6 @@ export class AuthenticationService {
 
   logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
     this.clearUserCache();
     this.router.navigate(['/login']);
   }
