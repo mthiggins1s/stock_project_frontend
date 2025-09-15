@@ -100,3 +100,24 @@ input:focus {
     transform: translateY(0);
   }
 }
+
+.auth-alt {
+  margin-top: 1rem;
+  text-align: center;
+  color: #9ca3af;
+  position: relative;   /* ensure it's not flattened by parents */
+  z-index: 10;          /* make sure it sits above .auth-card backdrop */
+}
+
+.link-btn {
+  color: #facc15;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 20;          /* always clickable */
+}
+
+.link-btn:hover {
+  color: #eab308;
+}

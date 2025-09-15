@@ -18,12 +18,22 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthenticationService) {}
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      // ✅ no token = logged out
+      this.user = null;
+      return;
+    }
+
     this.user = this.authService.getCachedUser();
     if (!this.user) {
       this.authService.getCurrentUser().subscribe({
         next: (u: User) => (this.user = u),
-        error: (err: unknown) =>
-          console.error('Failed to load current user:', err)
+        error: () => {
+          console.warn('Token invalid or expired. Logging out.');
+          this.logout(); // ✅ clear token + reset user
+        }
       });
     }
   }
