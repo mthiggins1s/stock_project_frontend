@@ -12,7 +12,7 @@ import { PortfolioService } from '../core/services/portfolio.service';
 })
 export class PortfolioComponent implements OnInit {
   portfolio: any[] = [];
-  loading = true;
+  loading = false;
   error: string | null = null;
 
   constructor(private portfolioService: PortfolioService) {}
@@ -23,9 +23,11 @@ export class PortfolioComponent implements OnInit {
 
   loadPortfolio() {
     this.loading = true;
+    this.error = null;
+
     this.portfolioService.getMyPortfolio().subscribe({
-      next: (res) => {
-        this.portfolio = res;
+      next: (data) => {
+        this.portfolio = data;
         this.loading = false;
       },
       error: (err) => {
@@ -39,10 +41,10 @@ export class PortfolioComponent implements OnInit {
   removeFromPortfolio(id: number) {
     this.portfolioService.removeFromPortfolio(id).subscribe({
       next: () => {
-        this.portfolio = this.portfolio.filter(item => item.id !== id);
+        this.portfolio = this.portfolio.filter(p => p.id !== id);
       },
       error: (err) => {
-        console.error('Error removing holding:', err);
+        console.error('Error removing stock:', err);
       }
     });
   }
