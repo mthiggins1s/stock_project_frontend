@@ -1,4 +1,5 @@
 <div class="stock-list">
+  <!-- Search box -->
   <input
     type="text"
     placeholder="Search stocks..."
@@ -7,11 +8,14 @@
     class="search-input"
   />
 
+  <!-- Loading state -->
   @if (loading) {
     <p class="loading-text">Loading stocks...</p>
   } @else {
+    <!-- Stock rows -->
     @for (stock of stocks; track stock.symbol) {
       <div class="stock-row" (click)="selectStock(stock)">
+        
         <!-- Left: Logo + Symbol/Name -->
         <div class="stock-left">
           <img
@@ -22,32 +26,33 @@
           />
           <div class="stock-text">
             <span class="symbol">{{ stock.symbol }}</span>
-            <span class="name">{{ stock.name }}</span>
+            <span class="name">{{ stock.name || 'Unknown' }}</span>
           </div>
         </div>
 
         <!-- Middle: Price + Change -->
         <div class="stock-right">
           <div class="price">
-            ${{ stock.price | number:'1.2-2' }}
+            ${{ stock.current_price || stock.price | number:'1.2-2' }}
           </div>
           <div
             class="change"
             [ngClass]="{
-              positive: stock.change >= 0,
-              negative: stock.change < 0
+              positive: (stock.change || 0) >= 0,
+              negative: (stock.change || 0) < 0
             }"
           >
-            {{ stock.change | number:'1.2-2' }}
-            ({{ stock.change_percent | percent:'1.1-1' }})
+            {{ stock.change || 0 | number:'1.2-2' }}
+            ({{ (stock.change_percent || 0) | percent:'1.1-1' }})
           </div>
         </div>
 
-        <!-- Right: Action -->
+        <!-- Right: Add to Portfolio -->
         <div class="stock-actions">
           <button
             class="add-btn"
             (click)="addToPortfolio(stock); $event.stopPropagation()"
+            title="Add to Portfolio"
           >
             +
           </button>

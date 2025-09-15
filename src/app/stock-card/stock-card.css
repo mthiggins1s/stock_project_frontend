@@ -86,3 +86,11 @@
 .remove-btn:hover {
   background: #dc2626;
 }
+
+.positive {
+  color: #10b981; /* Tailwind green-500 */
+}
+
+.negative {
+  color: #ef4444; /* Tailwind red-500 */
+}

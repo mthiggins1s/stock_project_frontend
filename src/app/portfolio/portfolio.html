@@ -1,13 +1,23 @@
 <div class="portfolio-shell">
-  @if (portfolio.length === 0) {
+  @if (loading) {
+    <p class="empty-msg">Loading portfolio...</p>
+  }
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  @if (!loading && portfolio.length === 0) {
     <p class="empty-msg">No stocks in your portfolio yet.</p>
-  } @else {
-    @for (stock of portfolio; track stock.symbol) {
-      <app-stock-card
-        [stock]="stock"
-        [showRemove]="true"
-        (remove)="removeFromPortfolio($event)">
-      </app-stock-card>
-    }
+  }
+
+  @for (holding of portfolio; track holding.id) {
+    <app-stock-card
+      [stock]="holding.stock"
+      [shares]="holding.shares"
+      [avgCost]="holding.avg_cost"
+      [showRemove]="true"
+      (remove)="removeFromPortfolio(holding.id)">
+    </app-stock-card>
   }
 </div>

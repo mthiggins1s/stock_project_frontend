@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subscription, interval } from 'rxjs';
 import { StocksService } from '../stocks.service';
+import { PortfolioService } from '../core/services/portfolio.service';
 
 @Component({
   selector: 'app-stock-list',
@@ -22,7 +23,8 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   constructor(
     private stocksService: StocksService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private portfolioService: PortfolioService
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +49,7 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   startPolling() {
     this.pollSub?.unsubscribe();
-    // refresh every 10 seconds (since you have unlimited calls)
+    // refresh every 3 minutes (since you have unlimited calls)
     this.pollSub = interval(180000).subscribe(() => this.loadStocks());
   }
 
@@ -59,14 +61,26 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.stockSelected.emit(stock);
   }
 
+  // ✅ Add a stock to backend portfolio
   addToPortfolio(stock: any) {
-    let portfolio = JSON.parse(localStorage.getItem('portfolio') || '[]');
-    if (!portfolio.some((s: any) => s.symbol === stock.symbol)) {
-      portfolio.push(stock);
-      localStorage.setItem('portfolio', JSON.stringify(portfolio));
-      this.snackBar.open('Stock added to portfolio!', 'Close', {
-        duration: 2000
-      });
-    }
+    this.portfolioService.addToPortfolio(
+      stock.symbol,
+      stock.name || 'Unknown',       // fallback in case API omits name
+      stock.current_price || 0,      // fallback in case API omits price
+      1,                             // default: 1 share
+      stock.current_price || 0       // avg cost = current price by default
+    ).subscribe({
+      next: () => {
+        this.snackBar.open(`${stock.symbol} added to portfolio!`, 'Close', {
+          duration: 2000
+        });
+      },
+      error: (err) => {
+        console.error('Error adding stock:', err);
+        this.snackBar.open('Failed to add stock to portfolio.', 'Close', {
+          duration: 2000
+        });
+      }
+    });
   }
 }

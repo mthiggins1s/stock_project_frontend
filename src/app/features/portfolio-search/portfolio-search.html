@@ -3,10 +3,10 @@
 
   <form (ngSubmit)="search()">
     <input
-      type="number"
+      type="text"
       [(ngModel)]="publicId"
       name="publicId"
-      placeholder="Enter User ID"
+      placeholder="Enter Public ID"
       required
     />
     <button type="submit">Search</button>
@@ -20,13 +20,17 @@
     <div class="error">{{ error }}</div>
   }
 
-  @if (results) {
+  @if (results.length) {
     <h3>Results for User {{ publicId }}</h3>
 
-    @for (item of results; track $index) {
-      <div class="result-item">
-        {{ item | json }}
-      </div>
-    }
+    <ul>
+      @for (item of results; track $index) {
+        <li>
+          <strong>{{ item.stock.symbol }}</strong> – 
+          {{ item.shares }} shares @ ${{ item.avg_cost }}
+          (Current: ${{ item.stock.current_price }})
+        </li>
+      }
+    </ul>
   }
 </div>

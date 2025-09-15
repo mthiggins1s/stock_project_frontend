@@ -12,23 +12,27 @@
     </div>
     <div class="price-block">
       <strong
-        [ngClass]="{ positive: stock.change >= 0, negative: stock.change < 0 }">
-        ${{ stock.price | number:'1.2-2' }}
+        [ngClass]="{ positive: (stock.change || 0) >= 0, negative: (stock.change || 0) < 0 }">
+        ${{ stock.current_price || stock.price | number:'1.2-2' }}
       </strong>
       <span
-        [ngClass]="{ positive: stock.change >= 0, negative: stock.change < 0 }">
-        {{ stock.change | number:'1.2-2' }}
-        ({{ stock.change_percent | percent:'1.1-1' }})
+        [ngClass]="{ positive: (stock.change || 0) >= 0, negative: (stock.change || 0) < 0 }">
+        {{ stock.change || 0 | number:'1.2-2' }}
+        ({{ stock.change_percent || 0 | percent:'1.1-1' }})
       </span>
     </div>
   </div>
 
-  <div class="card-footer">
-    <span>Open: {{ stock.open }}</span>
-    <span>High: {{ stock.high }}</span>
-    <span>Low: {{ stock.low }}</span>
-    <span>Close: {{ stock.close }}</span>
-  </div>
+  <!-- Extra details when used in Portfolio -->
+  @if (shares !== undefined && avgCost !== undefined) {
+    <div class="card-footer">
+      <span>Shares: {{ shares }}</span>
+      <span>Avg Cost: ${{ avgCost | number:'1.2-2' }}</span>
+      <span [ngClass]="{ positive: isGain, negative: !isGain }">
+        P/L: ${{ gainLoss | number:'1.2-2' }} ({{ gainLossPercent | number:'1.1-1' }}%)
+      </span>
+    </div>
+  }
 
   @if (showRemove) {
     <div class="card-actions">
