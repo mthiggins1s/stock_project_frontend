@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -11,25 +12,34 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./signup.css']
 })
 export class SignupComponent {
-  name = '';
+  username = '';
+  firstName = '';
+  lastName = '';
   email = '';
   password = '';
   errorMessage = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  signup() {
-    this.http
-      .post('http://localhost:3000/users', {
-        user: { name: this.name, email: this.email, password: this.password }
-      })
-      .subscribe({
-        next: () => {
-          window.location.href = '/login';
-        },
-        error: () => {
-          this.errorMessage = 'Signup failed. Please try again.';
-        }
-      });
+  signup(): void {
+    this.http.post('http://localhost:3000/users', {
+      user: {
+        username: this.username,
+        first_name: this.firstName,
+        last_name: this.lastName,
+        email: this.email,
+        password: this.password
+      }
+    }).subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: (err) => {
+        console.error('Signup failed:', err);
+        this.errorMessage = 'Signup failed. Please try again.';
+      }
+    });
+  }
+
+  goToLogin(): void {
+    this.router.navigate(['/login']);
   }
 }

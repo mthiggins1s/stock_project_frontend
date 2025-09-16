@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PortfolioService } from '../../core/services/portfolio.service';
+import { StockCardComponent } from '../../stock-card/stock-card';
 
 @Component({
   selector: 'app-portfolio-search',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, StockCardComponent],
   templateUrl: './portfolio-search.html',
   styleUrls: ['./portfolio-search.css']
 })
@@ -24,7 +25,7 @@ export class PortfolioSearchComponent {
     this.loading = true;
 
     this.portfolioService.getPortfolioByPublicId(this.publicId).subscribe({
-      next: (res) => {
+      next: (res: any[]) => {
         this.results = res;
         this.loading = false;
       },

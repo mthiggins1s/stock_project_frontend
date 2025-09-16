@@ -36,4 +36,11 @@ export class PortfolioService {
   getPortfolioByPublicId(publicId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/profiles/public/${publicId}/portfolio`);
   }
+
+  addStock(stock: any) {
+  console.log("Saving stock:", stock); // <-- add this
+  const portfolio = JSON.parse(localStorage.getItem('portfolio') || '[]');
+  portfolio.push(stock);
+  localStorage.setItem('portfolio', JSON.stringify(portfolio));
+    }
 }

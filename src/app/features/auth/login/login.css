@@ -100,23 +100,61 @@ input:focus {
   }
 }
 
+/* Login button - smaller */
+.btn.w-full {
+  width: 80%;              /* shrink from 100% to 80% */
+  margin: 0 auto;          /* center it */
+  display: block;
+}
+
+/* Sign up link styled like button */
+.auth-card {
+  background: rgba(26, 26, 26, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.6s ease forwards;
+  border: none; /* 🔥 removed yellow border */
+}
+
+/* Login button - smaller and centered */
+.btn.w-full {
+  width: 80%;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Auth alt (signup area) centered under login */
 .auth-alt {
   margin-top: 1rem;
+  display: flex;
+  justify-content: center; /* ✅ center horizontally */
+  align-items: center;
+  gap: 0.5rem;
   text-align: center;
+}
+
+.auth-alt span {
   color: #9ca3af;
-  position: relative;   /* ensure it's not flattened by parents */
-  z-index: 10;          /* make sure it sits above .auth-card backdrop */
 }
 
+/* Sign up button style */
 .link-btn {
-  color: #facc15;
+  background: #facc15;
+  color: #0f0f0f;   /* black text */
   font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
   text-decoration: none;
-  cursor: pointer;
-  position: relative;
-  z-index: 20;          /* always clickable */
+  transition: transform 0.2s ease, opacity 0.3s ease;
 }
 
+/* keep text black on hover */
 .link-btn:hover {
-  color: #eab308;
+  transform: translateY(-2px);
+  opacity: 0.9;
+  color: #0f0f0f;   /* ✅ stays black */
 }

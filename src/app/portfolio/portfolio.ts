@@ -27,7 +27,12 @@ export class PortfolioComponent implements OnInit {
 
     this.portfolioService.getMyPortfolio().subscribe({
       next: (data) => {
+        // ✅ Use backend shape directly
         this.portfolio = data;
+
+        // Save raw backend response into localStorage (optional)
+        localStorage.setItem('portfolio', JSON.stringify(data));
+
         this.loading = false;
       },
       error: (err) => {
@@ -42,6 +47,7 @@ export class PortfolioComponent implements OnInit {
     this.portfolioService.removeFromPortfolio(id).subscribe({
       next: () => {
         this.portfolio = this.portfolio.filter(p => p.id !== id);
+        localStorage.setItem('portfolio', JSON.stringify(this.portfolio));
       },
       error: (err) => {
         console.error('Error removing stock:', err);

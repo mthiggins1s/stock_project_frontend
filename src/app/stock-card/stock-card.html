@@ -6,28 +6,27 @@
       class="stock-logo"
       (error)="$any($event.target).style.display='none'"
     />
+
     <div class="stock-info">
       <h3>{{ stock.symbol }}</h3>
       <p>{{ stock.name }}</p>
     </div>
+
     <div class="price-block">
-      <strong
-        [ngClass]="{ positive: (stock.change || 0) >= 0, negative: (stock.change || 0) < 0 }">
-        ${{ stock.current_price || stock.price | number:'1.2-2' }}
+      <strong [ngClass]="{ positive: isGain, negative: !isGain }">
+        ${{ currentPrice | number:'1.2-2' }}
       </strong>
-      <span
-        [ngClass]="{ positive: (stock.change || 0) >= 0, negative: (stock.change || 0) < 0 }">
-        {{ stock.change || 0 | number:'1.2-2' }}
-        ({{ stock.change_percent || 0 | percent:'1.1-1' }})
+      <span class="change">
+        {{ stock.change ?? 0 | number:'1.2-2' }}
+        ({{ stock.change_percent ?? 0 | percent:'1.1-1' }})
       </span>
     </div>
   </div>
 
-  <!-- Extra details when used in Portfolio -->
-  @if (shares !== undefined && avgCost !== undefined) {
+  @if (shares !== undefined && normalizedAvgCost > 0) {
     <div class="card-footer">
       <span>Shares: {{ shares }}</span>
-      <span>Avg Cost: ${{ avgCost | number:'1.2-2' }}</span>
+      <span>Avg Cost: ${{ normalizedAvgCost | number:'1.2-2' }}</span>
       <span [ngClass]="{ positive: isGain, negative: !isGain }">
         P/L: ${{ gainLoss | number:'1.2-2' }} ({{ gainLossPercent | number:'1.1-1' }}%)
       </span>

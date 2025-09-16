@@ -20,14 +20,24 @@ export class StockCardComponent {
     this.remove.emit(this.stock?.symbol || '');
   }
 
+  /** Ensure we always have a usable price */
+  get currentPrice(): number {
+    return this.stock?.current_price ?? this.stock?.price ?? 0;
+  }
+
+  /** Ensure we always have avg cost (backend uses avg_cost) */
+  get normalizedAvgCost(): number {
+    return this.avgCost ?? this.stock?.avg_cost ?? 0;
+  }
+
   get gainLoss(): number {
-    if (!this.shares || !this.avgCost || !this.stock?.current_price) return 0;
-    return (this.stock.current_price - this.avgCost) * this.shares;
+    if (!this.shares || !this.normalizedAvgCost) return 0;
+    return (this.currentPrice - this.normalizedAvgCost) * this.shares;
   }
 
   get gainLossPercent(): number {
-    if (!this.avgCost || !this.stock?.current_price) return 0;
-    return ((this.stock.current_price - this.avgCost) / this.avgCost) * 100;
+    if (!this.normalizedAvgCost) return 0;
+    return ((this.currentPrice - this.normalizedAvgCost) / this.normalizedAvgCost) * 100;
   }
 
   get isGain(): boolean {
