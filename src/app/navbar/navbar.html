@@ -4,25 +4,26 @@
     <a routerLink="/dashboard">📈 StockFolio</a>
   </div>
 
-  <!-- Middle: Links -->
+  <!-- Middle: Nav links -->
   <ul class="nav-links">
-    <li>
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-    </li>
-    <li>
-      <a routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
-    </li>
-    <li>
-      <a routerLink="/search" routerLinkActive="active">Search</a>
-    </li>
+    @for (link of [
+      { path: '/dashboard', label: 'Dashboard' },
+      { path: '/portfolio', label: 'Portfolio' },
+      { path: '/search', label: 'Search' }
+    ]; track link.path) {
+      <li>
+        <a routerLink="{{ link.path }}" routerLinkActive="active">{{ link.label }}</a>
+      </li>
+    }
   </ul>
 
-  <!-- Right: Actions -->
-  <div class="actions">
-    @if (user) {
-      <div class="public-id-wrapper">
-        <span class="label">Copy Public ID:</span>
+  <!-- Right: User Info -->
+  @if (user) {
+    <div class="user-info">
+      <span class="welcome">Welcome, {{ user.first_name || user.username }}!</span>
 
+      <div class="public-id-wrapper">
+        <span class="label">Public ID:</span>
         <span
           class="public-id"
           (click)="copyPublicId()"
@@ -41,48 +42,6 @@
       </div>
 
       <button (click)="logout()">Logout</button>
-    }
-  </div>
-
-  <!-- Mobile Hamburger -->
-  <div class="hamburger" (click)="toggleMenu()">☰</div>
+    </div>
+  }
 </nav>
-
-<!-- Mobile Dropdown -->
-@if (menuOpen) {
-  <div class="mobile-menu">
-    <a routerLink="/dashboard" routerLinkActive="active" (click)="toggleMenu()">
-      Dashboard
-    </a>
-    <a routerLink="/portfolio" routerLinkActive="active" (click)="toggleMenu()">
-      Portfolio
-    </a>
-    <a routerLink="/search" routerLinkActive="active" (click)="toggleMenu()">
-      Search
-    </a>
-
-    @if (user) {
-      <div class="public-id-wrapper">
-        <span class="label">Copy Public ID:</span>
-
-        <span
-          class="public-id"
-          (click)="copyPublicId()"
-          title="Click to copy your Public ID"
-        >
-          {{ revealId ? user.public_id : '•••••••••••••••••••' }}
-        </span>
-
-        <span
-          class="eye-icon"
-          (click)="toggleReveal()"
-          title="Show/Hide Public ID"
-        >
-          {{ revealId ? '🙈' : '👁️' }}
-        </span>
-      </div>
-
-      <button (click)="logout()">Logout</button>
-    }
-  </div>
-}

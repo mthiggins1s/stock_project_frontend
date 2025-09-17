@@ -11,24 +11,15 @@
   z-index: 50;
 }
 
-/* Brand */
-.brand a {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #f5f5f5;
-  text-decoration: none;
-}
-.brand a:hover {
-  color: #3b82f6;
-}
-
-/* Links */
+/* Nav links row */
 .nav-links {
   list-style: none;
   display: flex;
   gap: 1.5rem;
   margin: 0;
   padding: 0;
+  justify-content: center;
+  flex: 1;
 }
 .nav-links li a {
   color: #9ca3af;
@@ -41,14 +32,41 @@
   color: #f5f5f5;
 }
 
-/* Actions */
-.actions {
+/* User info row */
+.user-info {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
+.user-info .welcome {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #facc15;
+}
 
-.actions button {
+/* Public ID */
+.public-id-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+.public-id {
+  font-family: monospace;
+  color: #ffcc00;
+  cursor: pointer;
+  user-select: none;
+}
+.public-id:hover {
+  text-decoration: underline;
+}
+.eye-icon {
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Button */
+.user-info button {
   background: #3b82f6;
   color: #fff;
   border: none;
@@ -58,95 +76,6 @@
   font-weight: 600;
   transition: background 0.2s ease;
 }
-.actions button:hover {
+.user-info button:hover {
   background: #2563eb;
-}
-
-/* Public ID */
-.public-id {
-  font-weight: 600;
-  color: #ffcc00; /* gold highlight */
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-.public-id:hover {
-  background: rgba(255, 204, 0, 0.1);
-  color: #ffe066;
-  text-decoration: underline;
-}
-.public-id:active {
-  transform: scale(0.95);
-}
-
-/* Mobile Hamburger */
-.hamburger {
-  display: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* Mobile Menu */
-.mobile-menu {
-  display: flex;
-  flex-direction: column;
-  background: #1a1a1a;
-  padding: 1rem;
-  gap: 1rem;
-}
-.mobile-menu a,
-.mobile-menu button,
-.mobile-menu .public-id {
-  color: #f5f5f5;
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: 500;
-  background: none;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-}
-.mobile-menu a:hover,
-.mobile-menu button:hover,
-.mobile-menu .public-id:hover {
-  color: #3b82f6;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-  .hamburger {
-    display: block;
-  }
-}
-
-.public-id-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-}
-
-.label {
-  font-size: 0.75rem;
-  color: #aaa; /* lighter gray for subtle label */
-}
-
-.public-id {
-  font-family: monospace;
-  color: #ffcc00; /* yellow for ID */
-  cursor: pointer;
-  user-select: none;
-}
-
-.public-id:hover {
-  text-decoration: underline;
-}
-
-.eye-icon {
-  cursor: pointer;
-  font-size: 1rem;
 }

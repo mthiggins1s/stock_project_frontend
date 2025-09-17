@@ -1,39 +1,38 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth-guard';
+import { noAuthGuard } from './core/guards/no-auth-guard';
 
-// lazy imports must return the correct component class
 export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
       import('./features/auth/login/login').then(c => c.LoginComponent),
+    canActivate: [noAuthGuard] // 🚫 if already logged in, redirect to dashboard
   },
   {
     path: 'signup',
     loadComponent: () =>
       import('./features/auth/signup/signup').then(c => c.SignupComponent),
+    canActivate: [noAuthGuard]
   },
   {
     path: 'dashboard',
     loadComponent: () =>
       import('./features/dashboard/dashboard').then(c => c.DashboardComponent),
+    canActivate: [authGuard] // ✅ requires login
   },
   {
     path: 'portfolio',
     loadComponent: () =>
       import('./portfolio/portfolio').then(c => c.PortfolioComponent),
+    canActivate: [authGuard]
   },
   {
-    path: 'search', // ✅ NEW route
+    path: 'search',
     loadComponent: () =>
       import('./features/search/search/search').then(c => c.SearchComponent),
+    canActivate: [authGuard]
   },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
-  {
-    path: '**',
-    redirectTo: 'login',
-  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' }
 ];

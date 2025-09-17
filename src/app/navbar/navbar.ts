@@ -13,7 +13,7 @@ import { AuthenticationService, User } from '../core/services/authentication.ser
 export class NavbarComponent implements OnInit {
   menuOpen = false;
   user: User | null = null;
-  revealId = false; // 👈 controls eye toggle
+  revealId = false;
 
   constructor(private authService: AuthenticationService) {}
 
@@ -21,7 +21,6 @@ export class NavbarComponent implements OnInit {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      // ✅ no token = logged out
       this.user = null;
       return;
     }
@@ -32,7 +31,7 @@ export class NavbarComponent implements OnInit {
         next: (u: User) => (this.user = u),
         error: () => {
           console.warn('Token invalid or expired. Logging out.');
-          this.logout(); // ✅ clear token + reset user
+          this.logout();
         }
       });
     }
