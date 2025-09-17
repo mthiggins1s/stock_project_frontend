@@ -2,13 +2,7 @@
   <h2>Search for a User Portfolio</h2>
 
   <form (ngSubmit)="search()" class="search-bar">
-    <input
-      type="text"
-      [(ngModel)]="publicId"
-      name="publicId"
-      placeholder="Enter Public ID"
-      required
-    />
+    <input type="text" [(ngModel)]="publicId" name="publicId" placeholder="Enter Public ID" required />
     <button type="submit">Search</button>
   </form>
 
@@ -28,13 +22,11 @@
     <h3>Results for User {{ publicId }}</h3>
     <div class="portfolio-search-results">
       @for (holding of results; track $index) {
-        <app-stock-card
-          [stock]="holding.stock"
-          [shares]="holding.shares"
-          [avgCost]="holding.avg_cost"
+        <app-stock-card [stock]="holding.stock" [shares]="holding.shares" [avgCost]="holding.avg_cost"
           [showRemove]="false">
         </app-stock-card>
       }
     </div>
+    <button class="save-btn" (click)="savePortfolio()">Save Portfolio</button>
   }
 </div>

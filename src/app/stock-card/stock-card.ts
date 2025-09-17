@@ -20,12 +20,12 @@ export class StockCardComponent {
     this.remove.emit(this.stock?.symbol || '');
   }
 
-  /** Ensure we always have a usable price */
+  /** Current price (fallbacks included) */
   get currentPrice(): number {
     return this.stock?.current_price ?? this.stock?.price ?? 0;
   }
 
-  /** Ensure we always have avg cost (backend uses avg_cost) */
+  /** Normalized average cost */
   get normalizedAvgCost(): number {
     return this.avgCost ?? this.stock?.avg_cost ?? 0;
   }

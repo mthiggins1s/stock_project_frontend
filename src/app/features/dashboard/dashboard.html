@@ -2,7 +2,22 @@
   <!-- User Info -->
   <section class="user-info">
     @if (user) {
-      <h3>👋 Welcome, {{ user.first_name }}</h3>
+      <div class="user-header">
+        <h3 class="welcome">👋 Welcome, {{ user.first_name }}</h3>
+
+        <div class="public-id">
+          <span>Public ID:</span>
+          <code>{{ showPublicId ? user.public_id : '••••••••••••••••' }}</code>
+          <button (click)="togglePublicId()">
+            {{ showPublicId ? '🙈 Hide' : '👁 Show' }}
+          </button>
+          <button (click)="copyId()">
+            {{ copied ? 'Copied!' : 'Copy' }}
+          </button>
+        </div>
+
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </div>
     }
   </section>
 
@@ -12,11 +27,13 @@
       <span>Total Value</span>
       <strong>${{ totalValue | number:'1.2-2' }}</strong>
     </div>
-    <div class="stat positive">
+    <div class="stat" [ngClass]="{ positive: totalGains > 0, negative: totalGains < 0 }">
       <span>Gains</span>
-      <strong>+${{ totalGains | number:'1.2-2' }}</strong>
+      <strong>
+        {{ totalGains >= 0 ? '+' : '' }}${{ totalGains | number:'1.2-2' }}
+      </strong>
     </div>
-    <div class="stat negative">
+    <div class="stat" [ngClass]="{ positive: totalLosses === 0, negative: totalLosses > 0 }">
       <span>Losses</span>
       <strong>-${{ totalLosses | number:'1.2-2' }}</strong>
     </div>
@@ -39,20 +56,10 @@
             <p>{{ selectedStock.name }}</p>
           </div>
           <div class="price-block">
-            <h2
-              [ngClass]="{
-                positive: selectedStock.change >= 0,
-                negative: selectedStock.change < 0
-              }"
-            >
+            <h2 [ngClass]="{ positive: selectedStock.change >= 0, negative: selectedStock.change < 0 }">
               ${{ selectedStock.price | number:'1.2-2' }}
             </h2>
-            <p
-              [ngClass]="{
-                positive: selectedStock.change >= 0,
-                negative: selectedStock.change < 0
-              }"
-            >
+            <p [ngClass]="{ positive: selectedStock.change >= 0, negative: selectedStock.change < 0 }">
               {{ selectedStock.change | number:'1.2-2' }}
               ({{ selectedStock.change_percent | percent:'1.1-1' }})
             </p>
@@ -67,12 +74,7 @@
         </div>
       }
 
-      <canvas
-        baseChart
-        [data]="chartData"
-        [options]="chartOptions"
-        [type]="'line'"
-      ></canvas>
+      <canvas baseChart [data]="chartData" [options]="chartOptions" [type]="'line'"></canvas>
     </div>
 
     <!-- Right: Stock list -->

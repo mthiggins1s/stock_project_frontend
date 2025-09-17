@@ -31,4 +31,20 @@ button {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.save-btn {
+  background: #06b6d4;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.save-btn:hover {
+  background: #0891b2;
 }
