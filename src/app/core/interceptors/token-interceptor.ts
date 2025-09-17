@@ -6,20 +6,15 @@ import {
   HttpEvent
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable()
-export class TokenInterceptor implements HttpInterceptor {   // 👈 PascalCase class name
-  constructor(private authService: AuthenticationService) {}
-
+export class TokenInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken();
+    const token = localStorage.getItem('token');
 
     if (token) {
       const authReq = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
+        setHeaders: { Authorization: `Bearer ${token}` }
       });
       return next.handle(authReq);
     }
