@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // ✅ Load user
     this.user = this.authService.getCachedUser();
     if (!this.user) {
       this.authService.getCurrentUser().subscribe({
@@ -47,6 +48,7 @@ export class DashboardComponent implements OnInit {
       });
     }
 
+    // ✅ Load portfolio stats
     this.loadPortfolioStats();
   }
 
