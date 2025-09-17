@@ -18,20 +18,20 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthenticationService) {}
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
+    // ✅ Only check if logged in
+    if (!this.authService.isLoggedIn()) {
       this.user = null;
       return;
     }
 
+    // ✅ Pull from cache or fetch fresh
     this.user = this.authService.getCachedUser();
     if (!this.user) {
       this.authService.getCurrentUser().subscribe({
         next: (u: User) => (this.user = u),
-        error: () => {
-          console.warn('Token invalid or expired. Logging out.');
-          this.logout();
+        error: (err) => {
+          console.warn('❌ Failed to load user (invalid/expired token):', err);
+          this.logout(); // clear token + redirect
         }
       });
     }
@@ -53,7 +53,7 @@ export class NavbarComponent implements OnInit {
   copyPublicId(): void {
     if (this.user?.public_id) {
       navigator.clipboard.writeText(this.user.public_id).then(() => {
-        alert('Public ID copied to clipboard!');
+        alert('✅ Public ID copied to clipboard!');
       });
     }
   }

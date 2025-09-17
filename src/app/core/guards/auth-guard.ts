@@ -3,15 +3,18 @@ import { inject } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject<AuthenticationService>(AuthenticationService);
+  const authService = inject(AuthenticationService);
   const router = inject(Router);
 
-  console.log('authGuard -- isLoggedIn:', authService.isLoggedIn());
+  const loggedIn = authService.isLoggedIn();
+  console.log('authGuard -- isLoggedIn:', loggedIn);
 
-  if (authService.isLoggedIn()) {
+  if (loggedIn) {
     return true;
-  } else {
-    router.navigate(['/login']);
-    return false;
   }
+
+  // ✅ Clear stale tokens before redirect
+  authService.logout();
+  router.navigate(['/login']);
+  return false;
 };
