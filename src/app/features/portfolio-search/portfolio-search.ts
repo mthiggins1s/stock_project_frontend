@@ -26,7 +26,11 @@ export class PortfolioSearchComponent {
 
     this.portfolioService.getPortfolioByPublicId(this.publicId).subscribe({
       next: (res: any[]) => {
-        this.results = res;
+        // ✅ Ensure shape is consistent with regular portfolio
+        this.results = res.map((holding: any) => ({
+          ...holding,
+          stock: holding.stock || holding
+        }));
         this.loading = false;
       },
       error: (err) => {

@@ -27,12 +27,12 @@
   @if (results.length) {
     <h3>Results for User {{ publicId }}</h3>
     <div class="portfolio-search-results">
-      @for (holding of results; track $index) {
+      @for (holding of results; track holding.id) {
         <app-stock-card
-          [stock]="holding.stock"
+          [stock]="holding.stock || holding"
           [shares]="holding.shares"
           [avgCost]="holding.avg_cost"
-          [showRemove]="false">
+          [showRemove]="false"> <!-- 🔑 disable remove for search -->
         </app-stock-card>
       }
     </div>

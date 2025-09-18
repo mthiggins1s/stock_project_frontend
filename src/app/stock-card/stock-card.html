@@ -26,10 +26,17 @@
     </div>
   </div>
 
-  <!-- Mini inline chart -->
-  <div class="chart-inline">
-  <app-stock-chart [symbol]="stock.symbol"></app-stock-chart>
-</div>
+  <!-- ✅ Sparkline inside the gray box -->
+  @if (chartData) {
+    <div class="chart-inline">
+      <canvas
+        baseChart
+        [data]="chartData"
+        [options]="chartOptions"
+        [type]="'line'">
+      </canvas>
+    </div>
+  }
 
   <!-- Footer (Shares + Avg Cost + P/L) -->
   @if (shares !== undefined && normalizedAvgCost > 0) {

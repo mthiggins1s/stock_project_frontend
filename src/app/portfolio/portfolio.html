@@ -20,15 +20,6 @@
         [showRemove]="true"
         (remove)="removeFromPortfolio(holding.id)">
       </app-stock-card>
-
-      <!-- Chart -->
-      <canvas
-        *ngIf="holding.chartData"
-        baseChart
-        [data]="holding.chartData"
-        [options]="{ responsive: true, plugins: { legend: { display: false }}}"
-        [type]="'line'">
-      </canvas>
     </div>
   }
 </div>
