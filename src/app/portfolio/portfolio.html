@@ -12,12 +12,23 @@
   }
 
   @for (holding of portfolio; track holding.id) {
-    <app-stock-card
-      [stock]="holding"
-      [shares]="holding.shares"
-      [avgCost]="holding.avg_cost"
-      [showRemove]="true"
-      (remove)="removeFromPortfolio(holding.id)">
-    </app-stock-card>
+    <div class="portfolio-card">
+      <app-stock-card
+        [stock]="holding.stock || holding"
+        [shares]="holding.shares"
+        [avgCost]="holding.avg_cost"
+        [showRemove]="true"
+        (remove)="removeFromPortfolio(holding.id)">
+      </app-stock-card>
+
+      <!-- Chart -->
+      <canvas
+        *ngIf="holding.chartData"
+        baseChart
+        [data]="holding.chartData"
+        [options]="{ responsive: true, plugins: { legend: { display: false }}}"
+        [type]="'line'">
+      </canvas>
+    </div>
   }
 </div>

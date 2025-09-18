@@ -8,34 +8,48 @@ export class PortfolioService {
 
   constructor(private http: HttpClient) {}
 
+  // ✅ Get holdings (each has stock info + shares + avg_cost)
   getMyPortfolio(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/portfolios`);
   }
 
-  addToPortfolio(symbol: string, name: string, current_price: number): Observable<any> {
-    // 🔑 send flat JSON body, not wrapped in "portfolio"
+  // ✅ Add stock to portfolio with shares + avg_cost
+  addToPortfolio(
+    symbol: string,
+    name: string,
+    current_price: number,
+    shares = 1
+  ): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/portfolios`, {
       symbol,
       name,
       current_price,
-      shares: 1,
+      shares,
       avg_cost: current_price
     });
   }
 
-  updatePortfolio(id: number, shares: number, avgCost: number): Observable<any> {
-    // This will need matching backend support (not in your controller yet!)
+  // ✅ Update portfolio entry (will need backend update action)
+  updatePortfolio(
+    id: number,
+    shares: number,
+    avgCost: number
+  ): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/portfolios/${id}`, {
       shares,
       avg_cost: avgCost
     });
   }
 
+  // ✅ Remove a stock from portfolio (by portfolio_stock.id)
   removeFromPortfolio(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/portfolios/${id}`);
   }
 
+  // ✅ Get portfolio by public ID (for sharing)
   getPortfolioByPublicId(publicId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/profiles/public/${publicId}/portfolio`);
+    return this.http.get<any[]>(
+      `${this.apiUrl}/profiles/public/${publicId}/portfolio`
+    );
   }
 }
