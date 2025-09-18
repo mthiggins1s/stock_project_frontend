@@ -37,19 +37,28 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   loadStocks() {
     this.loading = true;
-    this.stocksService.getStocks(this.search).subscribe(
-      data => {
-        this.stocks = data.slice(0, 50); // show first 50
+    this.stocksService.getStocks(this.search).subscribe({
+      next: (data: any[]) => {
+        console.log("✅ Stocks from backend:", data);
+        if (Array.isArray(data)) {
+          this.stocks = data.slice(0, 50);
+        } else {
+          console.error("❌ Unexpected response format:", data);
+          this.stocks = [];
+        }
         this.startPolling();
         this.loading = false;
       },
-      () => (this.loading = false)
-    );
+      error: (err) => {
+        console.error("❌ Failed to load stocks:", err);
+        this.loading = false;
+      }
+    });
   }
 
   startPolling() {
     this.pollSub?.unsubscribe();
-    // refresh every 3 minutes (since you have unlimited calls)
+    // refresh every 3 minutes
     this.pollSub = interval(180000).subscribe(() => this.loadStocks());
   }
 
@@ -58,28 +67,27 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   selectStock(stock: any) {
+    console.log("📌 Stock selected:", stock);
     this.stockSelected.emit(stock);
   }
 
-  // ✅ Add stock to backend portfolio (Rails expects stock_id)
-// ✅ Add stock to backend portfolio (send symbol/name/price)
-addToPortfolio(stock: any) {
-  this.portfolioService.addToPortfolio(
-    stock.symbol,
-    stock.name || 'Unknown',
-    stock.current_price || stock.price || 0
-  ).subscribe({
-    next: () => {
-      this.snackBar.open(`${stock.symbol} added to portfolio!`, 'Close', {
-        duration: 2000
-      });
-    },
-    error: (err) => {
-      console.error('Error adding stock:', err);
-      this.snackBar.open('Failed to add stock to portfolio.', 'Close', {
-        duration: 2000
-      });
-    }
-  });
+  addToPortfolio(stock: any) {
+    this.portfolioService.addToPortfolio(
+      stock.symbol,
+      stock.name || stock.symbol,
+      stock.price || 0
+    ).subscribe({
+      next: () => {
+        this.snackBar.open(`${stock.symbol} added to portfolio!`, 'Close', {
+          duration: 2000
+        });
+      },
+      error: (err) => {
+        console.error('Error adding stock:', err);
+        this.snackBar.open('Failed to add stock to portfolio.', 'Close', {
+          duration: 2000
+        });
+      }
+    });
   }
 }

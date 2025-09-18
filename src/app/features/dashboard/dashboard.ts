@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit {
       if (pnl >= 0) {
         gains += pnl;
       } else {
-        losses += Math.abs(pnl); // keep losses positive for display
+        losses += Math.abs(pnl);
       }
     });
 
@@ -94,12 +94,25 @@ export class DashboardComponent implements OnInit {
   }
 
   onStockSelected(stock: any) {
-    this.selectedStock = stock;
+    console.log("📊 Stock selected on dashboard:", stock);
+
+    // fallback if no name comes from backend
+    this.selectedStock = {
+      ...stock,
+      name: stock.name || stock.symbol
+    };
+
     this.loadStockCandles(stock.symbol);
   }
 
   loadStockCandles(symbol: string) {
     this.stocksService.getCandles(symbol).subscribe((candles) => {
+      if (!candles || candles.length === 0) {
+        console.warn("⚠️ No candle data for:", symbol);
+        this.chartData = { labels: [], datasets: [] };
+        return;
+      }
+
       const labels = candles.map((c: any) =>
         new Date(c.t).toLocaleDateString()
       );
