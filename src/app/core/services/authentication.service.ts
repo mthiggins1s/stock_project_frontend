@@ -6,54 +6,59 @@ import { tap, shareReplay } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 export interface LoginResponse {
-  token: string; // 👈 backend now always returns `token`
+  token: string;
+  public_id: string;
 }
 
 export interface User {
-  id: number;
   username: string;
   first_name: string;
   last_name: string;
+  email: string;
   public_id: string;
+  created_at: string;
+  updated_at: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private readonly api = environment.apiUrl;
-  private currentUser: User | null = null;   // ✅ cached user
-  private userRequest$: Observable<User> | null = null; // ✅ prevent duplicate calls
+  private currentUser: User | null = null;
+  private userRequest$: Observable<User> | null = null;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   // ---- Auth ----
   login(usernameOrEmail: string, password: string): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${this.api}/login`, { usernameOrEmail, password })
-      .pipe(
-        tap(res => {
-          if (res?.token) {
-            this.setToken(res.token);
-            this.currentUser = null; // reset cache after login
-          } else {
-            console.warn('⚠️ No token found in login response');
-          }
-        })
-      );
+    return this.http.post<LoginResponse>(`${this.api}/login`, {
+      usernameOrEmail,
+      password
+    }).pipe(
+      tap(res => {
+        if (res?.token) {
+          this.setToken(res.token);
+          this.clearUserCache();
+        }
+      })
+    );
   }
 
-  signup(data: any) {
-    if (data?.user) return this.http.post(`${this.api}/users`, data);
-
-    const user = {
-      username: data.username,
-      email: data.email,
-      first_name: data.first_name ?? data.firstName,
-      last_name: data.last_name ?? data.lastName,
-      password: data.password,
-      password_confirmation: data.password_confirmation ?? data.passwordConfirmation,
-    };
-
-    return this.http.post(`${this.api}/users`, { user });
+  signup(data: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+  }) {
+    return this.http.post(`${this.api}/users`, {
+      user: {
+        username: data.username,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        password: data.password
+      }
+    });
   }
 
   // ---- User ----
@@ -64,11 +69,10 @@ export class AuthenticationService {
     this.userRequest$ = this.http.get<User>(`${this.api}/me`).pipe(
       tap(user => {
         this.currentUser = user;
-        this.userRequest$ = null; // reset once complete
+        this.userRequest$ = null;
       }),
       shareReplay(1)
     );
-
     return this.userRequest$;
   }
 
@@ -90,7 +94,7 @@ export class AuthenticationService {
     return localStorage.getItem('token');
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     const token = this.getToken();
     if (!token) return false;
     try {

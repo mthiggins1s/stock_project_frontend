@@ -28,9 +28,11 @@ export class LoginComponent {
     }
 
     this.authService.login(this.usernameOrEmail, this.password).subscribe({
-      next: (res: any) => {
-        localStorage.setItem('token', res.token);
-        this.router.navigate(['/dashboard']); // ✅ Angular navigation
+      next: (res) => {
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/dashboard']);
+        }
       },
       error: () => {
         this.errorMessage = 'Invalid username/email or password.';

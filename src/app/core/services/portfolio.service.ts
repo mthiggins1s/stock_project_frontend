@@ -8,15 +8,14 @@ export class PortfolioService {
 
   constructor(private http: HttpClient) {}
 
-  // Get logged-in user’s portfolio
   getMyPortfolio(): Observable<any[]> {
+    // returns holdings with stock info
     return this.http.get<any[]>(`${this.apiUrl}/portfolios`);
   }
 
-  // ✅ Add stock by symbol/name/price (not stock_id anymore)
   addToPortfolio(symbol: string, name: string, current_price: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/portfolios`, {
-      portfolio: { symbol, name, current_price }
+      portfolio: { symbol, name, current_price, shares: 1, avg_cost: current_price }
     });
   }
 

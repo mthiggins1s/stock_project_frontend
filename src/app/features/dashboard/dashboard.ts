@@ -36,7 +36,6 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // ✅ Load user
     this.user = this.authService.getCachedUser();
     if (!this.user) {
       this.authService.getCurrentUser().subscribe({
@@ -45,7 +44,6 @@ export class DashboardComponent implements OnInit {
       });
     }
 
-    // ✅ Load portfolio totals
     this.loadPortfolioSummary();
   }
 
@@ -67,8 +65,8 @@ export class DashboardComponent implements OnInit {
 
     portfolio.forEach((holding) => {
       const shares = holding.shares ?? 0;
-      const avgCost = holding.avg_cost ?? holding.current_price ?? 0;
-      const currentPrice = holding.current_price ?? 0;
+      const avgCost = holding.avg_cost ?? 0;
+      const currentPrice = holding.stock?.current_price ?? 0;
 
       const holdingValue = shares * currentPrice;
       const pnl = (currentPrice - avgCost) * shares;
@@ -77,7 +75,7 @@ export class DashboardComponent implements OnInit {
       if (pnl >= 0) {
         gains += pnl;
       } else {
-        losses += pnl; // negative
+        losses += Math.abs(pnl); // keep losses positive for display
       }
     });
 

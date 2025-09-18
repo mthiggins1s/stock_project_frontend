@@ -7,7 +7,7 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () =>
       import('./features/auth/login/login').then(c => c.LoginComponent),
-    canActivate: [noAuthGuard] // 🚫 if already logged in, redirect to dashboard
+    canActivate: [noAuthGuard]
   },
   {
     path: 'signup',
@@ -19,7 +19,7 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () =>
       import('./features/dashboard/dashboard').then(c => c.DashboardComponent),
-    canActivate: [authGuard] // ✅ requires login
+    canActivate: [authGuard]
   },
   {
     path: 'portfolio',

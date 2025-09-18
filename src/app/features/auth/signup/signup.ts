@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
 @Component({
   selector: 'app-signup',
@@ -19,17 +19,18 @@ export class SignupComponent {
   password = '';
   errorMessage = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
   signup(): void {
-    this.http.post('http://localhost:3000/users', {
-      user: {
-        username: this.username,
-        first_name: this.firstName,
-        last_name: this.lastName,
-        email: this.email,
-        password: this.password
-      }
+    this.authService.signup({
+      username: this.username,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      password: this.password
     }).subscribe({
       next: () => this.router.navigate(['/login']),
       error: (err) => {
