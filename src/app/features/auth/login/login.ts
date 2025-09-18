@@ -1,57 +1,46 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Authentication } from '../../../core/services/authentication.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  // NOTE: Angular uses `styleUrls` (array). If you used `styleUrl`, styles may not load.
-  styleUrls: ['./login.css'],
+  styleUrls: ['./login.css']
 })
-export class Login {
-  // Strongly typed + non-nullable controls to avoid undefined reads
-  loginForm = new FormGroup({
-    username: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-  });
-
-  isError = false;
-  isLoading = false;
+export class LoginComponent {
+  usernameOrEmail = '';
+  password = '';
   errorMessage = '';
 
-  constructor(private auth: Authentication, private router: Router) {}
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
-  login() {
-    if (this.loginForm.invalid || this.isLoading) return;
+  onSubmit(): void {
+    if (!this.usernameOrEmail || !this.password) {
+      this.errorMessage = 'Please enter your username/email and password.';
+      return;
+    }
 
-    this.isError = false;
-    this.errorMessage = '';
-    this.isLoading = true;
-
-    const { username, password } = this.loginForm.getRawValue();
-
-    this.auth.login(username, password).subscribe({
-      next: () => {
-        // token is already saved by the service's tap()
-        this.router.navigateByUrl('/');
+    this.authService.login(this.usernameOrEmail, this.password).subscribe({
+      next: (res) => {
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/dashboard']);
+        }
       },
-      error: (err) => {
-        // 401 from Rails => unauthorized; other statuses bubble up too
-        this.isError = true;
-        this.errorMessage =
-          err?.error?.error || // { error: "unauthorized" } or "token expired"
-          err?.error?.messages?.[0] || // in case backend sends messages array
-          'Invalid username or password';
-        console.error('Error when logging', err);
-      },
-      complete: () => (this.isLoading = false),
+      error: () => {
+        this.errorMessage = 'Invalid username/email or password.';
+      }
     });
   }
 
-  goToSignup() {
+  goToSignup(): void {
     this.router.navigate(['/signup']);
   }
 }

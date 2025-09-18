@@ -1,35 +1,43 @@
 <div class="auth-layout">
-  <div class="auth-card glass fade-in">
-    <h1 class="logo">Stock<span>Folio</span></h1>
-    <form [formGroup]="signupForm" (ngSubmit)="onSignup()" novalidate>
-      <div class="grid duo">
-        <div class="form-group">
-          <label for="first_name">First Name</label>
-          <input id="first_name" type="text" formControlName="first_name" placeholder="First name" />
-        </div>
-        <div class="form-group">
-          <label for="last_name">Last Name</label>
-            <input id="last_name" type="text" formControlName="last_name" placeholder="Last name" />
-        </div>
-      </div>
+  <div class="auth-card fade-in">
+    <div class="logo">📈 StockFolio</div>
+
+    <form (ngSubmit)="signup()">
       <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" placeholder="Email address" autocomplete="email" />
+        <label>Username</label>
+        <input type="text" [(ngModel)]="username" name="username" required />
       </div>
+
       <div class="form-group">
-        <label for="username">Username</label>
-        <input id="username" type="text" formControlName="username" placeholder="Choose a username" autocomplete="username" />
+        <label>First Name</label>
+        <input type="text" [(ngModel)]="firstName" name="firstName" required />
       </div>
+
       <div class="form-group">
-        <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="Password" autocomplete="new-password" />
+        <label>Last Name</label>
+        <input type="text" [(ngModel)]="lastName" name="lastName" required />
       </div>
+
       <div class="form-group">
-        <label for="password_confirmation">Confirm Password</label>
-        <input id="password_confirmation" type="password" formControlName="password_confirmation" placeholder="Re-type password" autocomplete="new-password" />
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" name="email" required />
       </div>
-      @for (error of errors; track $index) { <p class="alert error">{{error}}</p> }
-      <button class="btn w-full" type="submit">Sign Up</button>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="password" name="password" required />
+      </div>
+
+      <button type="submit" class="btn w-full">Sign Up</button>
+
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
     </form>
+
+    <div class="auth-alt">
+      <span>Already have an account?</span>
+      <button type="button" class="link-btn" (click)="goToLogin()">Login</button>
+    </div>
   </div>
 </div>

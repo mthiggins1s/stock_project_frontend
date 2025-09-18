@@ -1,39 +1,46 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Authentication } from '../../../core/services/authentication.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './signup.html',
-  styleUrl: './signup.css'
+  styleUrls: ['./signup.css']
 })
-export class Signup {
-  signupForm: FormGroup = new FormGroup({
-    first_name: new FormControl(''),
-    last_name: new FormControl(''),
-    email: new FormControl(''),
-    username: new FormControl(''),
-    password: new FormControl(''),
-    password_confirmation: new FormControl('')
-  })
+export class SignupComponent {
+  username = '';
+  firstName = '';
+  lastName = '';
+  email = '';
+  password = '';
+  errorMessage = '';
 
-  errors:string[] = []
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
-  constructor(private authService: Authentication, private router:Router) {  }
-
-  onSignup() {
-    const formValue = this.signupForm.value
-    this.authService.signup({user: formValue}).subscribe({
-      next: (res:any) => {
-        this.router.navigate(['/login'])
-      },
-      error: (error:any) => {
-        console.log(error.error)
-        this.errors = error.error
+  signup(): void {
+    this.authService.signup({
+      username: this.username,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      password: this.password
+    }).subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: (err) => {
+        console.error('Signup failed:', err);
+        this.errorMessage = 'Signup failed. Please try again.';
       }
-    })
+    });
+  }
+
+  goToLogin(): void {
+    this.router.navigate(['/login']);
   }
 }

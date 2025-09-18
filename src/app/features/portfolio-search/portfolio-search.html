@@ -1,32 +1,40 @@
 <div class="search-container">
   <h2>Search for a User Portfolio</h2>
 
-  <form (ngSubmit)="search()">
+  <form (ngSubmit)="search()" class="search-bar">
     <input
-      type="number"
+      type="text"
       [(ngModel)]="publicId"
       name="publicId"
-      placeholder="Enter User ID"
+      placeholder="Enter Public ID"
       required
     />
     <button type="submit">Search</button>
   </form>
 
   @if (loading) {
-    <div>Loading...</div>
+    <p>Loading...</p>
   }
 
   @if (error) {
-    <div class="error">{{ error }}</div>
+    <p class="error">{{ error }}</p>
   }
 
-  @if (results) {
-    <h3>Results for User {{ publicId }}</h3>
+  @if (!loading && results.length === 0 && !error) {
+    <p class="empty-msg">No portfolio found for this user.</p>
+  }
 
-    @for (item of results; track $index) {
-      <div class="result-item">
-        {{ item | json }}
-      </div>
-    }
+  @if (results.length) {
+    <h3>Results for User {{ publicId }}</h3>
+    <div class="portfolio-search-results">
+      @for (holding of results; track holding.id) {
+        <app-stock-card
+          [stock]="holding.stock || holding"
+          [shares]="holding.shares"
+          [avgCost]="holding.avg_cost"
+          [showRemove]="false"> <!-- 🔑 disable remove for search -->
+        </app-stock-card>
+      }
+    </div>
   }
 </div>

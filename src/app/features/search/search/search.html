@@ -1,0 +1,32 @@
+<div class="search-shell">
+  <h2>Search Portfolios</h2>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      [(ngModel)]="query"
+      placeholder="Enter Public ID..."
+    />
+    <button (click)="search()">Search</button>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading...</div>
+  }
+
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  @if (results.length > 0) {
+    <div class="results">
+      @for (stock of results; track stock.symbol) {
+        <!-- ✅ Reuse stock-card -->
+        <app-stock-card
+          [stock]="stock"
+          [showRemove]="false">
+        </app-stock-card>
+      }
+    </div>
+  }
+</div>

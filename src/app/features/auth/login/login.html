@@ -1,33 +1,40 @@
 <div class="auth-layout">
-  <div class="auth-card glass fade-in">
-    <h1 class="logo">Stock<span>Folio</span></h1>
-    <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-      <!-- Username -->
+  <div class="auth-card fade-in">
+    <div class="logo">📈 StockFolio</div>
+
+    <form (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="username">Username</label>
-        <input id="username" type="text" formControlName="username" placeholder="Enter your username" autocomplete="username" />
-        @if (loginForm.get('username')?.touched && loginForm.get('username')?.hasError('required')) {
-          <p class="hint error">Username is required.</p>
-        }
+        <label for="usernameOrEmail">Username or Email</label>
+        <input
+          id="usernameOrEmail"
+          type="text"
+          [(ngModel)]="usernameOrEmail"
+          name="usernameOrEmail"
+          required
+        />
       </div>
-      <!-- Password -->
+
       <div class="form-group">
         <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="Enter your password" autocomplete="current-password" />
-        @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
-          <p class="hint error">Password is required.</p>
-        }
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
       </div>
-      @if (isError) {
-        <p class="alert error" role="alert">{{ errorMessage || 'Username and password credentials failed. Please try again!' }}</p>
-      }
-      <button class="btn w-full" type="submit" [disabled]="loginForm.invalid || isLoading">
-        {{ isLoading ? 'Signing in…' : 'Login' }}
-      </button>
+
+      <button type="submit" class="btn w-full">Login</button>
     </form>
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
     <div class="auth-alt">
-      <span>Don't have an account?</span>
-      <button type="button" (click)="goToSignup()" class="link-btn">Sign Up</button>
+      <span>Don’t have an account?</span>
+      <button type="button" class="link-btn" (click)="goToSignup()">Sign Up</button>
     </div>
   </div>
 </div>

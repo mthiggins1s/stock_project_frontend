@@ -1,20 +1,25 @@
 <div class="portfolio-shell">
-  <header class="portfolio-header fade-in">
-    <h2>Your Portfolio</h2>
-    <div class="stats">
-      <div class="stat"><span class="label">Holdings</span><span class="value">{{ portfolioStocks.length }}</span></div>
+  @if (loading) {
+    <p class="empty-msg">Loading portfolio...</p>
+  }
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  @if (!loading && portfolio.length === 0) {
+    <p class="empty-msg">No stocks in your portfolio yet.</p>
+  }
+
+  @for (holding of portfolio; track holding.id) {
+    <div class="portfolio-card">
+      <app-stock-card
+        [stock]="holding.stock || holding"
+        [shares]="holding.shares"
+        [avgCost]="holding.avg_cost"
+        [showRemove]="true"
+        (remove)="removeFromPortfolio(holding.id)">
+      </app-stock-card>
     </div>
-  </header>
-  <section class="holdings-grid">
-    <div class="holding-card" *ngFor="let stock of portfolioStocks; trackBy: trackStock">
-      <div class="info">
-        <div class="ticker">{{ stock.symbol }}</div>
-        <div class="name" title="{{stock.name}}">{{ stock.name }}</div>
-      </div>
-      <div class="actions">
-        <button class="btn outline tiny" (click)="removeFromPortfolio(stock.symbol)">Remove</button>
-      </div>
-    </div>
-  </section>
-  <div class="empty" *ngIf="portfolioStocks.length === 0">No stocks in your portfolio yet.</div>
+  }
 </div>

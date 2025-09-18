@@ -1,66 +1,138 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
-import { StockChartComponent } from '../../stock-chart/stock-chart';
+import { NgChartsModule } from 'ng2-charts';
 import { StockListComponent } from '../../stock-list/stock-list';
+import { StocksService } from '../../stocks.service';
+import { PortfolioService } from '../../core/services/portfolio.service';
+import { AuthenticationService, User } from '../../core/services/authentication.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, NgChartsModule, StockChartComponent, StockListComponent],
+  imports: [CommonModule, NgChartsModule, StockListComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
-export class DashboardComponent {
-  // --- Portfolio summary (mock for now) ---
-  totalValue = 12500;
-  totalGains = 2400;
-  totalLosses = 800;
+export class DashboardComponent implements OnInit {
+  totalValue = 0;
+  totalGains = 0;
+  totalLosses = 0;
 
-  // --- Portfolio Performance Line Chart ---
-  portfolioChartData: ChartConfiguration<'line'>['data'] = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-    datasets: [
-      {
-        data: [12000, 12300, 12200, 12400, 12500],
-        label: 'Portfolio',
-        borderColor: '#10b981',
-        backgroundColor: 'rgba(16,185,129,0.2)',
-        fill: true,
-        tension: 0.3,
-        pointBackgroundColor: '#10b981',
-        pointRadius: 4,
-      }
-    ]
-  };
+  selectedStock: any | null = null;
+  user: User | null = null;
+  copied = false;
 
-  portfolioChartOptions: ChartConfiguration<'line'>['options'] = {
+  chartData: ChartConfiguration<'line'>['data'] = { labels: [], datasets: [] };
+  chartOptions: ChartConfiguration<'line'>['options'] = {
     responsive: true,
-    plugins: { legend: { display: true } }
+    plugins: { legend: { display: false } }
   };
 
-  // --- Stock Allocation Doughnut Chart ---
-  allocationChartData: ChartConfiguration<'doughnut'>['data'] = {
-    labels: ['AAPL', 'TSLA', 'AMZN', 'GOOG'],
-    datasets: [
-      {
-        data: [25, 20, 15, 40],
-        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
-        hoverOffset: 8
+  constructor(
+    private stocksService: StocksService,
+    private portfolioService: PortfolioService,
+    private authService: AuthenticationService
+  ) {}
+
+  ngOnInit(): void {
+    this.user = this.authService.getCachedUser();
+    if (!this.user) {
+      this.authService.getCurrentUser().subscribe({
+        next: (res) => (this.user = res),
+        error: (err) => console.error('Failed to load user:', err)
+      });
+    }
+
+    this.loadPortfolioSummary();
+  }
+
+  private loadPortfolioSummary() {
+    this.portfolioService.getMyPortfolio().subscribe({
+      next: (portfolio) => {
+        this.calculateTotals(portfolio);
+      },
+      error: (err) => {
+        console.error('Failed to load portfolio:', err);
       }
-    ]
-  };
+    });
+  }
 
-  allocationChartOptions: ChartConfiguration<'doughnut'>['options'] = {
-    responsive: true,
-    plugins: { legend: { position: 'bottom' } }
-  };
+  private calculateTotals(portfolio: any[]) {
+    let value = 0;
+    let gains = 0;
+    let losses = 0;
 
-  // --- New: Selected stock state ---
-  selectedStock: string | null = null;
+    portfolio.forEach((holding) => {
+      const shares = holding.shares ?? 0;
+      const avgCost = holding.avg_cost ?? 0;
+      const currentPrice = holding.stock?.current_price ?? 0;
 
-  onStockSelected(symbol: string) {
-    this.selectedStock = symbol;
+      const holdingValue = shares * currentPrice;
+      const pnl = (currentPrice - avgCost) * shares;
+
+      value += holdingValue;
+      if (pnl >= 0) {
+        gains += pnl;
+      } else {
+        losses += Math.abs(pnl);
+      }
+    });
+
+    this.totalValue = value;
+    this.totalGains = gains;
+    this.totalLosses = losses;
+  }
+
+  copyId(): void {
+    if (this.user?.public_id) {
+      navigator.clipboard.writeText(this.user.public_id).then(() => {
+        this.copied = true;
+        setTimeout(() => (this.copied = false), 2000);
+      });
+    }
+  }
+
+  onStockSelected(stock: any) {
+    console.log("📊 Stock selected on dashboard:", stock);
+
+    // fallback if no name comes from backend
+    this.selectedStock = {
+      ...stock,
+      name: stock.name || stock.symbol
+    };
+
+    this.loadStockCandles(stock.symbol);
+  }
+
+  loadStockCandles(symbol: string) {
+    this.stocksService.getCandles(symbol).subscribe((candles) => {
+      if (!candles || candles.length === 0) {
+        console.warn("⚠️ No candle data for:", symbol);
+        this.chartData = { labels: [], datasets: [] };
+        return;
+      }
+
+      const labels = candles.map((c: any) =>
+        new Date(c.t).toLocaleDateString()
+      );
+      const prices = candles.map((c: any) => c.c);
+
+      this.chartData = {
+        labels,
+        datasets: [
+          {
+            data: prices,
+            label: symbol,
+            borderColor:
+              prices[0] < prices[prices.length - 1] ? '#10b981' : '#ef4444',
+            backgroundColor: 'rgba(255,255,255,0.05)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0
+          }
+        ]
+      };
+    });
   }
 }

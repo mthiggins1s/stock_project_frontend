@@ -1,17 +1,18 @@
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { inject } from '@angular/core';
-import { Authentication } from '../services/authentication.service';
+import { AuthenticationService } from '../services/authentication.service';
 
-export const noAuthGuard: CanActivateFn = (route, state) => {
-  const authService = inject(Authentication);
+export const noAuthGuard: CanActivateFn = (): boolean | UrlTree => {
+  const authService = inject(AuthenticationService);
   const router = inject(Router);
 
-  console.log('noAuthGuard - isLoggedIn:', authService.isLoggedIn());
+  const loggedIn = authService.isLoggedIn();
+  console.log('noAuthGuard -- isLoggedIn:', loggedIn);
 
-  if(authService.isLoggedIn()) {
-    router.navigate(['/'])
-    return false;
-  } else {
-    return true
+  if (loggedIn) {
+    // ✅ redirect away from login/signup if already logged in
+    return router.parseUrl('/dashboard');
   }
+
+  return true; // ✅ allow access
 };

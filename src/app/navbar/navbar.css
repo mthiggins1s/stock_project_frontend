@@ -1,24 +1,83 @@
 .navbar {
-  background: #1a1a1a;
-  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  background: #0d0d0d;
+  color: #f5f5f5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Nav links row */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  flex: 1;
+}
+.nav-links li a {
+  color: #9ca3af;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: #f5f5f5;
+}
+
+/* User info row */
+.user-info {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  gap: 1rem;
 }
-
-.navbar a {
-  margin-right: 1.5rem;
-  color: #f5f5f5;
-  font-weight: 500;
-}
-
-.navbar a.active {
-  color: #facc15; /* yellow highlight for active link */
-}
-
-.navbar .brand {
-  font-size: 1.25rem;
-  font-weight: 700;
+.user-info .welcome {
+  font-size: 1rem;
+  font-weight: bold;
   color: #facc15;
+}
+
+/* Public ID */
+.public-id-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+.public-id {
+  font-family: monospace;
+  color: #ffcc00;
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+}
+.public-id:hover {
+  text-decoration: underline;
+}
+.eye-icon {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Button */
+.user-info button {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+.user-info button:hover {
+  background: #2563eb;
 }

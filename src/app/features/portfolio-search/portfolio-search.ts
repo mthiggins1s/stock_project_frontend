@@ -1,39 +1,42 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { PortfolioService } from '../../core/services/portfolio.service';
+import { StockCardComponent } from '../../stock-card/stock-card';
 
 @Component({
   selector: 'app-portfolio-search',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, StockCardComponent],
   templateUrl: './portfolio-search.html',
   styleUrls: ['./portfolio-search.css']
 })
 export class PortfolioSearchComponent {
   publicId = '';
-  results: any = null;
+  results: any[] = [];
   error: string | null = null;
   loading = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private portfolioService: PortfolioService) {}
 
   search() {
     this.error = null;
-    this.results = null;
+    this.results = [];
     this.loading = true;
 
-    this.http.get(`${environment.apiUrl}/users/${this.publicId}`)
-      .subscribe({
-        next: (res) => {
-          this.results = res;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = err.error?.error || 'User not found';
-          this.loading = false;
-        }
-      });
+    this.portfolioService.getPortfolioByPublicId(this.publicId).subscribe({
+      next: (res: any[]) => {
+        // ✅ Ensure shape is consistent with regular portfolio
+        this.results = res.map((holding: any) => ({
+          ...holding,
+          stock: holding.stock || holding
+        }));
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = err.error?.error || 'User not found';
+        this.loading = false;
+      }
+    });
   }
 }

@@ -1,36 +1,47 @@
-<nav class="nav-shell glass">
-  <div class="nav-left">
-    <a routerLink="/" class="brand">Stock<span>Folio</span></a>
+<nav class="navbar">
+  <!-- Left: Brand -->
+  <div class="brand">
+    <a routerLink="/dashboard">📈 <strong>StockFolio</strong></a>
   </div>
 
-  <!-- Mobile toggle button -->
-  <button
-    class="nav-toggle"
-    type="button"
-    (click)="menuOpen = !menuOpen"
-    aria-label="Toggle navigation"
-    [attr.aria-expanded]="menuOpen"
-  >
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-
-  <!-- Nav links -->
-  <ul class="nav-links" [class.open]="menuOpen">
-    <li>
-      <a routerLink="/" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
-    </li>
-    <li>
-      <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">Portfolio</a>
-    </li>
-    <li>
-      <a routerLink="/portfolio-search" routerLinkActive="active" (click)="closeMenu()">
-        Search Portfolios
-      </a>
-    </li>
-    <li>
-      <button class="logout-btn" (click)="logout(); closeMenu()">Logout</button>
-    </li>
+  <!-- Middle: Nav links -->
+  <ul class="nav-links">
+    @for (link of [
+      { path: '/dashboard', label: 'Dashboard' },
+      { path: '/portfolio', label: 'Portfolio' },
+      { path: '/search', label: 'Search' }
+    ]; track link.path) {
+      <li>
+        <a routerLink="{{ link.path }}" routerLinkActive="active">
+          <strong>{{ link.label }}</strong>
+        </a>
+      </li>
+    }
   </ul>
+
+  <!-- Right: User Info -->
+  @if (user()) {
+    <div class="user-info">
+      <div class="public-id-wrapper">
+        <span class="label"><strong>Public ID:</strong></span>
+        <span
+          class="public-id"
+          (click)="copyPublicId()"
+          title="Click to copy your Public ID"
+        >
+          {{ revealId() ? user()?.public_id : '•••••••••••••••••••' }}
+        </span>
+
+        <span
+          class="eye-icon"
+          (click)="toggleReveal()"
+          title="Show/Hide Public ID"
+        >
+          {{ revealId() ? '🙈' : '👁️' }}
+        </span>
+      </div>
+
+      <button (click)="logout()"><strong>Logout</strong></button>
+    </div>
+  }
 </nav>
