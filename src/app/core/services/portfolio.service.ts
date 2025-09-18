@@ -9,19 +9,25 @@ export class PortfolioService {
   constructor(private http: HttpClient) {}
 
   getMyPortfolio(): Observable<any[]> {
-    // returns holdings with stock info
     return this.http.get<any[]>(`${this.apiUrl}/portfolios`);
   }
 
   addToPortfolio(symbol: string, name: string, current_price: number): Observable<any> {
+    // 🔑 send flat JSON body, not wrapped in "portfolio"
     return this.http.post<any>(`${this.apiUrl}/portfolios`, {
-      portfolio: { symbol, name, current_price, shares: 1, avg_cost: current_price }
+      symbol,
+      name,
+      current_price,
+      shares: 1,
+      avg_cost: current_price
     });
   }
 
   updatePortfolio(id: number, shares: number, avgCost: number): Observable<any> {
+    // This will need matching backend support (not in your controller yet!)
     return this.http.put<any>(`${this.apiUrl}/portfolios/${id}`, {
-      portfolio: { shares, avg_cost: avgCost }
+      shares,
+      avg_cost: avgCost
     });
   }
 
