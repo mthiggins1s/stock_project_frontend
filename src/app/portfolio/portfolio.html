@@ -13,7 +13,7 @@
 
   @for (holding of portfolio; track holding.id) {
     <app-stock-card
-      [stock]="holding.stock"
+      [stock]="holding"
       [shares]="holding.shares"
       [avgCost]="holding.avg_cost"
       [showRemove]="true"

@@ -1,8 +1,8 @@
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route, state): boolean | UrlTree => {
   const authService = inject(AuthenticationService);
   const router = inject(Router);
 
@@ -10,11 +10,10 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log('authGuard -- isLoggedIn:', loggedIn);
 
   if (loggedIn) {
-    return true;
+    return true; // ✅ Allow navigation
   }
 
-  // ✅ Clear stale tokens before redirect
+  // Return UrlTree instead of navigating manually
   authService.logout();
-  router.navigate(['/login']);
-  return false;
+  return router.parseUrl('/login');
 };

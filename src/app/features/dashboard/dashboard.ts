@@ -4,6 +4,7 @@ import { ChartConfiguration } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
 import { StockListComponent } from '../../stock-list/stock-list';
 import { StocksService } from '../../stocks.service';
+import { PortfolioService } from '../../core/services/portfolio.service';
 import { AuthenticationService, User } from '../../core/services/authentication.service';
 
 @Component({
@@ -14,9 +15,9 @@ import { AuthenticationService, User } from '../../core/services/authentication.
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
-  totalValue = 12500;
-  totalGains = 2400;
-  totalLosses = 800;
+  totalValue = 0;
+  totalGains = 0;
+  totalLosses = 0;
 
   selectedStock: any | null = null;
   user: User | null = null;
@@ -30,11 +31,12 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private stocksService: StocksService,
+    private portfolioService: PortfolioService,
     private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
-    // ✅ Load user from cache or fetch
+    // ✅ Load user
     this.user = this.authService.getCachedUser();
     if (!this.user) {
       this.authService.getCurrentUser().subscribe({
@@ -42,6 +44,46 @@ export class DashboardComponent implements OnInit {
         error: (err) => console.error('Failed to load user:', err)
       });
     }
+
+    // ✅ Load portfolio totals
+    this.loadPortfolioSummary();
+  }
+
+  private loadPortfolioSummary() {
+    this.portfolioService.getMyPortfolio().subscribe({
+      next: (portfolio) => {
+        this.calculateTotals(portfolio);
+      },
+      error: (err) => {
+        console.error('Failed to load portfolio:', err);
+      }
+    });
+  }
+
+  private calculateTotals(portfolio: any[]) {
+    let value = 0;
+    let gains = 0;
+    let losses = 0;
+
+    portfolio.forEach((holding) => {
+      const shares = holding.shares ?? 0;
+      const avgCost = holding.avg_cost ?? holding.current_price ?? 0;
+      const currentPrice = holding.current_price ?? 0;
+
+      const holdingValue = shares * currentPrice;
+      const pnl = (currentPrice - avgCost) * shares;
+
+      value += holdingValue;
+      if (pnl >= 0) {
+        gains += pnl;
+      } else {
+        losses += pnl; // negative
+      }
+    });
+
+    this.totalValue = value;
+    this.totalGains = gains;
+    this.totalLosses = losses;
   }
 
   copyId(): void {
@@ -59,7 +101,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadStockCandles(symbol: string) {
-    this.stocksService.getCandles(symbol).subscribe(candles => {
+    this.stocksService.getCandles(symbol).subscribe((candles) => {
       const labels = candles.map((c: any) =>
         new Date(c.t).toLocaleDateString()
       );

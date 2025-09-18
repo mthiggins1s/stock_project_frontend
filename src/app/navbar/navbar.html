@@ -1,7 +1,7 @@
 <nav class="navbar">
   <!-- Left: Brand -->
   <div class="brand">
-    <a routerLink="/dashboard">📈 StockFolio</a>
+    <a routerLink="/dashboard">📈 <strong>StockFolio</strong></a>
   </div>
 
   <!-- Middle: Nav links -->
@@ -12,24 +12,24 @@
       { path: '/search', label: 'Search' }
     ]; track link.path) {
       <li>
-        <a routerLink="{{ link.path }}" routerLinkActive="active">{{ link.label }}</a>
+        <a routerLink="{{ link.path }}" routerLinkActive="active">
+          <strong>{{ link.label }}</strong>
+        </a>
       </li>
     }
   </ul>
 
   <!-- Right: User Info -->
-  @if (user) {
+  @if (user()) {
     <div class="user-info">
-      <span class="welcome">Welcome, {{ user.first_name || user.username }}!</span>
-
       <div class="public-id-wrapper">
-        <span class="label">Public ID:</span>
+        <span class="label"><strong>Public ID:</strong></span>
         <span
           class="public-id"
           (click)="copyPublicId()"
           title="Click to copy your Public ID"
         >
-          {{ revealId ? user.public_id : '•••••••••••••••••••' }}
+          {{ revealId() ? user()?.public_id : '•••••••••••••••••••' }}
         </span>
 
         <span
@@ -37,11 +37,11 @@
           (click)="toggleReveal()"
           title="Show/Hide Public ID"
         >
-          {{ revealId ? '🙈' : '👁️' }}
+          {{ revealId() ? '🙈' : '👁️' }}
         </span>
       </div>
 
-      <button (click)="logout()">Logout</button>
+      <button (click)="logout()"><strong>Logout</strong></button>
     </div>
   }
 </nav>

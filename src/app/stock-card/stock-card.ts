@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { StockChartComponent } from '../stock-chart/stock-chart'; // ✅ Import chart
 
 @Component({
   selector: 'app-stock-card',
   standalone: true,
   templateUrl: './stock-card.html',
   styleUrls: ['./stock-card.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, StockChartComponent] // ✅ Register chart here
 })
 export class StockCardComponent {
   @Input() stock: any;
@@ -14,18 +15,16 @@ export class StockCardComponent {
   @Input() avgCost?: number;
   @Input() showRemove = false;
 
-  @Output() remove = new EventEmitter<string>();
+  @Output() remove = new EventEmitter<number>();
 
   handleRemove() {
-    this.remove.emit(this.stock?.symbol || '');
+    this.remove.emit(this.stock?.id);
   }
 
-  /** Ensure we always have a usable price */
   get currentPrice(): number {
     return this.stock?.current_price ?? this.stock?.price ?? 0;
   }
 
-  /** Ensure we always have avg cost (backend uses avg_cost) */
   get normalizedAvgCost(): number {
     return this.avgCost ?? this.stock?.avg_cost ?? 0;
   }

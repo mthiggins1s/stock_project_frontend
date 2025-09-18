@@ -17,16 +17,18 @@ export class StockChartComponent implements OnChanges {
   chartData: ChartConfiguration<'line'>['data'] = { labels: [], datasets: [] };
   chartOptions: ChartConfiguration<'line'>['options'] = {
     responsive: true,
-    plugins: { legend: { display: false } },
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: false } // 🚫 no hover popups
+    },
+    elements: {
+      line: { borderWidth: 2 },
+      point: { radius: 0 }
+    },
     scales: {
-      x: {
-        ticks: { color: '#9ca3af' },
-        grid: { color: 'rgba(255,255,255,0.05)' }
-      },
-      y: {
-        ticks: { color: '#9ca3af' },
-        grid: { color: 'rgba(255,255,255,0.05)' }
-      }
+      x: { display: false }, // 🚫 hide x-axis
+      y: { display: false }  // 🚫 hide y-axis
     }
   };
 
@@ -40,20 +42,15 @@ export class StockChartComponent implements OnChanges {
 
   loadCandles(symbol: string) {
     this.stocksService.getCandles(symbol).subscribe(candles => {
-      const labels = candles.map((c: any) =>
-        new Date(c.t).toLocaleDateString()
-      );
       const prices = candles.map((c: any) => c.c);
 
       this.chartData = {
-        labels,
+        labels: prices.map((_: any, i: number) => i), // dummy labels
         datasets: [
           {
             data: prices,
-            label: symbol,
             borderColor: prices[0] < prices[prices.length - 1] ? '#10b981' : '#ef4444',
-            backgroundColor: 'rgba(250, 204, 21, 0.05)',
-            fill: true,
+            fill: false,
             tension: 0.3,
             pointRadius: 0
           }

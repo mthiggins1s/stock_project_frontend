@@ -61,26 +61,25 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.stockSelected.emit(stock);
   }
 
-  // ✅ Add a stock to backend portfolio
-  addToPortfolio(stock: any) {
-    this.portfolioService.addToPortfolio(
-      stock.symbol,
-      stock.name || 'Unknown',       // fallback in case API omits name
-      stock.current_price || 0,      // fallback in case API omits price
-      1,                             // default: 1 share
-      stock.current_price || 0       // avg cost = current price by default
-    ).subscribe({
-      next: () => {
-        this.snackBar.open(`${stock.symbol} added to portfolio!`, 'Close', {
-          duration: 2000
-        });
-      },
-      error: (err) => {
-        console.error('Error adding stock:', err);
-        this.snackBar.open('Failed to add stock to portfolio.', 'Close', {
-          duration: 2000
-        });
-      }
-    });
+  // ✅ Add stock to backend portfolio (Rails expects stock_id)
+// ✅ Add stock to backend portfolio (send symbol/name/price)
+addToPortfolio(stock: any) {
+  this.portfolioService.addToPortfolio(
+    stock.symbol,
+    stock.name || 'Unknown',
+    stock.current_price || stock.price || 0
+  ).subscribe({
+    next: () => {
+      this.snackBar.open(`${stock.symbol} added to portfolio!`, 'Close', {
+        duration: 2000
+      });
+    },
+    error: (err) => {
+      console.error('Error adding stock:', err);
+      this.snackBar.open('Failed to add stock to portfolio.', 'Close', {
+        duration: 2000
+      });
+    }
+  });
   }
 }

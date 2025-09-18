@@ -1,5 +1,6 @@
 <div class="portfolio-card">
   <div class="card-header">
+    <!-- Logo -->
     <img
       [src]="stock.logo_url"
       alt="{{ stock.symbol }}"
@@ -7,11 +8,13 @@
       (error)="$any($event.target).style.display='none'"
     />
 
+    <!-- Symbol + Name -->
     <div class="stock-info">
       <h3>{{ stock.symbol }}</h3>
       <p>{{ stock.name }}</p>
     </div>
 
+    <!-- Price -->
     <div class="price-block">
       <strong [ngClass]="{ positive: isGain, negative: !isGain }">
         ${{ currentPrice | number:'1.2-2' }}
@@ -23,6 +26,12 @@
     </div>
   </div>
 
+  <!-- Mini inline chart -->
+  <div class="chart-inline">
+  <app-stock-chart [symbol]="stock.symbol"></app-stock-chart>
+</div>
+
+  <!-- Footer (Shares + Avg Cost + P/L) -->
   @if (shares !== undefined && normalizedAvgCost > 0) {
     <div class="card-footer">
       <span>Shares: {{ shares }}</span>
@@ -33,6 +42,7 @@
     </div>
   }
 
+  <!-- Remove Button -->
   @if (showRemove) {
     <div class="card-actions">
       <button class="remove-btn" (click)="handleRemove()">Remove</button>

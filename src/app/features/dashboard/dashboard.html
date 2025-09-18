@@ -6,21 +6,20 @@
     }
   </section>
 
-  <!-- Stats bar -->
-  <section class="stats-bar">
-    <div class="stat">
-      <span>Total Value</span>
-      <strong>${{ totalValue | number:'1.2-2' }}</strong>
-    </div>
-    <div class="stat positive">
-      <span>Gains</span>
-      <strong>+${{ totalGains | number:'1.2-2' }}</strong>
-    </div>
-    <div class="stat negative">
-      <span>Losses</span>
-      <strong>-${{ totalLosses | number:'1.2-2' }}</strong>
-    </div>
-  </section>
+<section class="stats-bar">
+  <div class="stat">
+    <span>Total Value</span>
+    <strong>${{ totalValue | number:'1.2-2' }}</strong>
+  </div>
+  <div class="stat positive">
+    <span>Gains</span>
+    <strong>+${{ totalGains | number:'1.2-2' }}</strong>
+  </div>
+  <div class="stat negative">
+    <span>Losses</span>
+    <strong>${{ totalLosses | number:'1.2-2' }}</strong>
+  </div>
+</section>
 
   <!-- Main layout -->
   <section class="main-layout">
