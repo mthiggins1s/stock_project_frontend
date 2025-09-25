@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PortfolioService } from '../../core/services/portfolio.service';
 import { StockCardComponent } from '../../stock-card/stock-card';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-portfolio-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, StockCardComponent],
+  imports: [CommonModule, FormsModule, StockCardComponent, MatSnackBarModule],
   templateUrl: './portfolio-search.html',
   styleUrls: ['./portfolio-search.css']
 })
@@ -17,7 +18,7 @@ export class PortfolioSearchComponent {
   error: string | null = null;
   loading = false;
 
-  constructor(private portfolioService: PortfolioService) {}
+  constructor(private portfolioService: PortfolioService, private snackBar: MatSnackBar) {}
 
   search() {
     this.error = null;
@@ -38,5 +39,27 @@ export class PortfolioSearchComponent {
         this.loading = false;
       }
     });
+  }
+
+  savePortfolio() {
+    if (!this.results.length) return;
+
+    let requests = this.results.map(holding =>
+      this.portfolioService.addToPortfolio(
+        holding.stock.symbol,
+        holding.stock.name,
+        holding.stock.current_price,
+        holding.shares,
+        holding.avg_cost
+      )
+    );
+
+    Promise.all(requests.map(req => req.toPromise()))
+      .then(() => {
+        this.snackBar.open('Portfolio saved to your account!', 'Close', { duration: 3000 });
+      })
+      .catch(() => {
+        this.snackBar.open('Error saving portfolio', 'Close', { duration: 3000 });
+      });
   }
 }

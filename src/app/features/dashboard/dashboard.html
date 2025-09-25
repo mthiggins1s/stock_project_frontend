@@ -1,30 +1,52 @@
 <div class="dashboard-shell">
+  <!-- Header with logout -->
+  <header class="dashboard-header">
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </header>
+
   <!-- User Info -->
   <section class="user-info">
     @if (user) {
-      <h3>👋 Welcome, {{ user.first_name }}</h3>
+      <h3 class="welcome">👋 Welcome, {{ user.first_name }}</h3>
+
+      <div class="public-id">
+        <span>Public ID:</span>
+        <code>
+          {{ showPublicId ? user.public_id : '••••••••••••••••••••' }}
+        </code>
+        <button class="toggle-btn" (click)="togglePublicId()">
+          {{ showPublicId ? 'Hide' : 'Show' }}
+        </button>
+        <button (click)="copyId()">
+          {{ copied ? 'Copied!' : 'Copy' }}
+        </button>
+      </div>
     }
   </section>
 
-  <!-- Portfolio stats -->
+  <!-- Stats bar -->
   <section class="stats-bar">
     <div class="stat">
       <span>Total Value</span>
       <strong>${{ totalValue | number:'1.2-2' }}</strong>
     </div>
-    <div class="stat positive">
+    <div class="stat" [ngClass]="{ positive: totalGains > 0, negative: totalGains < 0 }">
       <span>Gains</span>
-      <strong>+${{ totalGains | number:'1.2-2' }}</strong>
+      <strong>
+        {{ totalGains >= 0 ? '+' : '' }}${{ totalGains | number:'1.2-2' }}
+      </strong>
     </div>
-    <div class="stat negative">
+    <div class="stat" [ngClass]="{ positive: totalLosses === 0, negative: totalLosses > 0 }">
       <span>Losses</span>
-      <strong>${{ totalLosses | number:'1.2-2' }}</strong>
+      <strong>
+        -${{ totalLosses | number:'1.2-2' }}
+      </strong>
     </div>
   </section>
 
   <!-- Main layout -->
   <section class="main-layout">
-    <!-- Left: Stock details + chart -->
+    <!-- Left: Chart + details -->
     <div class="chart-panel">
       @if (selectedStock) {
         <div class="stock-header">
@@ -67,7 +89,6 @@
         </div>
       }
 
-      <!-- Chart -->
       <canvas
         baseChart
         [data]="chartData"
