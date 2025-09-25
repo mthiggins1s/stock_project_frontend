@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 import { PortfolioService } from '../../core/services/portfolio.service';
 import { StockCardComponent } from '../../stock-card/stock-card';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-portfolio-search',
@@ -18,9 +19,13 @@ export class PortfolioSearchComponent {
   error: string | null = null;
   loading = false;
 
-  constructor(private portfolioService: PortfolioService, private snackBar: MatSnackBar) {}
+  constructor(
+    private portfolioService: PortfolioService,
+    private snackBar: MatSnackBar
+  ) {}
 
-  search() {
+  /** 🔎 Search for a portfolio by its public ID */
+  search(): void {
     this.error = null;
     this.results = [];
     this.loading = true;
@@ -41,22 +46,27 @@ export class PortfolioSearchComponent {
     });
   }
 
-  savePortfolio() {
+  /** 💾 Save the currently loaded portfolio into the logged-in user’s account */
+  savePortfolio(): void {
     if (!this.results.length) return;
 
-    let requests = this.results.map(holding =>
+    // Create requests for each holding
+    const requests = this.results.map((holding) =>
       this.portfolioService.addToPortfolio(
         holding.stock.symbol,
         holding.stock.name,
         holding.stock.current_price,
         holding.shares,
-        holding.avg_cost
+        holding.avg_cost // ✅ supported now
       )
     );
 
-    Promise.all(requests.map(req => req.toPromise()))
+    // Wait for all requests to finish
+    Promise.all(requests.map((req) => req.toPromise()))
       .then(() => {
-        this.snackBar.open('Portfolio saved to your account!', 'Close', { duration: 3000 });
+        this.snackBar.open('Portfolio saved to your account!', 'Close', {
+          duration: 3000
+        });
       })
       .catch(() => {
         this.snackBar.open('Error saving portfolio', 'Close', { duration: 3000 });

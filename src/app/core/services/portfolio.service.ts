@@ -18,14 +18,15 @@ export class PortfolioService {
     symbol: string,
     name: string,
     current_price: number,
-    shares = 1
+    shares = 1,
+    avg_cost: number = current_price   // <-- added avg_cost
   ): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/portfolios`, {
       symbol,
       name,
       current_price,
       shares,
-      avg_cost: current_price
+      avg_cost
     });
   }
 
